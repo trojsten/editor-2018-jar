@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+        <link rel="icon" type="image/png" href="{% static "submit/favicon.ico" %}"/>
+        <title>Editor</title>
+    </head>
+
+    <body>
+        <!--<footer class="col-md-12">
+            {% if user.is_authenticated %}
+                <span>Loged as: {{ user.username }}</span> <a href="/logout/">Logout</a><br />
+            {% endif %}
+        </footer>-->
+        {% block content %}
+        {% endblock %}
+
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    </body>
+
+</html>
