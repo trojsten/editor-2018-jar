@@ -1,0 +1,6 @@
+{% extends 'submit/main.html' %}
+
+{% block content %}
+    <h2>{{ problem.title }}</h2>
+    {{ problem.content | safe }}
+{% endblock %}

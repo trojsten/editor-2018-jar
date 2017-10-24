@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'submit',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -117,5 +118,89 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 STATIC_URL = '/static/'
+
+#CKEDITOR_CONFIGS = {
+#    'default': {
+#        'toolbar': [
+#            [      'Undo', 'Redo',
+#              '-', 'Bold', 'Italic', 'Underline',
+#              '-', 'Link', 'Unlink', 'Anchor',
+#              '-', 'Format',
+#              '-', 'SpellChecker', 'Scayt',
+#              '-', 'Maximize',
+#            ],
+#            [      'HorizontalRule',
+#              '-', 'Table',
+#              '-', 'BulletedList', 'NumberedList',
+#              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
+#              '-', 'SpecialChar',
+#              '-', 'Source',
+#              '-', 'About',
+#            ]
+#        ],
+#        'width': 840,
+#        'height': 300,
+#        'toolbarCanCollapse': False,
+#    }
+#}
+
+#CKEDITOR_CONFIGS = {
+#    'default': {
+#        'skin': 'moono',
+#        'toolbar_MyCustomToolbar': [
+#            {'name': 'basic', 'items': [
+#                'Source',
+#                '-',
+#                'Bold',
+#                'Italic',
+#                'CodeSnippet'  # add the codesnippet button name
+#            ]}
+#        ],
+#        # https://github.com/django-ckeditor/django-ckeditor/tree/master/ckeditor/static/ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles
+#        # https://github.com/isagalaev/highlight.js/tree/master/src/styles
+#        'codeSnippet_theme': 'railscasts',
+#        'toolbar': 'MyCustomToolbar',
+#        'extraPlugins': ','.join(
+#            [
+#                # add the follow plugins
+#                'codesnippet',
+#                'widget',
+#                'dialog',
+#            ]),
+#    }
+#}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+		'skin': 'moono-lisa',
+		'toolbar_Basic': [
+			['Source', '-', 'Bold', 'Italic']
+		],
+		'toolbar_Full': [
+			['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+			['Link', 'Unlink', 'Anchor'],
+			['Image', 'Flash', 'Table', 'HorizontalRule'],
+			['TextColor', 'BGColor'],
+			['Smiley', 'SpecialChar'], ['CodeSnippet'], ['Source'],
+		],
+		# https://github.com/django-ckeditor/django-ckeditor/tree/master/ckeditor/static/ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles
+		# https://github.com/isagalaev/highlight.js/tree/master/src/styles
+		#'codeSnippet_theme': 'railscasts',
+		'toolbar': 'Full',
+		'height': 291,
+		'width': 835,
+		'filebrowserWindowWidth': 940,
+		'filebrowserWindowHeight': 725,
+		'extraPlugins': ','.join(
+			[
+				# add the follow plugins
+				'codesnippet',
+				'widget',
+				'dialog',
+			]),
+	}
+}

@@ -9,13 +9,13 @@
     </head>
 
     <body>
-        <!--<footer class="col-md-12">
+        <div class="container">
             {% if user.is_authenticated %}
                 <span>Loged as: {{ user.username }}</span> <a href="/logout/">Logout</a><br />
             {% endif %}
-        </footer>-->
-        {% block content %}
-        {% endblock %}
+            {% block content %}
+            {% endblock %}
+        </div>
 
 
         <!-- Bootstrap core JavaScript
