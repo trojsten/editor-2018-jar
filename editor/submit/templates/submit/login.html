@@ -4,12 +4,16 @@
 <h1>Login to Editor</h1>
 
 <form id="login_form" method="post" action="/submit/login/">
-    {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" />
-    <br />
-    Password: <input type="password" name="password" value="" size="50" />
-    <br />
+	{% csrf_token %}
+	<div class="form-group">
+		<label for="username-input">Username</label>
+		<input class="form-control" type="text" name="username" value="" size="50" id="username-input"/>
+	</div>
+	<div class="form-group">
+		<label for="password-input">Password</label>
+		<input class="form-control" type="password" name="password" value="" size="50" id="password-input"/>
+	</div>
 
-    <input type="submit" value="submit" />
+	<button type="submit" class="btn btn-primary">Login</button>
 </form>
 {% endblock %}

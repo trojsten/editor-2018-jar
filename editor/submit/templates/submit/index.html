@@ -3,10 +3,8 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h1>Editor says... hello {{ user.username }}!</h1>
-        <a href="problems">Ulohy</a>
-        <a href="logout">Logout</a><br />
     {% else %}
         <h1>Hello KSP!</h1>
-        <a href="login">Login</a>
+        <a href="login" class="btn btn-primary">Login</a>
     {% endif %}
 {% endblock %}

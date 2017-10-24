@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'submit',
     'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -122,57 +123,18 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_DIR, "media")
 
-#CKEDITOR_CONFIGS = {
-#    'default': {
-#        'toolbar': [
-#            [      'Undo', 'Redo',
-#              '-', 'Bold', 'Italic', 'Underline',
-#              '-', 'Link', 'Unlink', 'Anchor',
-#              '-', 'Format',
-#              '-', 'SpellChecker', 'Scayt',
-#              '-', 'Maximize',
-#            ],
-#            [      'HorizontalRule',
-#              '-', 'Table',
-#              '-', 'BulletedList', 'NumberedList',
-#              '-', 'Cut','Copy','Paste','PasteText','PasteFromWord',
-#              '-', 'SpecialChar',
-#              '-', 'Source',
-#              '-', 'About',
-#            ]
-#        ],
-#        'width': 840,
-#        'height': 300,
-#        'toolbarCanCollapse': False,
-#    }
-#}
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
 
-#CKEDITOR_CONFIGS = {
-#    'default': {
-#        'skin': 'moono',
-#        'toolbar_MyCustomToolbar': [
-#            {'name': 'basic', 'items': [
-#                'Source',
-#                '-',
-#                'Bold',
-#                'Italic',
-#                'CodeSnippet'  # add the codesnippet button name
-#            ]}
-#        ],
-#        # https://github.com/django-ckeditor/django-ckeditor/tree/master/ckeditor/static/ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles
-#        # https://github.com/isagalaev/highlight.js/tree/master/src/styles
-#        'codeSnippet_theme': 'railscasts',
-#        'toolbar': 'MyCustomToolbar',
-#        'extraPlugins': ','.join(
-#            [
-#                # add the follow plugins
-#                'codesnippet',
-#                'widget',
-#                'dialog',
-#            ]),
-#    }
-#}
+# New
+IMAGE_QUALITY = 40
+THUMBNAIL_SIZE = (300, 300)
+
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_FILENAME_GENERATOR = 'editor.utils.get_filename'
 
 CKEDITOR_CONFIGS = {
     'default': {

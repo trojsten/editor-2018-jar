@@ -10,9 +10,7 @@
 
     <body>
         <div class="container">
-            {% if user.is_authenticated %}
-                <span>Loged as: {{ user.username }}</span> <a href="/logout/">Logout</a><br />
-            {% endif %}
+			{% include 'submit/nav.html' %}
             {% block content %}
             {% endblock %}
         </div>
