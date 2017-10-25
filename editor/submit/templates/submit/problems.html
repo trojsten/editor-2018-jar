@@ -1,9 +1,16 @@
 {% extends 'submit/main.html' %}
 
 {% block content %}
-    <h2>Problems:</h2>
+    <h3>Active problem:</h3>
+    <a
+        class="btn btn-success"
+        href="/submit/problem/{{ active_problem.id }}"
+    >
+        {{ active_problem.order }}. {{ active_problem.title }}
+    </a>
+    <h3>Past problems:</h3>
     <ul class="list-group">
-    {% for problem in problems %}
+    {% for problem in past_problems %}
         <li class="list-group-item">
             <a href="/submit/problem/{{ problem.id }}">{{ problem.order }}. {{ problem.title }}</a>
         </li>

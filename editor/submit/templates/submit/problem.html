@@ -17,13 +17,14 @@
                 aria-describedby="basic-addon{{ row.order }}"
                 value="{{ row.content | safe }}"
                 name="row-{{ row.order }}"
+                {% if readonly %}readonly=true{% endif %}
             >
             </input>
             <span class="input-group-addon language" id="basic-addon{{ row.order }}">{{ row.get_lang_display }}</span>
         </div>
     {% endfor %}
     <br/>
-	<button type="submit" class="btn btn-success" name="save">Save</button>
+    <button type="submit" class="btn btn-success {% if readonly %}disabled{% endif %}" name="save">Save</button>
 	<button type="submit" class="btn btn-primary disabled" name="save-submit">Save & Submit</button>
 </form>
 {% endblock %}

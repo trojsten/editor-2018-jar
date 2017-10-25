@@ -31,7 +31,28 @@ class Row(models.Model):
     content = models.CharField(max_length=80, default="")
 
     def __unicode__(self):
-        return "Row-%s-%s-%s-%s" % (user, problem, order, lang)
+        return "(Row-%s-%s-%s-%s)" % (user, problem, order, lang)
 
     class Meta:
         unique_together = ("user", "problem", "order")
+
+class ActiveProblem(models.Model):
+    user = models.OneToOneField(User)
+    problem = models.ForeignKey(Problem)
+
+class SubmitOutput(models.Model):
+    OK = 1
+    WRONG = 2
+    STATUS_CHOICES = (
+            (OK, 'OK'),
+            (WRONG, 'Wrong'),
+    )
+
+    timestamp = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User)
+    problem = models.ForeignKey(Problem)
+    test_case = models.IntegerField(default=1)
+    status = models.IntegerField(choices=STATUS_CHOICES)
+
+    def __unicode__(self):
+        return "(Output-%s-%s-%s-%-%)" % (timestamp, user, problem, test_case, status)

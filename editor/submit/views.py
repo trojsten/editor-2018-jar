@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from submit.models import Problem, Row
+from submit.models import Problem, Row, ActiveProblem
 import sys
 
 def index(request):
@@ -10,19 +10,30 @@ def index(request):
 
 @login_required(login_url='/submit/login/')
 def problems(request):
-    all_entries = Problem.objects.order_by('order')
-    # TODO: filter only those which he can see
+    user = request.user
+    active = ActiveProblem.objects.get(user=user)
+    active_problem = Problem.objects.get(pk=active.problem.id)
+    past_problems = Problem.objects.filter(order__lt=active_problem.order)
     context_dict = {
-        'problems': all_entries
+        'past_problems': past_problems,
+        'active_problem': active_problem,
     }
     return render(request, 'submit/problems.html', context_dict)
 
 @login_required(login_url='/submit/login/')
 def problem(request, problem_id):
     user = request.user
+
+    active = ActiveProblem.objects.get(user=user)
+    active_problem = Problem.objects.get(pk=active.problem.id)
     problem = Problem.objects.get(pk=problem_id)
+    readonly = (active_problem != problem)
+
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     if request.method == 'POST':
+        if readonly:
+            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
         for row in rows:
             row.content = request.POST.get('row-%s' % row.order)
             row.save()
@@ -35,6 +46,7 @@ def problem(request, problem_id):
         context_dict = {
             'problem': problem,
             'rows': rows,
+            'readonly': readonly,
         }
         return render(request, 'submit/problem.html', context_dict)
 
