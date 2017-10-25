@@ -8,7 +8,7 @@ import sys
 def index(request):
     return render(request, 'submit/index.html', {})
 
-@login_required
+@login_required(login_url='/submit/login/')
 def problems(request):
     all_entries = Problem.objects.order_by('order')
     # TODO: filter only those which he can see
@@ -17,7 +17,7 @@ def problems(request):
     }
     return render(request, 'submit/problems.html', context_dict)
 
-@login_required
+@login_required(login_url='/submit/login/')
 def problem(request, problem_id):
     user = request.user
     problem = Problem.objects.get(pk=problem_id)
@@ -56,7 +56,7 @@ def user_login(request):
     else:
         return render(request, 'submit/login.html', {})
 
-@login_required
+@login_required(login_url='/submit/login/')
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/submit/')
