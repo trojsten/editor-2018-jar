@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from submit.models import Problem
+from submit.models import Problem, Row
+import sys
 
 def index(request):
     return render(request, 'submit/index.html', {})
@@ -11,13 +12,31 @@ def index(request):
 def problems(request):
     all_entries = Problem.objects.order_by('order')
     # TODO: filter only those which he can see
-    context_dict = {'problems': all_entries}
+    context_dict = {
+        'problems': all_entries
+    }
     return render(request, 'submit/problems.html', context_dict)
 
 @login_required
 def problem(request, problem_id):
+    user = request.user
     problem = Problem.objects.get(pk=problem_id)
-    return render(request, 'submit/problem.html', {'problem': problem})
+    rows = Row.objects.filter(problem=problem, user=user).order_by('order')
+    if request.method == 'POST':
+        for row in rows:
+            row.content = request.POST.get('row-%s' % row.order)
+            row.save()
+        if 'save' in request.POST:
+            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+        elif 'save-submit' in request.POST:
+            # TODO: add testing
+            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    else:
+        context_dict = {
+            'problem': problem,
+            'rows': rows,
+        }
+        return render(request, 'submit/problem.html', context_dict)
 
 def user_login(request):
     if request.method == 'POST':
