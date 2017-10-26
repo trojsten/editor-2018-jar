@@ -46,7 +46,7 @@ class ActiveProblem(models.Model):
     problem = models.ForeignKey(Problem)
 
 class SubmitOutput(models.Model):
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User)
     problem = models.ForeignKey(Problem)
     status = models.CharField(max_length=128, blank=True,

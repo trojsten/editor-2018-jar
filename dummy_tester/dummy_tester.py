@@ -9,7 +9,7 @@ protocol_file_names = {
     'cerr': 'CERR.protocol',
 }
 
-default_protocol = 'OK.protocol'
+default_protocol = 'ALL.protocol'
 
 
 class DummyTester(SocketServer.BaseRequestHandler):
@@ -22,12 +22,10 @@ class DummyTester(SocketServer.BaseRequestHandler):
         self.request.close()
 
         data_str = input_data.decode('utf8')
-        data_obj = data_str.split('\n', 6)
+        data_obj = data_str.split('\n', 4)
         submit_id = data_obj[1]
 
-        submit_file_name = data_obj[5]
-        submit_type = os.path.splitext(submit_file_name)[0].lower()
-        protocol_file_name = protocol_file_names.get(submit_type, default_protocol)
+        protocol_file_name = default_protocol
 
         with open(protocol_file_name, 'rb') as protocol_file:
             protocol_data = protocol_file.read()

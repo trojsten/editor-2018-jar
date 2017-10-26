@@ -57,13 +57,11 @@ def _prepare_raw_file(submit):
 
             timestamp = int(time.time())
 
-            raw_head = "%s\n%s\n%s\n%s\n%d\n%s\n" % (
+            raw_head = "%s\n%s\n%s\n%d\n" % (
                 django_settings.JUDGE_INTERFACE_IDENTITY,
                 submit_id,      # judge expects submit_id, but at front-end it is Review that stores all feedback data
                 user_id,
-                '', # correct_filename,
                 timestamp,
-                '', #original_filename,
             )
 
             raw_separator = "\n\n%s\n\n" % "##### LANGS #####"
