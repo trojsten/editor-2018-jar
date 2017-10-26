@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 SUBMITTED_FILE_EXTENSION = '.submit'
+SUBMITTED_LANG_FILE_EXTENSION = '.langs'
 TESTING_PROTOCOL_EXTENSION = '.protocol'
 TESTING_RAW_EXTENSION = '.raw'
 

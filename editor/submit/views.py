@@ -136,16 +136,18 @@ def view_submit(request, submit_id):
 
     with open(submit.file_path(), 'rb') as submitted_file:
         sub_file = submitted_file.read().decode('utf-8', 'replace')
-        order = 1
-        rows = []
-        for line in sub_file.split('\n')[:-1]:
-            rows.append({
-                'content': line,
-                'order': order,
-                'lang': 'C++',
-                })
-            order += 1
-        context_dict['rows'] = rows
+        with open(submit.lang_path(), 'rb') as lang_file:
+            file = lang_file.read().decode('utf-8', 'replace')
+            order = 1
+            rows = []
+            for content_line, lang_line in zip(sub_file.split('\n')[:-1], file.split('\n')[:-1]):
+                rows.append({
+                    'content': content_line,
+                    'order': order,
+                    'lang': lang_line,
+                    })
+                order += 1
+            context_dict['rows'] = rows
 
     if submit.protocol_exists():
         force_show_details = is_staff

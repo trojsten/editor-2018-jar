@@ -46,24 +46,30 @@ def _prepare_raw_file(submit):
     # TODO: send languages info, not only code
     rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
     write_lines_to_file(submit.file_path(), [row.content for row in rows])
+    write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
     with open(submit.file_path(), 'rb') as submitted_file:
         submitted_source = submitted_file.read()
+        with open(submit.lang_path(), 'rb') as submitted_lang_file:
+            submitted_langs = submitted_lang_file.read()
 
-        submit_id = str(submit.id)
-        user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
+            submit_id = str(submit.id)
+            user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
 
-        timestamp = int(time.time())
+            timestamp = int(time.time())
 
-        raw_head = "%s\n%s\n%s\n%s\n%d\n%s\n" % (
-            django_settings.JUDGE_INTERFACE_IDENTITY,
-            submit_id,      # judge expects submit_id, but at front-end it is Review that stores all feedback data
-            user_id,
-            '', # correct_filename,
-            timestamp,
-            '', #original_filename,
-        )
+            raw_head = "%s\n%s\n%s\n%s\n%d\n%s\n" % (
+                django_settings.JUDGE_INTERFACE_IDENTITY,
+                submit_id,      # judge expects submit_id, but at front-end it is Review that stores all feedback data
+                user_id,
+                '', # correct_filename,
+                timestamp,
+                '', #original_filename,
+            )
 
-        write_chunks_to_file(submit.raw_path(), [raw_head.encode('UTF-8'), submitted_source])
+            raw_separator = "\n\n%s\n\n" % "##### LANGS #####"
+
+            write_chunks_to_file(submit.raw_path(), [raw_head.encode('UTF-8'), submitted_source,
+                raw_separator.encode('UTF-8'), submitted_langs])
 
 
 def parse_protocol(protocol_path, force_show_details=False):

@@ -63,6 +63,9 @@ class SubmitOutput(models.Model):
     def file_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_FILE_EXTENSION)
 
+    def lang_path(self):
+        return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_LANG_FILE_EXTENSION)
+
     def raw_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.TESTING_RAW_EXTENSION)
 
