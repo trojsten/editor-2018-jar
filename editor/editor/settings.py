@@ -15,6 +15,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+def env(name, default):
+    return os.environ.get(name, default)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -166,3 +169,8 @@ CKEDITOR_CONFIGS = {
 			]),
 	}
 }
+
+SUBMIT_PATH = env('SUBMIT_PATH', os.path.join(PROJECT_DIR, 'submit'))
+JUDGE_INTERFACE_IDENTITY = env('JUDGE_INTERFACE_IDENTITY', 'Editor')
+JUDGE_ADDRESS = env('JUDGE_ADDRESS', '127.0.0.1')
+JUDGE_PORT = int(env('JUDGE_PORT', 12347))

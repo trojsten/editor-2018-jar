@@ -15,6 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
+                    <li><a href="/submit/active_problem/">Active</a></li>
                     <li><a href="/submit/problems/">Problems</a></li>
                 {% endif %}
             </ul>

@@ -11,7 +11,7 @@ class ActiveProblemAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'problem')
 
 class SubmitOutputAdmin(admin.ModelAdmin):
-    list_display = ('id', 'timestamp', 'user', 'problem', 'test_case', 'status')
+    list_display = ('id', 'timestamp', 'user', 'problem', 'status')
 
 admin.site.register(Problem, ProblemAdmin)
 admin.site.register(Row, RowAdmin)

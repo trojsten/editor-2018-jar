@@ -25,6 +25,28 @@
     {% endfor %}
     <br/>
     <button type="submit" class="btn btn-success {% if readonly %}disabled{% endif %}" name="save">Save</button>
-	<button type="submit" class="btn btn-primary disabled" name="save-submit">Save & Submit</button>
+    <button type="submit" class="btn btn-primary {% if readonly %}disabled{% endif %}" name="save-submit">Save & Submit</button>
 </form>
+<table class="table hover">
+    <thead>
+        <tr>
+            <th>Čas</th>
+            <th>Stav</th>
+        </tr>
+    </thead>
+    {% for submit in submits %}
+    <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
+                success
+                {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
+                info
+                {% elif submit.score > 0 %}
+                warning
+                {% else %}
+                danger
+                {% endif %}">
+            <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
+            <td>{{ submit.get_status_display }}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

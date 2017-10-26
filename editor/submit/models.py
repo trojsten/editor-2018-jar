@@ -1,6 +1,11 @@
+import os
+
+from django.contrib.auth.models import User
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
-from django.contrib.auth.models import User
+from django.conf import settings as django_settings
+
+from submit import constants
 
 class Problem(models.Model):
     order = models.IntegerField(default=1, unique=True)
@@ -41,18 +46,26 @@ class ActiveProblem(models.Model):
     problem = models.ForeignKey(Problem)
 
 class SubmitOutput(models.Model):
-    OK = 1
-    WRONG = 2
-    STATUS_CHOICES = (
-            (OK, 'OK'),
-            (WRONG, 'Wrong'),
-    )
-
     timestamp = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
     problem = models.ForeignKey(Problem)
-    test_case = models.IntegerField(default=1)
-    status = models.IntegerField(choices=STATUS_CHOICES)
+    status = models.CharField(max_length=128, blank=True,
+                              choices=constants.ReviewResponse.all_items_as_choices())
+    score = models.IntegerField()
+
+    def dir_path(self):
+        return os.path.join(django_settings.SUBMIT_PATH, 'submits',
+                str(self.user.id), str(self.id))
+
+
+    def file_path(self):
+        return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_FILE_EXTENSION)
+
+    def raw_path(self):
+        return os.path.join(self.dir_path(), str(self.id) + constants.TESTING_RAW_EXTENSION)
+
+    def protocol_path(self):
+        return os.path.join(self.dir_path(), str(self.id) + constants.TESTING_PROTOCOL_EXTENSION)
 
     def __unicode__(self):
-        return "(Output-%s-%s-%s-%-%)" % (timestamp, user, problem, test_case, status)
+        return "(Output-%s-%s-%s-%s)" % (timestamp, user, problem, status)

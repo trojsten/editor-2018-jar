@@ -1,0 +1,25 @@
+<protokol><runLog>
+<test><name>00.sample.a.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>21</time></test>
+<test><name>00.sample.b.in</name><resultCode>2</resultCode><resultMsg>WA</resultMsg><time>21</time><details>nas  0001: 4
+tvoj 0001: 3</details></test>
+<test><name>1.a.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>84</time></test>
+<test><name>1.b.in</name><resultCode>2</resultCode><resultMsg>WA</resultMsg><time>498</time><details>nas  0001: 1
+tvoj 0001: 0</details></test>
+<test><name>1.c.in</name><resultCode>7</resultCode><resultMsg>IGN</resultMsg><time>0</time></test>
+<test><name>1.d.in</name><resultCode>7</resultCode><resultMsg>IGN</resultMsg><time>0</time></test>
+<test><name>2.a.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>180</time></test>
+<test><name>2.b.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>46</time></test>
+<test><name>2.c.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>225</time></test>
+<test><name>2.d.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>128</time></test>
+<test><name>3.a.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>52</time></test>
+<test><name>3.b.in</name><resultCode>1</resultCode><resultMsg>OK</resultMsg><time>261</time></test>
+<test><name>3.c.in</name><resultCode>3</resultCode><resultMsg>TLE</resultMsg><time>2000</time></test>
+<test><name>3.d.in</name><resultCode>7</resultCode><resultMsg>IGN</resultMsg><time>0</time></test>
+<test><name>4.a.in</name><resultCode>5</resultCode><resultMsg>EXC</resultMsg><time>2000</time></test>
+<test><name>4.b.in</name><resultCode>7</resultCode><resultMsg>IGN</resultMsg><time>0</time></test>
+<test><name>5.a.in</name><resultCode>5</resultCode><resultMsg>SEC</resultMsg><time>2000</time></test>
+<test><name>5.b.in</name><resultCode>7</resultCode><resultMsg>IGN</resultMsg><time>0</time></test>
+
+<score> 20</score><details>
+Score:  20
+</details><finalResult>2</finalResult><finalMessage>Wrong answer (OK: 20 %)</finalMessage></runLog></protokol>
