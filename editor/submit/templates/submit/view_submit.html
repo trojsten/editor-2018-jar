@@ -2,6 +2,42 @@
 {% load staticfiles %}
 
 {% block content %}
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Submit</div>
+                <div class="panel-body">
+                    <table class="table-condensed">
+                        <tr> <th>Task:</th> <td>{{ submit.problem.title }}</td> </tr>
+                        <tr> <th>Submit ID:</th> <td>{{ submit.id }}</td> </tr>
+                        <tr> <th>User:</th> <td>{{ submit.user }}</td> </tr>
+                        <tr> <th>Time:</th> <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td> </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">Review</div>
+				<div class="panel-body">
+					<table class="table-condensed">
+						<tr>
+							<th>Result:</th>
+							<td>{{ submit.verbose_response }}</td>
+						</tr>
+						<tr>
+							<th>Score:</th>
+							<td>{{ submit.score }}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+            <div class="pull-right">
+                <a href="{% url 'problem' problem_id=submit.problem.id %}" class="btn btn-primary">Zadanie</a>
+            </div>
+		</div>
+    </div>
     <h3>Protocol</h3>
     {% include 'submit/protocol.html' %}
 {% endblock content %}

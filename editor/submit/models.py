@@ -33,7 +33,7 @@ class Row(models.Model):
     problem = models.ForeignKey(Problem)
     order = models.IntegerField(default=1)
     lang = models.IntegerField(choices=LANG_CHOICES)
-    content = models.CharField(max_length=80, default="")
+    content = models.CharField(max_length=80, default="", blank=True)
 
     def __unicode__(self):
         return "(Row-%s-%s-%s-%s)" % (user, problem, order, lang)

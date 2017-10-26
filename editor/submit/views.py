@@ -122,7 +122,7 @@ def receive_protocol(request):
     return HttpResponse("")
 
 
-@login_required
+@login_required(login_url='/submit/login/')
 def view_submit(request, submit_id):
     submit = get_object_or_404(SubmitOutput, pk=submit_id)
     is_staff = request.user.is_staff
