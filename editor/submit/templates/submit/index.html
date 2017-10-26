@@ -5,6 +5,6 @@
         <h1>Editor says... hello {{ user.username }}!</h1>
     {% else %}
         <h1>Hello KSP!</h1>
-        <a href="login" class="btn btn-primary">Login</a>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
     {% endif %}
 {% endblock %}

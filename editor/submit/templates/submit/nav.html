@@ -15,8 +15,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
-                    <li><a href="/submit/active_problem/">Active</a></li>
-                    <li><a href="/submit/problems/">Problems</a></li>
+                    <li><a href="{% url 'active_problem' %}">Active</a></td>
+                    <li><a href="{% url 'problems' %}">Problems</a></td>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -26,11 +26,11 @@
 							{{ user.username }} <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="/submit/logout">Logout</a></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></td>
 						</ul>
 					</li>
 				{% else %}
-					<li><a href="/submit/login/">Login</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></td>
 				{% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->

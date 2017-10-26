@@ -2,6 +2,7 @@ import sys
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -119,6 +120,29 @@ def receive_protocol(request):
             active_problem.delete()
 
     return HttpResponse("")
+
+
+@login_required
+def view_submit(request, submit_id):
+    submit = get_object_or_404(SubmitOutput, pk=submit_id)
+    is_staff = request.user.is_staff
+
+    if submit.user != request.user and not is_staff:
+        raise PermissionDenied()
+
+    context_dict = {
+        'submit': submit,
+    }
+
+    with open(submit.file_path(), 'rb') as submitted_file:
+        context_dict['submitted_file'] = submitted_file.read().decode('utf-8', 'replace')
+
+    if submit.protocol_exists():
+        force_show_details = is_staff
+        context_dict['protocol'] = parse_protocol(submit.protocol_path(), force_show_details)
+        context_dict['result'] = constants.JudgeTestResult
+
+    return render(request, 'submit/view_submit.html', context_dict)
 
 
 def user_login(request):

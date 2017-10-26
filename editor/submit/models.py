@@ -56,7 +56,9 @@ class SubmitOutput(models.Model):
     def dir_path(self):
         return os.path.join(django_settings.SUBMIT_PATH, 'submits',
                 str(self.user.id), str(self.id))
-
+    
+    def verbose_response(self):
+        return constants.ReviewResponse.verbose(self.status)
 
     def file_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_FILE_EXTENSION)
@@ -66,6 +68,9 @@ class SubmitOutput(models.Model):
 
     def protocol_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.TESTING_PROTOCOL_EXTENSION)
+
+    def protocol_exists(self):
+        return os.path.exists(self.protocol_path())
 
     def __unicode__(self):
         return "(Output-%s-%s-%s-%s)" % (timestamp, user, problem, status)
