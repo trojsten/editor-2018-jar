@@ -6,23 +6,7 @@
 <h2>Riešenie:</h2>
 <form id="problem_form" method="post" action="/submit/problem/{{ problem.id }}/">
 	{% csrf_token %}
-    {% for row in rows %}
-        <div class="input-group">
-            <span class="input-group-addon line-number" id="basic-addon{{ row.order }}">{{ row.order }}</span>
-            <input
-                type="text"
-                class="form-control"
-                placeholder="Write some {{ row.get_lang_display }} code here"
-                aria-label="Username"
-                aria-describedby="basic-addon{{ row.order }}"
-                value="{{ row.content | safe }}"
-                name="row-{{ row.order }}"
-                {% if readonly %}readonly=true{% endif %}
-            >
-            </input>
-            <span class="input-group-addon language" id="basic-addon{{ row.order }}">{{ row.get_lang_display }}</span>
-        </div>
-    {% endfor %}
+    {% include 'submit/code_rows.html' with rows=rows readonly=readonly %}
     <br/>
     <button type="submit" class="btn btn-success {% if readonly %}disabled{% endif %}" name="save">Save</button>
     <button type="submit" class="btn btn-primary {% if readonly %}disabled{% endif %}" name="save-submit">Save & Submit</button>

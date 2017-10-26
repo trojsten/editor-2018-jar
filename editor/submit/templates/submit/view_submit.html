@@ -15,7 +15,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
         <div class="col col-md-6">
 			<div class="panel panel-default">
@@ -37,6 +36,14 @@
                 <a href="{% url 'problem' problem_id=submit.problem.id %}" class="btn btn-primary">Zadanie</a>
             </div>
 		</div>
+    </div>
+    <p>
+        <a data-toggle="collapse" href="#collapseCode" aria-expanded="false" aria-controls="collapseCode" class="btn btn-primary btn-lg">
+            Code
+        </a>
+    </p>
+    <div class="collapse card" id="collapseCode">
+        {% include 'submit/code_rows.html' with rows=rows readonly=True %}
     </div>
     <h3>Protocol</h3>
     {% include 'submit/protocol.html' %}

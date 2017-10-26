@@ -135,7 +135,17 @@ def view_submit(request, submit_id):
     }
 
     with open(submit.file_path(), 'rb') as submitted_file:
-        context_dict['submitted_file'] = submitted_file.read().decode('utf-8', 'replace')
+        sub_file = submitted_file.read().decode('utf-8', 'replace')
+        order = 1
+        rows = []
+        for line in sub_file.split('\n')[:-1]:
+            rows.append({
+                'content': line,
+                'order': order,
+                'lang': 'C++',
+                })
+            order += 1
+        context_dict['rows'] = rows
 
     if submit.protocol_exists():
         force_show_details = is_staff
