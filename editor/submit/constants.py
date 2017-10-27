@@ -78,8 +78,40 @@ class Language(object):
     CPP = 1
     PYTHON = 2
     JAVA = 3
+    BASIC = 4
+    PERL = 5
+    FREE_PASCAL = 6
+    JAVASCRIPT = 7
+    R = 8
+    CSHARP = 9
+    GO = 10
+    BASH = 11
+    D = 12
+    LUA = 13
+    PHP = 14
+    RUBY = 15
+    RUST = 16
+    COBOL = 17
+    FORTRAN = 18
+    LISP = 19
     LANG_CHOICES = (
             (CPP, 'C++'),
             (PYTHON, 'Python'),
             (JAVA, 'Java'),
+            (BASIC, 'Basic'),
+            (PERL, 'Perl'),
+            (FREE_PASCAL, 'FreePascal'),
+            (JAVASCRIPT, 'Javascript'),
+            (R, 'R'),
+            (CSHARP, 'C#'),
+            (GO, 'Go'),
+            (BASH, 'Bash'),
+            (D, 'D'),
+            (LUA, 'Lua'),
+            (PHP, 'PHP'),
+            (RUBY, 'Ruby'),
+            (RUST, 'Rust'),
+            (COBOL, 'Cobol'),
+            (FORTRAN, 'Fortran'),
+            (LISP, 'Lisp'),
     )
