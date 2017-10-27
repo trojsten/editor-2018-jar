@@ -1,7 +1,9 @@
 import sys
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -156,6 +158,44 @@ def view_submit(request, submit_id):
 
     return render(request, 'submit/view_submit.html', context_dict)
 
+@login_required(login_url='/submit/login/')
+@staff_member_required
+def add_row(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user-select')
+        lang_number = request.POST.get('lang-select')
+
+        user = User.objects.get(pk=user_id)
+        active_problem = ActiveProblem.objects.filter(user=user).first()
+        if active_problem is None:
+            return HttpResponseRedirect('/submit/add_row/')
+
+        problem = active_problem.problem
+        row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
+        new_order = row.order + 1
+        print(user_id, lang_number, problem.title, new_order, file=sys.stderr)
+        Row.objects.create(
+                user=user,
+                problem=problem,
+                order=new_order,
+                lang=lang_number,
+                content="")
+        return HttpResponseRedirect('/submit/add_row/')
+    else:
+        users = User.objects.all()
+        langs = constants.Language.LANG_CHOICES
+        info = []
+        for user in users:
+            active_problem = ActiveProblem.objects.get(user=user)
+            row = Row.objects.filter(user=user, problem=active_problem.problem).order_by('order').last()
+            info.append((user.id, active_problem, row.order + 1))
+
+        context_dict = {
+            'users': users,
+            'langs': langs,
+            'info': info,
+        }
+        return render(request, 'submit/add_row.html', context_dict)
 
 def user_login(request):
     if request.method == 'POST':

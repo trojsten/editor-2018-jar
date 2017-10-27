@@ -1,0 +1,34 @@
+{% extends 'submit/main.html' %}
+
+{% block content %}
+<h1>Add row</h1>
+
+Pridá nový riadok družinke vo vybratom jazyku.
+Keďže družinka má len jeden aktívny problém v nejakom momente, pridá sa automaticky ako posledný.
+
+<form id="add_row_form" method="post" action="/submit/add_row/">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username-input">Druzinka</label>
+        <select class="form-control" onchange="changeInfo()" id="user-select" name="user-select">
+            <option disabled selected value> -- select an option -- </option>
+            {% for user in users %}
+                <option value="{{ user.id }}">
+                    {{ user }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="lang-input">Jazyk</label>
+        <select class="form-control" name="lang-select">
+            {% for lang_code, lang_name in langs %}
+                <option value="{{ lang_code }}">
+                    {{ lang_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Add row</button>
+</form>
+{% endblock %}

@@ -17,6 +17,9 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'active_problem' %}">Active</a></td>
                     <li><a href="{% url 'problems' %}">Problems</a></td>
+                    {% if user.is_staff %}
+                        <li><a href="{% url 'add_row' %}">Add row</a></td>
+                    {% endif %}
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

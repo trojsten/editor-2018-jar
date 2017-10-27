@@ -20,19 +20,10 @@ class Problem(models.Model):
         return self.title
 
 class Row(models.Model):
-    CPP = 1
-    PYTHON = 2
-    JAVA = 3
-    LANG_CHOICES = (
-            (CPP, 'C++'),
-            (PYTHON, 'Python'),
-            (JAVA, 'Java'),
-    )
-
     user = models.ForeignKey(User)
     problem = models.ForeignKey(Problem)
     order = models.IntegerField(default=1)
-    lang = models.IntegerField(choices=LANG_CHOICES)
+    lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
     content = models.CharField(max_length=80, default="", blank=True)
 
     def __unicode__(self):

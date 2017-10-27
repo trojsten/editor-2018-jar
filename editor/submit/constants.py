@@ -73,3 +73,13 @@ class ReviewResponse(JudgeTestResult):
         )
 
         return choices
+
+class Language(object):
+    CPP = 1
+    PYTHON = 2
+    JAVA = 3
+    LANG_CHOICES = (
+            (CPP, 'C++'),
+            (PYTHON, 'Python'),
+            (JAVA, 'Java'),
+    )
