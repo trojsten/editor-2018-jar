@@ -172,7 +172,9 @@ def add_row(request):
 
         problem = active_problem.problem
         row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
-        new_order = row.order + 1
+        new_order = 1
+        if row is not None:
+            new_order = row.order + 1
         print(user_id, lang_number, problem.title, new_order, file=sys.stderr)
         Row.objects.create(
                 user=user,
@@ -184,16 +186,10 @@ def add_row(request):
     else:
         users = User.objects.all()
         langs = constants.Language.LANG_CHOICES
-        info = []
-        for user in users:
-            active_problem = ActiveProblem.objects.get(user=user)
-            row = Row.objects.filter(user=user, problem=active_problem.problem).order_by('order').last()
-            info.append((user.id, active_problem, row.order + 1))
 
         context_dict = {
             'users': users,
             'langs': langs,
-            'info': info,
         }
         return render(request, 'submit/add_row.html', context_dict)
 
