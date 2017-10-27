@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -192,6 +192,25 @@ def add_row(request):
             'langs': langs,
         }
         return render(request, 'submit/add_row.html', context_dict)
+
+@login_required(login_url='/submit/login/')
+@staff_member_required
+def add_row_info(request, user_id):
+    user = User.objects.get(pk=user_id)
+    active_problem = ActiveProblem.objects.filter(user=user).first()
+    if active_problem is None:
+        return JsonResponse({'no_active_problem': True});
+    problem = active_problem.problem
+    row = Row.objects.filter(user=user, problem=problem).last()
+    next_order = 1
+    if row is not None:
+        next_order = row.order + 1
+    return JsonResponse({
+        'no_active_problem': False,
+        'problem_id': problem.id,
+        'problem_title': problem.title,
+        'next_order': next_order,
+    })
 
 def user_login(request):
     if request.method == 'POST':
