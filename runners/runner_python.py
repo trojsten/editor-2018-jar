@@ -14,6 +14,7 @@ class PythonRunner(Runner):
           'import sys\n' +
           'IN_MEMORY_NAME = sys.argv[1]\n' +
           'OUT_MEMORY_NAME = sys.argv[2]\n' +
+          'sys = None\n' +
           'IN_MEMORY = open(IN_MEMORY_NAME, "r")\n' +
           'OUT_MEMORY = open(OUT_MEMORY_NAME, "w")\n'
         )
