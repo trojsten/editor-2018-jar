@@ -1,5 +1,8 @@
 from runner import Runner, InitRunner
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class CppRunner(Runner):
@@ -56,7 +59,6 @@ class CppRunner(Runner):
           'for(int I=0; I<TMP_INT; I++){\n' +
           '  fscanf(IN_MEMORY, "%[^\\n]\\n", &BUFFER);\n' +
           '  {}[I] = string(BUFFER);\n'.format(vector) +
-          '  cout << {}.size()<<endl;\n'.format(vector) +
           '}\n'
         )
         return code
@@ -107,17 +109,24 @@ class CppRunner(Runner):
     def save_str(self, strr):
         return 'fprintf(OUT_MEMORY, "{}\\n%s\\n", {}.c_str());\n'.format(strr, strr)
 
-    def prepare(self, codename):
-        command = 'g++ {} --std=c++11 -o {}.bin'.format(codename, codename)
-        os.system(command)
+    def prepare(self):
+        code_file = open(self.codename+".cpp", "w")
+        code_file.write(self.generate())
+        code_file.close()
+        command = 'g++ {}.cpp --std=c++11 -w -o {}.bin'.format(self.codename, self.codename)
+        logging.info("Running: %s", command)
+        return os.system(command)
 
-    def execute(self, codename, in_memory, out_memory):
-        os.system('./{}.bin {} {}'.format(codename, in_memory, out_memory))
+    def execute(self, in_memory, out_memory):
+        command = './{}.bin {} {}'.format(self.codename, in_memory, out_memory)
+        logging.info('Executing: %s', command)
+        return os.system(command)
 
 
 if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    runner = CppRunner()
-    runner.simle_full_run('vs1.push_back("ss");\n', 'tmp/tmp.cpp', 'tmp/memory.txt', 'tmp/memory2_cpp.txt')
-    runner.simle_full_run('vs1.push_back("ss");\n', 'tmp/tmp.cpp', 'tmp/memory2_cpp.txt', 'tmp/memory3_cpp.txt')
+    runner1 = CppRunner(Runner.SOME_STR_VECTOR + '.push_back("string1");\n', 'tmp/tmp.cpp')
+    runner1.simple_full_run('tmp/memory.txt', 'tmp/memory2_cpp.txt')
+    runner2 = CppRunner(Runner.SOME_STR_VECTOR + '.push_back("string2");\n', 'tmp/tmp2.cpp')
+    runner2.simple_full_run('tmp/memory2_cpp.txt', 'tmp/memory3_cpp.txt')

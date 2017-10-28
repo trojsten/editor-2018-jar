@@ -2,6 +2,8 @@ from runner import Runner, InitRunner
 import os
 import logging
 
+logging.basicConfig(level=logging.INFO)
+
 
 class PythonRunner(Runner):
 
@@ -77,13 +79,15 @@ class PythonRunner(Runner):
         )
         return code
 
-    def prepare(self, codename):
-        # Nothing to do for python.
-        pass
+    def prepare(self):
+        code_file = open(self.codename+".py", "w")
+        code_file.write(self.generate())
+        code_file.close()
+        return 0
 
-    def execute(self, codename, in_memory, out_memory):
-        command = 'python3 {} {} {}'.format(codename, in_memory, out_memory)
-        os.system(command)
+    def execute(self, in_memory, out_memory):
+        command = 'python3 {}.py {} {}'.format(self.codename, in_memory, out_memory)
+        return os.system(command)
 
     def name(self):
         return 'Python'
@@ -91,5 +95,5 @@ class PythonRunner(Runner):
 if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    runner = PythonRunner()
-    runner.simle_full_run('vs1.append("f")\n', 'tmp/tmp.py', 'tmp/memory.txt', 'tmp/memory2_py.txt')
+    runner = PythonRunner(Runner.SOME_STR_VECTOR + '.append("f")\n', 'tmp/tmp')
+    runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_py.txt')
