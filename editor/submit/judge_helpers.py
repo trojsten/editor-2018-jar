@@ -43,7 +43,6 @@ def _send_to_judge(submit):
         sock.close()
 
 def _prepare_raw_file(submit):
-    # TODO: send languages info, not only code
     rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
     write_lines_to_file(submit.file_path(), [row.content for row in rows])
     write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])

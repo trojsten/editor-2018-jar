@@ -161,12 +161,12 @@ def receive_protocol(request):
     if submit_output.status == constants.ReviewResponse.OK:
         user = submit_output.user
         problem_order = submit_output.problem.order
-        # TODO: uz nie je dalsi?
         next_problem = Problem.objects.filter(order__gt = problem_order).first()
         if next_problem is not None:
             active_problem.problem = next_problem
             active_problem.save()
         else:
+            # uz nei je dalsi problem
             active_problem.delete()
 
     return HttpResponse("")
@@ -259,6 +259,40 @@ def add_row_info(request, user_id):
         'problem_title': problem.title,
         'next_order': next_order,
     })
+
+@login_required(login_url='/submit/login/')
+@staff_member_required
+def view_results(request):
+    users = User.objects.all()
+    problems = Problem.objects.all().order_by('order')
+
+    results = {}
+    count_oks = {}
+    for user in users:
+        user_results = {}
+        count_ok = 0
+        for problem in problems:
+            last_submit = SubmitOutput.objects.filter(
+                    user=user, problem=problem).order_by('timestamp').last()
+            last_ok_submit = SubmitOutput.objects.filter(
+                    user=user, problem=problem,
+                    status=constants.ReviewResponse.OK).order_by('timestamp').last()
+            if last_ok_submit is None:
+                user_results[problem.id] = last_submit
+            else:
+                user_results[problem.id] = last_ok_submit
+                count_ok += 1
+        results[user.id] = user_results
+        count_oks[user.id] = count_ok
+
+    context_dict = {
+        'users': users,
+        'problems': problems,
+        'results': results,
+        'count_oks': count_oks,
+        'response': constants.ReviewResponse,
+    }
+    return render(request, 'submit/view_results.html', context_dict)
 
 def work_after_login(user):
     result = create_active_if_first_login(user)

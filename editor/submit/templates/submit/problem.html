@@ -20,21 +20,23 @@
             <th>Akcie</th>
         </tr>
     </thead>
-    {% for submit in submits %}
-    <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
-                success
-                {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
-                info
-                {% elif submit.score > 0 %}
-                warning
-                {% else %}
-                danger
-                {% endif %}">
-            <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
-            <td>{{ submit.get_status_display }}</td>
-            <td>{{ submit.score }}</td>
-            <td><a class="btn btn-primary btn-xs" href="{% url 'view_submit' submit_id=submit.id %}">Detaily</a></td>
-        </tr>
-    {% endfor %}
+    <tbody>
+        {% for submit in submits %}
+        <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
+                    success
+                    {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
+                    info
+                    {% elif submit.score > 0 %}
+                    warning
+                    {% else %}
+                    danger
+                    {% endif %}">
+                <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
+                <td>{{ submit.get_status_display }}</td>
+                <td>{{ submit.score }}</td>
+                <td><a class="btn btn-primary btn-xs" href="{% url 'view_submit' submit_id=submit.id %}">Detaily</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
