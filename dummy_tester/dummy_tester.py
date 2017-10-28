@@ -1,4 +1,5 @@
 import os
+import json
 
 from django.utils.six.moves import socketserver as SocketServer
 from django.utils.six.moves import urllib
@@ -21,9 +22,9 @@ class DummyTester(SocketServer.BaseRequestHandler):
         print('Connection from: ' + str(self.client_address))
         self.request.close()
 
-        data_str = input_data.decode('utf8')
-        data_obj = data_str.split('\n', 4)
-        submit_id = data_obj[1]
+        data = json.loads(input_data.decode('UTF-8'))
+
+        submit_id = data['submit_id']
 
         protocol_file_name = default_protocol
 

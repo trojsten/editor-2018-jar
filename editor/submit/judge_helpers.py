@@ -7,6 +7,7 @@ from decimal import Decimal
 from django.conf import settings as django_settings
 
 from unidecode import unidecode
+import json
 
 from submit.constants import JudgeTestResult, ReviewResponse
 from submit.models import SubmitOutput, Row
@@ -43,6 +44,29 @@ def _send_to_judge(submit):
         sock.close()
 
 def _prepare_raw_file(submit):
+    rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
+
+    submit_id = str(submit.id)
+    user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
+
+    timestamp = int(time.time())
+
+    info = {
+        'judge': django_settings.JUDGE_INTERFACE_IDENTITY,
+        'submit_id': submit_id,
+        'user_id': user_id,
+        'timestamp': timestamp,
+        'code': [(row.get_lang_display(), row.content) for row in rows],
+    }
+
+    # write because of code in submit view
+    # TODO: do it with json dump
+    write_lines_to_file(submit.file_path(), [row.content for row in rows])
+    write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
+    with open(submit.raw_path(), 'w') as outfile:
+       json.dump(info, outfile)
+
+def _prepare_raw_file_old(submit):
     rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
     write_lines_to_file(submit.file_path(), [row.content for row in rows])
     write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
