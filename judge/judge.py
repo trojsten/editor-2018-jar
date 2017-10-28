@@ -12,9 +12,11 @@ from django.utils.six.moves import urllib
 
 def add_compile(protokol, result):
     # result: None alebo (CERR, line_number, msg)
-    # TODO: add line information
     compileLog = SubElement(protokol, 'compileLog')
+    # TODO: ked mi bude dochadzat aj message, tak ju tu vopchat
     compileLog.text = "Line %s didn't compile." % result[1]
+    lineNumber = SubElement(protokol, 'cLogLineNumber')
+    lineNumber.text = str(result[1])
 
 def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
@@ -22,9 +24,10 @@ def run_tests(problem, master, protokol):
         base = os.path.splitext(input_path)[0]
         result = master.run(input_path)
         message = 'OK'
+        line = 0
         if isinstance(result, tuple):
-            # TODO: add line number info
             message = 'EXC'
+            line = result[1]
         elif isinstance(result, dict):
             memory = result
 
@@ -44,9 +47,11 @@ def run_tests(problem, master, protokol):
         test = SubElement(runLog, 'test')
         name = SubElement(test, 'name')
         resultMsg = SubElement(test, 'resultMsg')
+        lineNumber = SubElement(test, 'lineNumber')
         #details = SubElement(test, 'details') # TODO: add details
         name.text = os.path.basename(input_path)
         resultMsg.text = message
+        lineNumber.text = str(line)
 
 class EditorJudge(SocketServer.BaseRequestHandler):
     def handle(self):

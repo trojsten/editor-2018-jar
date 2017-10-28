@@ -8,6 +8,9 @@
 {% else %}
     {% if protocol.compile_log_present %}
         <h4>Compiler output</h4>
+        <div class="alert alert-danger">
+            Line {{ protocol.compile_log_line }} didn't compile.
+        </div>
         <pre>{{ protocol.compile_log }}</pre>
     {% endif %}
     {% if protocol.have_tests %}
@@ -16,6 +19,7 @@
                 <tr>
                     <th>Test case</th>
                     <th>Result</th>
+                    <th>Line</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +37,7 @@
                             {% endif %}
                         </td>
                         <td><span data-toggle="tooltip" data-placement="auto" title="{{ test.result }}">{{ result|verbose:test.result }}</span></td>
+                        <td>{% if test.line > 0 %}{{ test.line }}{% endif %}</td>
                     </tr>
 
                     {% if test.show_details %}

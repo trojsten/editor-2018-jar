@@ -111,18 +111,21 @@ def parse_protocol(protocol_path, force_show_details=False):
     clog = tree.find('compileLog')
     data['compile_log_present'] = clog is not None
     data['compile_log'] = clog.text if clog is not None else ''
+    clog_line = tree.find('cLogLineNumber')
+    data['compile_log_line'] = int(clog_line.text) if clog_line is not None else None
 
     tests = []
     runlog = tree.find('runLog')
     if runlog is not None:
         for runtest in runlog:
-            # Test log format in protocol is: name, resultCode, resultMsg, details
+            # Test log format in protocol is: name, resultMsg, line, details
             if runtest.tag != 'test':
                 continue
             test = dict()
             test['name'] = runtest[0].text
             test['result'] = runtest[1].text
-            details = runtest[2].text if len(runtest) > 2 else None
+            test['line'] = int(runtest[2].text)
+            details = runtest[3].text if len(runtest) > 3 else None
             test['details'] = details
             test['show_details'] = details is not None and ('sample' in test['name'] or force_show_details)
             tests.append(test)
