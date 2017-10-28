@@ -54,30 +54,33 @@ Keďže družinka má len jeden aktívny problém v nejakom momente, pridá sa a
         </div>
     </div>
 </div>
+{% endblock %}
 
-<script>
-function changeInfo() {
-    var user_id = $("#user-select").val();
-    $.ajax({
-        url: "/submit/add_row_info/" + user_id,
-        type: "GET", // This is the default though, you don't actually need to always mention it
-        dataType: "json",
-        success: function(data) {
-            if (data['no_active_problem']) {
-                $("#add-row-btn").attr("disabled", true);
-                $("#td-active").text("No active problem")
-                $("#td-new-order").text("-")
-            } else {
-                $("#add-row-btn").attr("disabled", false);
-                $("#td-active").text(data['problem_title'])
-                $("#td-new-order").text(data['next_order'])
+{% block js %}
+    {{ block.super }}
+    <script>
+    function changeInfo() {
+        var user_id = $("#user-select").val();
+        $.ajax({
+            url: "/submit/add_row_info/" + user_id,
+            type: "GET", // This is the default though, you don't actually need to always mention it
+            dataType: "json",
+            success: function(data) {
+                if (data['no_active_problem']) {
+                    $("#add-row-btn").attr("disabled", true);
+                    $("#td-active").text("No active problem")
+                    $("#td-new-order").text("-")
+                } else {
+                    $("#add-row-btn").attr("disabled", false);
+                    $("#td-active").text(data['problem_title'])
+                    $("#td-new-order").text(data['next_order'])
+                }
+                console.log(data);
+            },
+            failure: function(data) { 
+                console.log("Got an error dude");
             }
-            console.log(data);
-        },
-        failure: function(data) { 
-            console.log("Got an error dude");
-        }
-    }); 
-}
-</script>
+        }); 
+    }
+    </script>
 {% endblock %}
