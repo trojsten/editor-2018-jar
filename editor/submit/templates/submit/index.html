@@ -1,5 +1,7 @@
 {% extends 'submit/main.html' %}
 
+{% block title %}Editor{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
         <h1>Editor says... hello {{ user.username }}!</h1>
