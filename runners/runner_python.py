@@ -29,6 +29,9 @@ class PythonRunner(Runner):
     def load_int_vector(self, vector):
         return vector + ' = list(map(int, IN_MEMORY.readline().split()[2:]))\n'
 
+    def load_float_vector(self, vector):
+        return vector + ' = list(map(float, IN_MEMORY.readline().split()[2:]))\n'
+
     def load_str_vector(self, vector):
         code = (
           vector + ' = []\n' +
@@ -41,6 +44,9 @@ class PythonRunner(Runner):
     def load_int(self, intt):
         return intt + ' = int(IN_MEMORY.readline().split()[1])\n'
 
+    def load_float(self, floatt):
+        return floatt + ' = float(IN_MEMORY.readline().split()[1])\n'
+
     def load_str(self, strr):
         code = (
           '_ = IN_MEMORY.readline()\n' +
@@ -49,6 +55,14 @@ class PythonRunner(Runner):
         return code
 
     def save_int_vector(self, vector):
+        code = (
+          'print("{} ", file=OUT_MEMORY, end="")\n'.format(vector) +
+          'print(str(len({}))+" ", file=OUT_MEMORY, end="")\n'.format(vector) +
+          'print("".join(map(str, {})), file=OUT_MEMORY)\n'.format(vector)
+        )
+        return code
+
+    def save_float_vector(self, vector):
         code = (
           'print("{} ", file=OUT_MEMORY, end="")\n'.format(vector) +
           'print(str(len({}))+" ", file=OUT_MEMORY, end="")\n'.format(vector) +
@@ -69,6 +83,13 @@ class PythonRunner(Runner):
         code = (
           'print("{} ", file=OUT_MEMORY, end="")\n'.format(intt) +
           'print({}, file=OUT_MEMORY)\n'.format(intt)
+        )
+        return code
+
+    def save_float(self, floatt):
+        code = (
+          'print("{} ", file=OUT_MEMORY, end="")\n'.format(floatt) +
+          'print({}, file=OUT_MEMORY)\n'.format(floatt)
         )
         return code
 

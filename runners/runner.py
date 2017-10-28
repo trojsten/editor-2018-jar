@@ -6,16 +6,20 @@ logging.basicConfig(level=logging.INFO)
 class Runner:
     # Variables.
     # If you add new variables, modify load_vars, save_vars and initrunner
-    SOME_INT_VECTOR = "vstring"
-    SOME_STR_VECTOR = "vs1"
-    SOME_INT = "stringg"
-    SOME_STR = "vector"
-    SOME_FLOAT = "intt"
+    #  TODO zmente nazvy na nieco aspon trochu vtipne.
+    SOME_INT_VECTOR = "vector_intov"
+    SOME_STR_VECTOR = "vector_stringov"
+    SOME_FLOAT_VECTOR = "vector_floatov"
+    SOME_INT = "intt"
+    SOME_STR = "stringg"
+    SOME_FLOAT = "floatik"
 
     INT_VECTORS = [SOME_INT_VECTOR, "chcem_float", "bilbo"]
     STR_VECTORS = [SOME_STR_VECTOR, "nemam_for"]
+    FLOAT_VECTORS = [SOME_FLOAT_VECTOR]
     INTS = [SOME_INT, "nemam_while"]
     STRS = [SOME_STR, "nemam_if"]
+    FLOATS = [SOME_FLOAT]
     NAME = ''
 
     def __init__(self, code, codename):
@@ -37,6 +41,12 @@ class Runner:
         for strr in self.STRS:
             code += self.load_str(strr)
 
+        for vector in self.FLOAT_VECTORS:
+            code += self.load_float_vector(vector)
+
+        for floatt in self.FLOATS:
+            code += self.load_float(floatt)
+
         return code
 
     def save_vars(self):
@@ -52,6 +62,12 @@ class Runner:
 
         for strr in self.STRS:
             code += self.save_str(strr)
+
+        for vector in self.FLOAT_VECTORS:
+            code += self.save_float_vector(vector)
+
+        for floats in self.FLOATS:
+            code += self.save_float(floats)
 
         return code
 
@@ -84,6 +100,13 @@ class Runner:
         """
         pass
 
+    def load_float_vector(self, vector):
+        """Override me. Code that loads vectors of floats.
+                Returns:
+            str: code
+        """
+        pass
+
     def load_int(self, intt):
         """Override me. Code that loads ints.                Returns:
             str: code
@@ -93,6 +116,12 @@ class Runner:
     def load_str(self, strr):
         """Override me. Code that loads string.
         Returns:
+            str: code
+        """
+        pass
+
+    def load_float(self, floatt):
+        """Override me. Code that loads floats.                Returns:
             str: code
         """
         pass
@@ -111,6 +140,13 @@ class Runner:
         """
         pass
 
+    def save_float_vector(self, vector):
+        """Override me. Code that saves vectors of floats.
+        Returns:
+            str: code
+        """
+        pass
+
     def save_int(self, intt):
         """Override me. Code that saves ints.
         Returns:
@@ -120,6 +156,13 @@ class Runner:
 
     def save_str(self, strr):
         """Override me. Code that saves strings.
+        Returns:
+            str: code
+        """
+        pass
+
+    def save_float(self, floatt):
+        """Override me. Code that saves floats.
         Returns:
             str: code
         """
@@ -176,6 +219,12 @@ class InitRunner(Runner):
 
         for strr in self.STRS:
             print(strr + "\n", file=memory)
+
+        for vector in self.FLOAT_VECTORS:
+            print(vector + " 0", file=memory)
+
+        for strr in self.FLOATS:
+            print(strr + " 0", file=memory)
         memory.close()
 
     def load_memory(self, memory):

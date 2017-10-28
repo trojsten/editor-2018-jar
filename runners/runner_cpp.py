@@ -63,11 +63,31 @@ class CppRunner(Runner):
         )
         return code
 
+    def load_float_vector(self, vector):
+        code = (
+          '\n' +
+          'vector<float> {};\n'.format(vector) +
+          'fscanf(IN_MEMORY, "%s %d ", BUFFER, &TMP_INT);\n' +
+          '{}.resize(TMP_INT);\n'.format(vector) +
+          'for(int I=0; I<TMP_INT; I++){\n' +
+          '  fscanf(IN_MEMORY, "%f ", &{}[I]);\n'.format(vector) +
+          '}\n'
+        )
+        return code
+
     def load_int(self, intt):
         code = (
           '\n' +
           'int {};\n'.format(intt) +
           'fscanf(IN_MEMORY, "%s %d ", BUFFER, &{});\n'.format(intt)
+        )
+        return code
+
+    def load_float(self, floatt):
+        code = (
+          '\n' +
+          'float {};\n'.format(floatt) +
+          'fscanf(IN_MEMORY, "%s %f ", BUFFER, &{});\n'.format(floatt)
         )
         return code
 
@@ -92,6 +112,18 @@ class CppRunner(Runner):
         )
         return code
 
+    def save_float_vector(self, vector):
+        code = (
+          '\nfprintf(OUT_MEMORY, "{} %d", int({}.size()));\n'.format(vector, vector) +
+          '\n' +
+          'for(int I=0; I<{}.size(); I++)\n'.format(vector) +
+          '{\n' +
+          '  fprintf(OUT_MEMORY, " %.10f", {}[I]);\n'.format(vector) +
+          '}\n' +
+          'fprintf(OUT_MEMORY, "\\n");\n'
+        )
+        return code
+
     def save_str_vector(self, vector):
         code = (
           '\nfprintf(OUT_MEMORY, "{} %d\\n", int({}.size()));\n'.format(vector, vector) +
@@ -105,6 +137,9 @@ class CppRunner(Runner):
 
     def save_int(self, intt):
         return 'fprintf(OUT_MEMORY, "{} %d\\n", {});\n'.format(intt, intt)
+
+    def save_float(self, floatt):
+        return 'fprintf(OUT_MEMORY, "{} %.10f\\n", {});\n'.format(floatt, floatt)
 
     def save_str(self, strr):
         return 'fprintf(OUT_MEMORY, "{}\\n%s\\n", {}.c_str());\n'.format(strr, strr)
