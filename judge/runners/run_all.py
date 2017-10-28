@@ -1,6 +1,6 @@
-from runner_python import PythonRunner
-from runner_cpp import CppRunner
-from runner import InitRunner, Runner
+from runners.runner_python import PythonRunner
+from runners.runner_cpp import CppRunner
+from runners.runner import InitRunner, Runner
 import logging
 import re
 
@@ -29,7 +29,7 @@ class MasterRunner:
                 # TODO catch errors
                 prepare_status = runner.prepare()
                 if prepare_status != 0:
-                    return "CERR", line+1, prepare_status
+                    return "CERR", i+1, prepare_status
                 self.runners.append(runner)
             else:
                 groups = special_match.groups()

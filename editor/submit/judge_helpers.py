@@ -57,7 +57,7 @@ def _prepare_raw_file(submit):
         'user_id': user_id,
         'timestamp': timestamp,
         'problem': submit.problem.order,
-        'code': [(row.get_lang_display(), row.content) for row in rows],
+        'code': [(row.content, row.get_lang_display()) for row in rows],
     }
 
     # write because of code in submit view
