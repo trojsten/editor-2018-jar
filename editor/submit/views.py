@@ -35,7 +35,7 @@ def create_active_if_first_login(user):
     no_more_problems = False
     if first is None:
         # ziadne ulohy ani nie su?
-        error = "Neexistujú žiadne úlohy!",
+        error = "Neexistujú žiadne úlohy!"
     else:
         last_ok_submit = SubmitOutput.objects.filter(
                 user=user, problem=first, status=constants.ReviewResponse.OK).last()
