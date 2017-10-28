@@ -10,7 +10,7 @@ protocol_file_names = {
     'cerr': 'CERR.protocol',
 }
 
-default_protocol = 'ALL.protocol'
+default_protocol = 'CERR.protocol'
 
 
 class DummyTester(SocketServer.BaseRequestHandler):

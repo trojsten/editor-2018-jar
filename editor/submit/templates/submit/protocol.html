@@ -16,7 +16,6 @@
                 <tr>
                     <th>Test case</th>
                     <th>Result</th>
-                    <th>Run time</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +33,6 @@
                             {% endif %}
                         </td>
                         <td><span data-toggle="tooltip" data-placement="auto" title="{{ test.result }}">{{ result|verbose:test.result }}</span></td>
-                        <td>{{ test.time }} ms</td>
                     </tr>
 
                     {% if test.show_details %}

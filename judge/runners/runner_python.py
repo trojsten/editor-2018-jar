@@ -1,4 +1,4 @@
-from runner import Runner, InitRunner
+from runners.runner import Runner, InitRunner
 import os
 import logging
 

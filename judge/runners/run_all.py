@@ -1,6 +1,6 @@
-from runner_python import PythonRunner
-from runner_cpp import CppRunner
-from runner import InitRunner, Runner
+from runners.runner_python import PythonRunner
+from runners.runner_cpp import CppRunner
+from runners.runner import InitRunner, Runner
 import logging
 import re
 
@@ -17,7 +17,7 @@ class MasterRunner:
         self.runners = []
         self.location = 'tmp/runer{}'
 
-    def prepare(self, code):
+    def prepare(self):
         """
         Args:
           code (list[pairs[code, language]]): code.
@@ -29,7 +29,7 @@ class MasterRunner:
                 # TODO catch errors
                 prepare_status = runner.prepare()
                 if prepare_status != 0:
-                    return "CERR", line+1, prepare_status
+                    return "CERR", i+1, prepare_status
                 self.runners.append(runner)
             else:
                 groups = special_match.groups()
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     master = MasterRunner(code)
-    master.prepare('tmp/c_python')
+    master.prepare()
     memory = master.run('tmp/memory.txt')
     print(memory[Runner.SOME_STR_VECTOR])
     assert memory[Runner.SOME_STR_VECTOR] == ["P1", "C1", "P2", "C2"]

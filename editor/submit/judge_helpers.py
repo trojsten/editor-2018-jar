@@ -56,7 +56,8 @@ def _prepare_raw_file(submit):
         'submit_id': submit_id,
         'user_id': user_id,
         'timestamp': timestamp,
-        'code': [(row.get_lang_display(), row.content) for row in rows],
+        'problem': submit.problem.order,
+        'code': [(row.content, row.get_lang_display()) for row in rows],
     }
 
     # write because of code in submit view
@@ -115,14 +116,13 @@ def parse_protocol(protocol_path, force_show_details=False):
     runlog = tree.find('runLog')
     if runlog is not None:
         for runtest in runlog:
-            # Test log format in protocol is: name, resultCode, resultMsg, time, details
+            # Test log format in protocol is: name, resultCode, resultMsg, details
             if runtest.tag != 'test':
                 continue
             test = dict()
             test['name'] = runtest[0].text
-            test['result'] = runtest[2].text
-            test['time'] = runtest[3].text
-            details = runtest[4].text if len(runtest) > 4 else None
+            test['result'] = runtest[1].text
+            details = runtest[2].text if len(runtest) > 2 else None
             test['details'] = details
             test['show_details'] = details is not None and ('sample' in test['name'] or force_show_details)
             tests.append(test)

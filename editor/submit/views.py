@@ -92,7 +92,7 @@ def problem(request, problem_id):
     user = request.user
 
     result = create_active_if_first_login(user)
-    if result['error'] is not None or result['no_more_problems']:
+    if result['error'] is not None:
         return HttpResponseRedirect('/submit/problems/')
 
     readonly = True
