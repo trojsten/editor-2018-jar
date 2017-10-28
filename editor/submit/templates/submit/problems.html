@@ -1,26 +1,37 @@
 {% extends 'submit/main.html' %}
 
 {% block content %}
-    {% if active_problem is not None%}
-        <h3>Active problem:</h3>
+    {% if error is not None %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+    {% else %}
+        {% if no_more_problems %}
+            <div class="alert alert-success" role="alert">
+                Vyriešili ste všetky úlohy!
+            </div>
+        {% endif %}
+        {% if active_problem is not None%}
+            <h3>Active problem:</h3>
+            <table class="table hover">
+                <tr class="info">
+                    <td>
+                        <a href="/submit/problem/{{ active_problem.id }}" >
+                            {{ active_problem.order }}. {{ active_problem.title }}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        {% endif %}
+        <h3>Past problems:</h3>
         <table class="table hover">
-            <tr class="info">
-                <td>
-                    <a href="/submit/problem/{{ active_problem.id }}" >
-                        {{ active_problem.order }}. {{ active_problem.title }}
-                    </a>
-                </td>
-            </tr>
+            {% for problem in past_problems %}
+                <tr class="success">
+                    <td>
+                        <a href="/submit/problem/{{ problem.id }}">{{ problem.order }}. {{ problem.title }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
         </table>
     {% endif %}
-    <h3>Past problems:</h3>
-    <table class="table hover">
-        {% for problem in past_problems %}
-            <tr class="success">
-                <td>
-                    <a href="/submit/problem/{{ problem.id }}">{{ problem.order }}. {{ problem.title }}</a>
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
 {% endblock %}

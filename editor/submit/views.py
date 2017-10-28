@@ -18,46 +18,95 @@ from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protoco
 def index(request):
     return render(request, 'submit/index.html', {})
 
+def create_active_if_first_login(user):
+    problems = Problem.objects.all()
+    first = problems.first()
+
+    active_problem = ActiveProblem.objects.filter(user=user).first()
+    if active_problem is not None:
+        return {
+            'error': None,
+            'active_problem': active_problem,
+            'no_more_problems': False,
+        }
+
+    error = None
+    active_problem = None
+    no_more_problems = False
+    if first is None:
+        # ziadne ulohy ani nie su?
+        error = "Neexistujú žiadne úlohy!",
+    else:
+        last_ok_submit = SubmitOutput.objects.filter(
+                user=user, problem=first, status=constants.ReviewResponse.OK).last()
+        if last_ok_submit is None:
+            # Ak je to prvy krat, mozno sme im zabudli nastavit prvy aktivny problem.
+            # este nesubmitli nic ani k prvej ulohe
+            active_problem = ActiveProblem.objects.create(user=user, problem=first)
+        else:
+            # kedze nemaju aktivny problem, ale maju submit k prvemu, tak skoncili
+            no_more_problems = True
+    return {
+        'error': error,
+        'active_problem': active_problem,
+        'no_more_problems': no_more_problems,
+    }
+
 @login_required(login_url='/submit/login/')
 def problems(request):
     user = request.user
-    active = ActiveProblem.objects.filter(user=user).first()
+
+    result = create_active_if_first_login(user)
+
     past_problems = []
-    active_problem = None
-    if active is not None:
-        active_problem = Problem.objects.get(pk=active.problem.id)
-        past_problems = Problem.objects.filter(order__lt=active_problem.order)
-    else:
+    active_problem = result['active_problem']
+    error = result['error']
+    no_more_problems = result['no_more_problems']
+    problem = None
+    if no_more_problems:
         past_problems = Problem.objects.all()
+    elif active_problem is not None:
+        problem = Problem.objects.get(pk=active_problem.problem.id)
+        past_problems = Problem.objects.filter(order__lt=problem.order)
     context_dict = {
         'past_problems': past_problems,
-        'active_problem': active_problem,
+        'active_problem': problem,
+        'error': error,
+        'no_more_problems': no_more_problems,
     }
     return render(request, 'submit/problems.html', context_dict)
 
 @login_required(login_url='/submit/login/')
 def active_problem(request):
-    # TODO: no active problem?
     user = request.user
 
-    active = ActiveProblem.objects.filter(user=user).first()
-    if active is None:
+    result = create_active_if_first_login(user)
+    if result['error'] is not None or result['no_more_problems']:
         return HttpResponseRedirect('/submit/problems/')
-    else:
-        active_problem = Problem.objects.get(pk=active.problem.id)
-        return HttpResponseRedirect('/submit/problem/%s' % active_problem.id)
+
+    active_problem = result['active_problem']
+    return HttpResponseRedirect('/submit/problem/%s' % active_problem.problem.id)
 
 @login_required(login_url='/submit/login/')
 def problem(request, problem_id):
     user = request.user
 
-    # TODO: no active problem?
-    active = ActiveProblem.objects.filter(user=user).first()
-    problem = Problem.objects.get(pk=problem_id)
+    result = create_active_if_first_login(user)
+    if result['error'] is not None or result['no_more_problems']:
+        return HttpResponseRedirect('/submit/problems/')
+
     readonly = True
-    if active is not None:
+    problem = Problem.objects.get(pk=problem_id)
+    if result['no_more_problems']:
+        readonly = True
+    else:
+        # active problem existuje
+        active = result['active_problem']
         active_problem = Problem.objects.get(pk=active.problem.id)
         readonly = (active_problem != problem)
+
+        if problem.order > active_problem.order:
+            return HttpResponseRedirect('/submit/problems/')
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     if request.method == 'POST':
@@ -71,7 +120,6 @@ def problem(request, problem_id):
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
         elif 'save-submit' in request.POST:
             create_submit_and_send_to_judge(problem, user)
-            # TODO: send to judge really
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
@@ -212,6 +260,9 @@ def add_row_info(request, user_id):
         'next_order': next_order,
     })
 
+def work_after_login(user):
+    result = create_active_if_first_login(user)
+
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -221,6 +272,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
+                work_after_login(user)
                 return HttpResponseRedirect('/submit/')
             else:
                 return HttpResponse("Your account is disabled.")
