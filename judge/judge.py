@@ -2,27 +2,51 @@ import os
 import json
 import glob
 
+from runners.run_all import MasterRunner
+from runners.runner import InitRunner
+
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
 from django.utils.six.moves import socketserver as SocketServer
 from django.utils.six.moves import urllib
 
 def add_compile(protokol, result):
-    # result: None alebo (msg, line_number, return_code)
+    # result: None alebo (CERR, line_number, msg)
     # TODO: add line information
     compileLog = SubElement(protokol, 'compileLog')
-    compileLog.text = result[0]
+    compileLog.text = "Line %s didn't compile." % result[1]
 
-def run_tests(protokol, problem, code):
-    # TODO: actually run something
+def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
-    for file_path in glob.glob('test/%s/*.in' % problem):
+    for input_path in glob.glob('test/%s/*.in' % problem):
+        base = os.path.splitext(input_path)[0]
+        result = master.run(input_path)
+        message = 'OK'
+        if isinstance(result, tuple):
+            # TODO: add line number info
+            message = 'EXC'
+        elif isinstance(result, dict):
+            memory = result
+
+            with open('%s.out' % base, 'r') as out_file:
+                output = json.loads(out_file.read())
+                ok = True
+                for premenna, hodnota in output.items():
+                    if hodnota != memory[premenna]:
+                        ok = False
+                        break
+                if ok:
+                    message = 'OK'
+                else:
+                    message = 'WA'
+
+        # crete xml elements
         test = SubElement(runLog, 'test')
         name = SubElement(test, 'name')
         resultMsg = SubElement(test, 'resultMsg')
         #details = SubElement(test, 'details') # TODO: add details
-        name.text = os.path.basename(file_path)
-        resultMsg.text = 'OK' # change to read answer
+        name.text = os.path.basename(input_path)
+        resultMsg.text = message
 
 class EditorJudge(SocketServer.BaseRequestHandler):
     def handle(self):
@@ -37,14 +61,12 @@ class EditorJudge(SocketServer.BaseRequestHandler):
 
         protokol = Element('protokol')
 
-        # TODO: really compile
-        # None alebo (msg, line_number, return_code)
-        result = ("fskebvskeve", 5, 0)
-        result = None
+        master = MasterRunner(code)
+        result = master.prepare()
         if result is not None:
             add_compile(protokol, result)
         else:
-            run_tests(protokol, problem, code)
+            run_tests(problem, master, protokol)
 
         protocol_data = tostring(protokol)
 
