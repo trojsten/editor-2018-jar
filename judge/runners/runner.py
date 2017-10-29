@@ -14,11 +14,11 @@ class Runner:
     SOME_STR = "stringg"
     SOME_FLOAT = "floatik"
 
-    INT_VECTORS = [SOME_INT_VECTOR, "chcem_float", "bilbo"]
-    STR_VECTORS = [SOME_STR_VECTOR, "nemam_for"]
+    INT_VECTORS = [SOME_INT_VECTOR]
+    STR_VECTORS = [SOME_STR_VECTOR]
     FLOAT_VECTORS = [SOME_FLOAT_VECTOR]
-    INTS = [SOME_INT, "nemam_while"]
-    STRS = [SOME_STR, "nemam_if"]
+    INTS = [SOME_INT]
+    STRS = [SOME_STR, "string2"]
     FLOATS = [SOME_FLOAT]
     NAME = ''
 
@@ -209,51 +209,69 @@ class InitRunner(Runner):
     def create_init_memory(self, memory):
         memory = open(memory, 'w')
         for vector in self.INT_VECTORS:
-            print(vector + " 0", file=memory)
+            print("VECTOR_INT:\n" + vector + "\n0", file=memory)
 
         for intt in self.INTS:
-            print(intt + " 0", file=memory)
+            print("INT:\n" + intt + "\n0", file=memory)
 
         for vector in self.STR_VECTORS:
-            print(vector + " 0", file=memory)
+            print("VECTOR_STR:\n" + vector + "\n0", file=memory)
 
         for strr in self.STRS:
-            print(strr + "\n", file=memory)
+            print("STR:\n" + strr + "\n", file=memory)
 
         for vector in self.FLOAT_VECTORS:
-            print(vector + " 0", file=memory)
+            print("VECTOR_FLOAT:\n" + vector + "\n0", file=memory)
 
-        for strr in self.FLOATS:
-            print(strr + " 0", file=memory)
+        for floatt in self.FLOATS:
+            print("FLOAT:\n" + floatt + "\n0", file=memory)
         memory.close()
 
     def load_memory(self, memory):
         memory = open(memory, 'r')
         variables = {}
         for vector in self.INT_VECTORS:
-            line = memory.readline().split()
-            vector_name = line[0]
+            _ = memory.readline().strip()
+            vector_name = memory.readline().strip()
+            vector_size = int(memory.readline().strip())
             assert vector == vector_name
-            variables[vector_name] = list(map(int, line[2:]))
+            variables[vector_name] = [int(memory.readline().strip()) for _ in range(vector_size)]
 
         for intt in self.INTS:
-            line = memory.readline().split()
-            intt_name = line[0]
+            _ = memory.readline().strip()
+            intt_name = memory.readline().strip()
+            intt_value = memory.readline().strip()
             assert intt == intt_name
-            variables[intt_name] = int(line[1])
+            variables[intt_name] = int(intt_value)
 
         for vector in self.STR_VECTORS:
-            line = memory.readline().split()
-            vector_name, vector_size = line[0], line[1]
+            _ = memory.readline().strip()
+            vector_name = memory.readline().strip()
+            vector_size = int(memory.readline().strip())
             assert vector == vector_name
-            variables[vector_name] = []
-            for x in range(int(vector_size)):
-                variables[vector_name].append(memory.readline().strip())
+            variables[vector_name] = [memory.readline().strip() for _ in range(vector_size)]
 
         for strr in self.STRS:
+            _ = memory.readline().strip()
             strr_name = memory.readline().strip()
-            assert strr == strr_name, strr_name + " " + strr
-            variables[strr_name] = memory.readline().strip()
+            strr_value = memory.readline().strip()
+            assert strr == strr_name
+            variables[strr_name] = strr_value
+
+        for vector in self.FLOAT_VECTORS:
+            _ = memory.readline().strip()
+            vector_name = memory.readline().strip()
+            vector_size = int(memory.readline().strip())
+            assert vector == vector_name
+            variables[vector_name] = [float(memory.readline().strip()) for _ in range(vector_size)]
+
+        for floatt in self.FLOATS:
+            _ = memory.readline().strip()
+            floatt_name = memory.readline().strip()
+            floatt_value = float(memory.readline().strip())
+            assert floatt == floatt_name
+            variables[floatt_name] = int(floatt_value)
+
         memory.close()
         return variables
 
