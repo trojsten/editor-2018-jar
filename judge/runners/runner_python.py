@@ -142,11 +142,12 @@ class PythonRunner(Runner):
         code_file = open(self.codename+".py", "w")
         code_file.write(self.generate())
         code_file.close()
-        return 0
+        return 0, ''
 
     def execute(self, in_memory, out_memory):
-        command = 'python3 {}.py {} {}'.format(self.codename, in_memory, out_memory)
-        return os.system(command)
+        log_fname = "{}.log_file".format(self.codename)
+        command = 'python3 {}.py {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
+        return os.system(command), open(log_fname).read()
 
     def name(self):
         return 'Python'

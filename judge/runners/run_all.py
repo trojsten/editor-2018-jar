@@ -27,9 +27,9 @@ class MasterRunner:
             if special_match is None:
                 runner = REGISTER[language](line, self.location.format(i))
                 # TODO catch errors
-                prepare_status = runner.prepare()
+                prepare_status, prepare_message = runner.prepare()
                 if prepare_status != 0:
-                    return "CERR", i+1, prepare_status
+                    return "CERR", i+1, prepare_message
                 self.runners.append(runner)
             else:
                 groups = special_match.groups()
@@ -48,9 +48,10 @@ class MasterRunner:
                 logging.info('Line %d, counter %d, runner %s', line, counter, runner.NAME)
                 out_memory = self.location.format("_mem_"+str(counter))
                 logging.info('From: %s, To: %s', last_memory, out_memory)
-                execute_status = self.runners[line].execute(last_memory, out_memory)
+                execute_result = self.runners[line].execute(last_memory, out_memory)
+                execute_status, execute_message = execute_result
                 if execute_status != 0:
-                    return "EXEC", line+1, execute_status
+                    return "EXEC", line+1, execute_message
                 last_memory = out_memory
                 line += 1
             else:
@@ -72,10 +73,10 @@ class MasterRunner:
 
 if __name__ == "__main__":
     code = [
-      [Runner.SOME_STR_VECTOR + '.append("P1")', 'Python'],
-      [Runner.SOME_STR_VECTOR + '.push_back("C1");', 'C++'],
-      [Runner.SOME_STR_VECTOR + '.append("P2")', 'Python'],
-      [Runner.SOME_STR_VECTOR + '.push_back("C2");', 'C++'],
+      [Runner.SOME_STR_VECTOR + '.append("P 1")', 'Python'],
+      [Runner.SOME_STR_VECTOR + '.push_back("C 1");', 'C++'],
+      [Runner.SOME_STR_VECTOR + '.append("P 2")', 'Python'],
+      [Runner.SOME_STR_VECTOR + '.push_back("C 2");', 'C++'],
     ]
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     master.prepare()
     memory = master.run('tmp/memory.txt')
     print(memory[Runner.SOME_STR_VECTOR])
-    assert memory[Runner.SOME_STR_VECTOR] == ["P1", "C1", "P2", "C2"]
+    assert memory[Runner.SOME_STR_VECTOR] == ["P 1", "C 1", "P 2", "C 2"]
 
     # CODE 2 with flow control
     code2 = [
@@ -94,7 +95,6 @@ if __name__ == "__main__":
       ['IF ' + Runner.SOME_INT + ' IS NOT ZERO GOTO 3', 'C++'],
     ]
 
-    init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     master = MasterRunner(code2, '2')
     master.prepare()
@@ -102,3 +102,19 @@ if __name__ == "__main__":
     print(memory[Runner.SOME_STR])
     print(memory[Runner.SOME_INT])
     assert memory[Runner.SOME_STR] == "aaaaa"
+
+    # CODE 3 with flow control
+    code3 = [
+      [Runner.SOME_INT + '=5', 'Python'],
+      [Runner.SOME_STR + '=""', 'Python'],
+      [Runner.SOME_STR_VECTOR + '[10]="fff";', 'C++'],
+      [Runner.SOME_INT + '-=1', 'Python'],
+      ['IF ' + Runner.SOME_INT + ' IS NOT ZERO GOTO 3', 'C++'],
+    ]
+
+    init.create_init_memory('tmp/memory.txt')
+    master = MasterRunner(code3, '3')
+    prepare_log = master.prepare()
+    print(prepare_log)
+    memory = master.run('tmp/memory.txt')
+    print(memory)

@@ -183,6 +183,7 @@ class Runner:
         """Override me. Save code to file and prepare it so it can be run (compile it).
         Returns:
             int: exit status (non zero in case of compilation error)
+            str: exit message (compilation error message)
         """
         pass
 
@@ -190,6 +191,7 @@ class Runner:
         """Override me. Execute the generated code.
         Returns:
             int: exit status
+            str: exit message (what went wrong)
         """
         pass
 

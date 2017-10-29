@@ -148,14 +148,16 @@ class CppRunner(Runner):
         code_file = open(self.codename+".cpp", "w")
         code_file.write(self.generate())
         code_file.close()
-        command = 'g++ {}.cpp --std=c++11 -w -o {}.bin'.format(self.codename, self.codename)
+        log_fname = "{}.compile_log".format(self.codename)
+        command = 'g++ {0}.cpp --std=c++11 -w -o {0}.bin 2>{0}'.format(self.codename, log_fname)
         logging.info("Running: %s", command)
-        return os.system(command)
+        return os.system(command), open(log_fname).read()
 
     def execute(self, in_memory, out_memory):
-        command = './{}.bin {} {}'.format(self.codename, in_memory, out_memory)
+        log_fname = "{}.runtime_log".format(self.codename)
+        command = './{}.bin {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
         logging.info('Executing: %s', command)
-        return os.system(command)
+        return os.system(command), open(log_fname).read()
 
 
 if __name__ == '__main__':
