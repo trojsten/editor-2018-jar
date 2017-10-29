@@ -11,8 +11,8 @@
 	{% csrf_token %}
     {% include 'submit/code_rows.html' with rows=rows readonly=readonly %}
     <br/>
-    <button type="submit" class="btn btn-success {% if readonly %}disabled{% endif %}" name="save">Save</button>
-    <button type="submit" class="btn btn-primary {% if readonly %}disabled{% endif %}" name="save-submit">Save & Submit</button>
+    <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
+    <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-submit">Save & Submit</button>
 </form>
 <div class="row">
     <div class="col col-md-8">
@@ -66,7 +66,7 @@
                                 action="/submit/problem/{{ problem.id }}/add_lang_row/{{ row.lang }}/"
                             >
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-success btn-xs {% if readonly %}disabled{% endif %}" name="add-lang">
+                                <button type="submit" class="btn btn-success btn-xs" {% if readonly %}disabled{% endif %} name="add-lang">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
                             </form>
