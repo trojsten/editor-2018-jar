@@ -28,28 +28,57 @@ class PythonRunner(Runner):
         return code
 
     def load_int_vector(self, vector):
-        return vector + ' = list(map(int, IN_MEMORY.readline().split()[2:]))\n'
+        code = (
+          vector + ' = []\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          'SIZE = IN_MEMORY.readline().strip()\n' +
+          'for I in range(int(SIZE)):\n' +
+          '    {}.append(int(IN_MEMORY.readline()))\n'.format(vector)
+        )
+        return code
 
     def load_float_vector(self, vector):
-        return vector + ' = list(map(float, IN_MEMORY.readline().split()[2:]))\n'
+        code = (
+          vector + ' = []\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          'SIZE = IN_MEMORY.readline().strip()\n' +
+          'for I in range(int(SIZE)):\n' +
+          '    {}.append(float(IN_MEMORY.readline()))\n'.format(vector)
+        )
+        return code
 
     def load_str_vector(self, vector):
         code = (
           vector + ' = []\n' +
-          '_, SIZE = IN_MEMORY.readline().split()[:2]\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          'SIZE = IN_MEMORY.readline().strip()\n' +
           'for I in range(int(SIZE)):\n' +
-          '    {}.append(IN_MEMORY.readline())\n'.format(vector)
+          '    {}.append(IN_MEMORY.readline().strip())\n'.format(vector)
         )
         return code
 
     def load_int(self, intt):
-        return intt + ' = int(IN_MEMORY.readline().split()[1])\n'
+        code = (
+          '_ = IN_MEMORY.readline()\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          intt + ' = int(IN_MEMORY.readline().strip())\n'
+        )
+        return code
 
     def load_float(self, floatt):
-        return floatt + ' = float(IN_MEMORY.readline().split()[1])\n'
+        code = (
+          '_ = IN_MEMORY.readline()\n' +
+          '_ = IN_MEMORY.readline()\n' +
+          floatt + ' = float(IN_MEMORY.readline().strip())\n'
+        )
+        return code
 
     def load_str(self, strr):
         code = (
+          '_ = IN_MEMORY.readline()\n' +
           '_ = IN_MEMORY.readline()\n' +
           strr + ' = IN_MEMORY.readline().strip()\n'
         )
@@ -57,23 +86,28 @@ class PythonRunner(Runner):
 
     def save_int_vector(self, vector):
         code = (
-          'print("{} ", file=OUT_MEMORY, end="")\n'.format(vector) +
-          'print(str(len({}))+" ", file=OUT_MEMORY, end="")\n'.format(vector) +
-          'print("".join(map(str, {})), file=OUT_MEMORY)\n'.format(vector)
+          'print("VECTOR_INT:", file=OUT_MEMORY)\n'.format(vector) +
+          'print("{}", file=OUT_MEMORY)\n'.format(vector) +
+          'print(str(len({})), file=OUT_MEMORY)\n'.format(vector) +
+          'for I in {}:\n'.format(vector) +
+          '    print(str(I), file=OUT_MEMORY)\n'
         )
         return code
 
     def save_float_vector(self, vector):
         code = (
-          'print("{} ", file=OUT_MEMORY, end="")\n'.format(vector) +
-          'print(str(len({}))+" ", file=OUT_MEMORY, end="")\n'.format(vector) +
-          'print("".join(map(str, {})), file=OUT_MEMORY)\n'.format(vector)
+          'print("VECTOR_FLOAT:", file=OUT_MEMORY)\n'.format(vector) +
+          'print("{}", file=OUT_MEMORY)\n'.format(vector) +
+          'print(str(len({})), file=OUT_MEMORY)\n'.format(vector) +
+          'for I in {}:\n'.format(vector) +
+          '    print("{0:.6f}".format(I), file=OUT_MEMORY)\n'
         )
         return code
 
     def save_str_vector(self, vector):
         code = (
-          'print("{} ", file=OUT_MEMORY, end="")\n'.format(vector) +
+          'print("VECTOR_STR:", file=OUT_MEMORY)\n'.format(vector) +
+          'print("{}", file=OUT_MEMORY)\n'.format(vector) +
           'print(str(len({})), file=OUT_MEMORY)\n'.format(vector) +
           'for I in {}:\n'.format(vector) +
           '    print(I, file=OUT_MEMORY)\n'
@@ -82,20 +116,23 @@ class PythonRunner(Runner):
 
     def save_int(self, intt):
         code = (
-          'print("{} ", file=OUT_MEMORY, end="")\n'.format(intt) +
+          'print("INT:", file=OUT_MEMORY)\n'.format(intt) +
+          'print("{}", file=OUT_MEMORY)\n'.format(intt) +
           'print({}, file=OUT_MEMORY)\n'.format(intt)
         )
         return code
 
     def save_float(self, floatt):
         code = (
-          'print("{} ", file=OUT_MEMORY, end="")\n'.format(floatt) +
-          'print({}, file=OUT_MEMORY)\n'.format(floatt)
+          'print("FLOAT:", file=OUT_MEMORY)\n'.format(floatt) +
+          'print("{}", file=OUT_MEMORY)\n'.format(floatt) +
+          'print("{0:.6f}".format(%s), file=OUT_MEMORY)\n' % floatt
         )
         return code
 
     def save_str(self, strr):
         code = (
+          'print("STR:", file=OUT_MEMORY)\n'.format(strr) +
           'print("{}", file=OUT_MEMORY)\n'.format(strr) +
           'print({}, file=OUT_MEMORY)\n'.format(strr)
         )
@@ -119,3 +156,5 @@ if __name__ == '__main__':
     init.create_init_memory('tmp/memory.txt')
     runner = PythonRunner(Runner.SOME_STR_VECTOR + '.append("f")\n', 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_py.txt')
+    runner2 = PythonRunner(Runner.SOME_FLOAT_VECTOR + '.append(0.5)\n', 'tmp/tmp2')
+    runner2.simple_full_run('tmp/memory2_py.txt', 'tmp/memory3_py.txt')
