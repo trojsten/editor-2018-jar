@@ -9,6 +9,7 @@
             aria-describedby="basic-addon{{ row.order }}"
             value="{{ row.content | safe }}"
             name="row-{{ row.order }}"
+            id="code-row-{{ row.order }}"
             {% if readonly %}readonly=true{% endif %}
         >
         </input>

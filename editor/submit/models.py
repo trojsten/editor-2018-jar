@@ -32,6 +32,13 @@ class Row(models.Model):
     class Meta:
         unique_together = ("user", "problem", "order")
 
+class SpareRow(models.Model):
+    user = models.ForeignKey(User)
+    lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
+
+    def __unicode__(self):
+        return "(SpareRow-%s-%s-%s)" % (id, user, lang)
+
 class ActiveProblem(models.Model):
     user = models.OneToOneField(User)
     problem = models.ForeignKey(Problem)
