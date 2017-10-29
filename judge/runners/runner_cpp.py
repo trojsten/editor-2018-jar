@@ -111,10 +111,10 @@ class CppRunner(Runner):
         return self.vector_saver("VECTOR_INT", vector)
 
     def save_float_vector(self, vector):
-        return self.vector_saver("VECTOR_FLOAT", vector)
+        return self.vector_saver("VECTOR_FLOAT", vector, floats=True)
 
     def save_str_vector(self, vector):
-        return self.vector_saver("VECTOR_STR", vector, floats=True)
+        return self.vector_saver("VECTOR_STR", vector)
 
     def save_int(self, intt):
         code = (

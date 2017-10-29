@@ -12,10 +12,10 @@ REGISTER = {r.NAME: r for r in runners}
 
 
 class MasterRunner:
-    def __init__(self, code):
+    def __init__(self, code, prefix=''):
         self.code = code
         self.runners = []
-        self.location = 'tmp/runer{}'
+        self.location = 'tmp/'+prefix+'runer{}'
 
     def prepare(self):
         """
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     ]
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    master = MasterRunner(code)
+    master = MasterRunner(code, '1')
     master.prepare()
     memory = master.run('tmp/memory.txt')
     print(memory[Runner.SOME_STR_VECTOR])
@@ -89,15 +89,15 @@ if __name__ == "__main__":
     code2 = [
       [Runner.SOME_INT + '=5', 'Python'],
       [Runner.SOME_STR + '=""', 'Python'],
-      [Runner.SOME_STR + '+="a"', 'Python'],
+      [Runner.SOME_STR + '+="a";', 'C++'],
       [Runner.SOME_INT + '-=1', 'Python'],
       ['IF ' + Runner.SOME_INT + ' IS NOT ZERO GOTO 3', 'C++'],
     ]
 
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    master = MasterRunner(code2)
-    master.prepare('tmp/c_python2')
+    master = MasterRunner(code2, '2')
+    master.prepare()
     memory = master.run('tmp/memory.txt')
     print(memory[Runner.SOME_STR])
     print(memory[Runner.SOME_INT])
