@@ -1,0 +1,50 @@
+{% extends 'submit/main.html' %}
+
+{% block title %}Pridaj riadky{% endblock %}
+
+{% block content %}
+<h1>Add rows</h1>
+
+<p>
+Keď pridáš riadky družinke, tak sa im uložia do DB, a potom si ich vedia sami pridávať tak ako chcú.
+</p>
+
+<form id="add_rows_form" method="post" action="/submit/add_spare_rows/">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="username-input">Druzinka</label>
+        <select class="form-control" onchange="changeInfo()" id="user-select" name="user-select">
+            <option disabled selected value> -- select an option -- </option>
+            {% for user in users %}
+                <option value="{{ user.id }}">
+                    {{ user }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="row">
+        {% for lang_group in lang_groups %}
+            <div class="col col-md-4">
+                {% for number, lang in lang_group %}
+                    <div class="form-group row">
+                        <label for="lang-input-{{ number }}" class="col-sm-3 col-form-label">{{ lang }}</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="number" name="lang-input-{{ number }}" value="0" size="50" id="lang-input-{{ number }}"/>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg pull-right" disabled id="add-row-btn">Add rows</button>
+</form>
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+    function changeInfo() {
+        $("#add-row-btn").attr("disabled", false);
+    }
+    </script>
+{% endblock %}

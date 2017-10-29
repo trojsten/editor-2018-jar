@@ -1,4 +1,5 @@
 {% extends 'submit/main.html' %}
+{% load submit_parts %}
 
 {% block title %}Úloha: {{ problem.title }}{% endblock %}
 
@@ -13,32 +14,67 @@
     <button type="submit" class="btn btn-success {% if readonly %}disabled{% endif %}" name="save">Save</button>
     <button type="submit" class="btn btn-primary {% if readonly %}disabled{% endif %}" name="save-submit">Save & Submit</button>
 </form>
-<table class="table hover">
-    <thead>
-        <tr>
-            <th>Čas</th>
-            <th>Stav</th>
-            <th>Body</th>
-            <th>Akcie</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for submit in submits %}
-        <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
-                    success
-                    {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
-                    info
-                    {% elif submit.score > 0 %}
-                    warning
-                    {% else %}
-                    danger
-                    {% endif %}">
-                <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
-                <td>{{ submit.get_status_display }}</td>
-                <td>{{ submit.score }}</td>
-                <td><a class="btn btn-primary btn-xs" href="{% url 'view_submit' submit_id=submit.id %}">Detaily</a></td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col col-md-8">
+        <table class="table hover">
+            <thead>
+                <tr>
+                    <th>Čas</th>
+                    <th>Stav</th>
+                    <th>Body</th>
+                    <th>Akcie</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submit in submits %}
+                <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
+                            success
+                            {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
+                            info
+                            {% elif submit.score > 0 %}
+                            warning
+                            {% else %}
+                            danger
+                            {% endif %}">
+                        <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
+                        <td>{{ submit.get_status_display }}</td>
+                        <td>{{ submit.score }}</td>
+                        <td><a class="btn btn-primary btn-xs" href="{% url 'view_submit' submit_id=submit.id %}">Detaily</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-md-4">
+        <table class="table hover">
+            <thead>
+                <tr>
+                    <th>Jazyk</th>
+                    <th>Počet</th>
+                    <th>+</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in lang_counts %}
+                    <tr>
+                        <td>{{ lang_codes|get_key:row.lang }}</td>
+                        <td>{{ row.num_rows }}</td>
+                        <td>
+                            <form
+                                id="add_lang_{{row.lang}}_form"
+                                method="post"
+                                action="/submit/problem/{{ problem.id }}/add_lang_row/{{ row.lang }}/"
+                            >
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-xs {% if readonly %}disabled{% endif %}" name="add-lang">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

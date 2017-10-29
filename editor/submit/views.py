@@ -5,12 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from submit.models import Problem, Row, ActiveProblem, SubmitOutput
+from submit.models import Problem, Row, ActiveProblem, SubmitOutput, SpareRow
 from submit import constants
 from submit.helpers import write_chunks_to_file
 from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protocol)
@@ -88,6 +89,35 @@ def active_problem(request):
     return HttpResponseRedirect('/submit/problem/%s' % active_problem.problem.id)
 
 @login_required(login_url='/submit/login/')
+@require_POST
+def add_lang_row(request, problem_id, lang_code):
+    user = request.user
+
+    active_problem = ActiveProblem.objects.filter(user=user).first()
+    if active_problem is None or int(active_problem.problem.id) != int(problem_id):
+        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+    spare_row = SpareRow.objects.filter(user=user, lang=lang_code).first()
+    if spare_row is None:
+        # nemaju taky riadok
+        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+    problem = active_problem.problem
+    row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
+    new_order = 1
+    if row is not None:
+        new_order = row.order + 1
+    print(user.id, lang_code, problem.title, new_order, file=sys.stderr)
+    Row.objects.create(
+            user=user,
+            problem=problem,
+            order=new_order,
+            lang=lang_code,
+            content="")
+    spare_row.delete()
+    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+@login_required(login_url='/submit/login/')
 def problem(request, problem_id):
     user = request.user
 
@@ -110,6 +140,7 @@ def problem(request, problem_id):
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     if request.method == 'POST':
+        # Savein everytime, because we are redirecting everytinme.
         if readonly:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
@@ -123,11 +154,14 @@ def problem(request, problem_id):
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
+        lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
         context_dict = {
             'problem': problem,
             'rows': rows,
             'readonly': readonly,
             'submits': submits,
+            'lang_counts': lang_counts,
+            'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
             'response': constants.ReviewResponse,
         }
         return render(request, 'submit/problem.html', context_dict)
@@ -208,7 +242,7 @@ def view_submit(request, submit_id):
 
 @login_required(login_url='/submit/login/')
 @staff_member_required
-def add_row(request):
+def add_one_row(request):
     if request.method == 'POST':
         user_id = request.POST.get('user-select')
         lang_number = request.POST.get('lang-select')
@@ -216,21 +250,20 @@ def add_row(request):
         user = User.objects.get(pk=user_id)
         active_problem = ActiveProblem.objects.filter(user=user).first()
         if active_problem is None:
-            return HttpResponseRedirect('/submit/add_row/')
+            return HttpResponseRedirect('/submit/add_one_row/')
 
         problem = active_problem.problem
         row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
         new_order = 1
         if row is not None:
             new_order = row.order + 1
-        print(user_id, lang_number, problem.title, new_order, file=sys.stderr)
         Row.objects.create(
                 user=user,
                 problem=problem,
                 order=new_order,
                 lang=lang_number,
                 content="")
-        return HttpResponseRedirect('/submit/add_row/')
+        return HttpResponseRedirect('/submit/add_one_row/')
     else:
         users = User.objects.all()
         langs = constants.Language.LANG_CHOICES
@@ -239,7 +272,7 @@ def add_row(request):
             'users': users,
             'langs': langs,
         }
-        return render(request, 'submit/add_row.html', context_dict)
+        return render(request, 'submit/add_one_row.html', context_dict)
 
 @login_required(login_url='/submit/login/')
 @staff_member_required
@@ -259,6 +292,33 @@ def add_row_info(request, user_id):
         'problem_title': problem.title,
         'next_order': next_order,
     })
+
+@login_required(login_url='/submit/login/')
+@staff_member_required
+def add_spare_rows(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user-select')
+        user = User.objects.get(pk=user_id)
+        langs = constants.Language.LANG_CHOICES
+        for number, lang in langs:
+            count = request.POST.get('lang-input-%s' % number)
+            count = 0 if count == '' else int(count)
+            for i in range(count):
+                SpareRow.objects.create(user=user, lang=number)
+        return HttpResponseRedirect('/submit/add_spare_rows/')
+    else:
+        users = User.objects.all()
+        langs = constants.Language.LANG_CHOICES
+
+        n = len(langs)
+        k1, k2, k3 = n//3 + (n%3 == 1), n//3 + (n%3 == 2), n//3
+
+        context_dict = {
+            'users': users,
+            'langs': langs,
+            'lang_groups': [langs[:k1],langs[k1:k1+k2],langs[k1+k2:]],
+        }
+        return render(request, 'submit/add_spare_rows.html', context_dict)
 
 @login_required(login_url='/submit/login/')
 @staff_member_required
