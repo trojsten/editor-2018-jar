@@ -157,11 +157,7 @@ def problem(request, problem_id):
             create_submit_and_send_to_judge(problem, user)
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
         elif 'save-custom-run' in request.POST:
-            try:
-                json.loads('{ %s }' % custom_input.content)
-                create_submit_and_send_to_judge(problem, user, custom=True)
-            except:
-                pass
+            create_submit_and_send_to_judge(problem, user, custom=True)
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')

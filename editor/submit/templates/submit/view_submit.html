@@ -48,7 +48,10 @@
         {% include 'submit/code_rows.html' with rows=rows readonly=True %}
     </div>
     {% if submit.custom %}
-        <pre><code>{{ custom_input }}</code></pre>
+        <p>
+            <h4>Custom input:</h4>
+            <pre><code>{{ custom_input }}</code></pre>
+        </p>
     {% endif %}
     <h3>Protocol</h3>
     {% include 'submit/protocol.html' %}
