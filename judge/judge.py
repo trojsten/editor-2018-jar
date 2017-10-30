@@ -2,7 +2,7 @@ import os
 import json
 import glob
 
-from runners.run_all import MasterRunner
+from runners.run_all import MasterRunner, prepare_memory
 from runners.runner import InitRunner
 
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
@@ -17,11 +17,8 @@ def add_compile(protokol, result):
     lineNumber = SubElement(protokol, 'cLogLineNumber')
     lineNumber.text = str(result[1])
 
-def run_custom(master, protokol, custom_input):
+def run_custom(master, protokol, input_path):
     runLog = SubElement(protokol, 'runLog')
-
-    # TODO
-    input_path = 'test/1/01.in'
 
     base = os.path.splitext(input_path)[0]
     result = master.run(input_path)
@@ -120,9 +117,11 @@ class EditorJudge(SocketServer.BaseRequestHandler):
         elif not custom:
             run_tests(problem, master, protokol)
         else:
-            with open('submits/%s/data.custom' % submit_id, 'w') as out:
-                out.write('%s' % custom_input)
-            run_custom(master, protokol, custom_input)
+            print(custom_input)
+            print(json.loads(custom_input))
+            input_path = 'submits/%s/data.custom' % submit_id
+            prepare_memory(json.loads(custom_input), input_path)
+            run_custom(master, protokol, input_path)
 
         protocol_data = tostring(protokol)
 

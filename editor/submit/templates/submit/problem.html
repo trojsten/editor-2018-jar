@@ -28,13 +28,24 @@
                 </div>
                 <div id="collapseCustomInput" class="panel-collapse collapse">
                     <div class="panel-body">
-                        {
-                        <textarea class="form-control" id="custom-input" name="custom-input" rows="4">{{ custom_input.content }}</textarea>
-                        }
-                        <br/>
-                        <div class="btn-group pull-right" role="group" aria-label="...">
-                        <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
-                        <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-custom-run">Save & Run for custom input</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                {
+                                <textarea class="form-control" id="custom-input" name="custom-input" rows="4">{{ custom_input.content }}</textarea>
+                                }
+                                <br/>
+                                <div class="btn-group pull-right" role="group" aria-label="...">
+                                    <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
+                                    <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-custom-run">Save & Run for custom input</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                Example:
+                                <pre><code>"intt": 1,
+"vector_intov": [1,2,3],
+"vector_stringov": ["aaaa", "bbb"],
+                                </code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
