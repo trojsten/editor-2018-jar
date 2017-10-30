@@ -24,6 +24,7 @@ def run_tests(problem, master, protokol):
         result = master.run(input_path)
         message = 'OK'
         line = 0
+        diff = {}
         if isinstance(result, tuple):
             message = 'EXC'
             line = result[1]
@@ -34,9 +35,10 @@ def run_tests(problem, master, protokol):
                 output = json.loads(out_file.read())
                 ok = True
                 for premenna, hodnota in output.items():
+                    # TODO: lepsie porovnavanie
                     if hodnota != memory[premenna]:
                         ok = False
-                        break
+                        diff[premenna] = (hodnota, memory[premenna])
                 if ok:
                     message = 'OK'
                 else:
@@ -47,10 +49,16 @@ def run_tests(problem, master, protokol):
         name = SubElement(test, 'name')
         resultMsg = SubElement(test, 'resultMsg')
         lineNumber = SubElement(test, 'lineNumber')
-        #details = SubElement(test, 'details') # TODO: add details
         name.text = os.path.basename(input_path)
         resultMsg.text = message
         lineNumber.text = str(line)
+        if len(diff) > 0:
+            details = SubElement(test, 'details')
+            s = ''
+            for premenna, (nasa, tvoja) in diff.items():
+                s += 'nas %s: %s\n' % (premenna, nasa)
+                s += 'tvoj %s: %s\n' % (premenna, tvoja)
+            details.text = s
 
 class EditorJudge(SocketServer.BaseRequestHandler):
     def handle(self):

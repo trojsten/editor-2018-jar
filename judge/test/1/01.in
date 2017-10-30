@@ -1,13 +1,21 @@
-vector_intov 0
-chcem_float 0
-bilbo 0
-intt 0
-nemam_while 0
-vector_stringov 0
-nemam_for 0
+VECTOR_INT:
+vector_intov
+0
+INT:
+intt
+0
+VECTOR_STR:
+vector_stringov
+0
+STR:
 stringg
 
-nemam_if
+STR:
+string2
 
-vector_floatov 0
-floatik 0
+VECTOR_FLOAT:
+vector_floatov
+0
+FLOAT:
+floatik
+0
