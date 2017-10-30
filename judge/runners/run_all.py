@@ -71,6 +71,16 @@ class MasterRunner:
         return memory
 
 
+def prepare_memory(variables, filename):
+    filename2 = filename + '_tmp'
+    codefile = filename + '_tmp_code'
+    init = InitRunner()
+    init.create_init_memory(filename2)
+    code = '\n'.join(["{} = {}".format(key, val.__str__()) for key, val in variables.items()])
+    pyrunner = PythonRunner(code, codefile)
+    pyrunner.simple_full_run(filename2, filename)
+
+
 if __name__ == "__main__":
     code = [
       [Runner.SOME_STR_VECTOR + '.append("P 1")', 'Python'],
@@ -118,3 +128,10 @@ if __name__ == "__main__":
     print(prepare_log)
     memory = master.run('tmp/memory.txt')
     print(memory)
+
+    # CODE 4 prepare memory
+    memory = {Runner.SOME_STR_VECTOR: ["str1", "str2", "fffg f3"]}
+    prepare_memory(memory, "tmp/prefilled_memory.txt")
+    out_memory = init.load_memory("tmp/prefilled_memory.txt")
+    print(memory)
+    print(out_memory)
