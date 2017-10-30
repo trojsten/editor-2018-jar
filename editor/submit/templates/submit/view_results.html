@@ -31,7 +31,7 @@
                                         {% else %}
                                         danger
                                         {% endif %}">
-                                {{ submit.status }}
+                                <a href="{% url 'view_submit' submit_id=submit.id %}">{{ submit.status }}</a>
                             </td>
                         {% endif %}
                     {% endwith %}
