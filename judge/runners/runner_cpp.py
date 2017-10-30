@@ -149,7 +149,7 @@ class CppRunner(Runner):
         code_file.write(self.generate())
         code_file.close()
         log_fname = "{}.compile_log".format(self.codename)
-        command = 'g++ {0}.cpp --std=c++11 -w -o {0}.bin 2>{0}'.format(self.codename, log_fname)
+        command = 'g++ {0}.cpp --std=c++11 -w -o {0}.bin 2>{1}'.format(self.codename, log_fname)
         logging.info("Running: %s", command)
         return os.system(command), open(log_fname).read()
 

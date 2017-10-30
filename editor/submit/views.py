@@ -107,7 +107,6 @@ def add_lang_row(request, problem_id, lang_code):
     new_order = 1
     if row is not None:
         new_order = row.order + 1
-    print(user.id, lang_code, problem.title, new_order, file=sys.stderr)
     Row.objects.create(
             user=user,
             problem=problem,

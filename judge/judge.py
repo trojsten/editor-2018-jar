@@ -13,8 +13,7 @@ from django.utils.six.moves import urllib
 def add_compile(protokol, result):
     # result: None alebo (CERR, line_number, msg)
     compileLog = SubElement(protokol, 'compileLog')
-    # TODO: ked mi bude dochadzat aj message, tak ju tu vopchat
-    compileLog.text = "Line %s didn't compile." % result[1]
+    compileLog.text = result[2]
     lineNumber = SubElement(protokol, 'cLogLineNumber')
     lineNumber.text = str(result[1])
 
