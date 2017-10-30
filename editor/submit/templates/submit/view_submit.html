@@ -47,6 +47,9 @@
     <div class="collapse card" id="collapseCode">
         {% include 'submit/code_rows.html' with rows=rows readonly=True %}
     </div>
+    {% if submit.custom %}
+        <pre><code>{{ custom_input }}</code></pre>
+    {% endif %}
     <h3>Protocol</h3>
     {% include 'submit/protocol.html' %}
 {% endblock content %}
