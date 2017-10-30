@@ -33,7 +33,7 @@ def run_tests(problem, master, protokol):
                 output = json.loads(out_file.read())
                 ok = True
                 for premenna, hodnota in output.items():
-                    # TODO: lepsie porovnavanie
+                    # TODO: floaty su meh
                     if hodnota != memory[premenna]:
                         ok = False
                         diff[premenna] = (hodnota, memory[premenna])

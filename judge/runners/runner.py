@@ -272,7 +272,7 @@ class InitRunner(Runner):
             floatt_name = memory.readline().strip()
             floatt_value = float(memory.readline().strip())
             assert floatt == floatt_name
-            variables[floatt_name] = int(floatt_value)
+            variables[floatt_name] = float(floatt_value)
 
         memory.close()
         return variables
