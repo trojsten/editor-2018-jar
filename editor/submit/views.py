@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from submit.models import Problem, Row, ActiveProblem, SubmitOutput, SpareRow
+from submit.models import Problem, Row, ActiveProblem, SubmitOutput, SpareRow, CustomInput
 from submit import constants
 from submit.helpers import write_chunks_to_file
 from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protocol)
@@ -44,6 +44,7 @@ def create_active_if_first_login(user):
             # Ak je to prvy krat, mozno sme im zabudli nastavit prvy aktivny problem.
             # este nesubmitli nic ani k prvej ulohe
             active_problem = ActiveProblem.objects.create(user=user, problem=first)
+            custom_input = CustomInput.objects.create(user=user, problem=first)
         else:
             # kedze nemaju aktivny problem, ale maju submit k prvemu, tak skoncili
             no_more_problems = True
@@ -139,21 +140,29 @@ def problem(request, problem_id):
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     if request.method == 'POST':
-        # Savein everytime, because we are redirecting everytinme.
+        # Save everytime, because we are redirecting everytinme.
         if readonly:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
         for row in rows:
             row.content = request.POST.get('row-%s' % row.order)
             row.save()
+        custom_input = CustomInput.objects.get(user=user, problem=problem)
+        custom_input.content = request.POST.get('custom-input')
+        custom_input.save()
+
         if 'save' in request.POST:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
         elif 'save-submit' in request.POST:
             create_submit_and_send_to_judge(problem, user)
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+        elif 'save-custom-run' in request.POST:
+            create_submit_and_send_to_judge(problem, user, custom=True)
+            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
         lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
+        custom_input = CustomInput.objects.get(user=user, problem=problem)
         context_dict = {
             'problem': problem,
             'rows': rows,
@@ -161,6 +170,7 @@ def problem(request, problem_id):
             'submits': submits,
             'lang_counts': lang_counts,
             'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
+            'custom_input': custom_input,
             'response': constants.ReviewResponse,
         }
         return render(request, 'submit/problem.html', context_dict)
@@ -198,6 +208,7 @@ def receive_protocol(request):
         if next_problem is not None:
             active_problem.problem = next_problem
             active_problem.save()
+            CustomInput.objects.create(user=user, problem=next_problem)
         else:
             # uz nei je dalsi problem
             active_problem.delete()

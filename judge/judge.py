@@ -17,12 +17,43 @@ def add_compile(protokol, result):
     lineNumber = SubElement(protokol, 'cLogLineNumber')
     lineNumber.text = str(result[1])
 
+def run_custom(master, protokol, custom_input):
+    runLog = SubElement(protokol, 'runLog')
+
+    # TODO
+    input_path = 'test/1/01.in'
+
+    base = os.path.splitext(input_path)[0]
+    result = master.run(input_path)
+    message, line, detailsMsg = 'OK', 0, ''
+    if isinstance(result, tuple):
+        message = 'EXC'
+        line = result[1]
+    elif isinstance(result, dict):
+        memory = result
+        message = 'DONE'
+        detailsMsg = 'Memory:\n'
+        for premenna, hodnota in memory.items():
+            detailsMsg += '%s: %s\n' % (premenna, hodnota)
+
+    # crete xml elements
+    test = SubElement(runLog, 'test')
+    name = SubElement(test, 'name')
+    resultMsg = SubElement(test, 'resultMsg')
+    lineNumber = SubElement(test, 'lineNumber')
+    name.text = 'custom'
+    resultMsg.text = message
+    lineNumber.text = str(line)
+    details = SubElement(test, 'details')
+    details.text = detailsMsg
+
 def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
+    count_ok = 0
     for input_path in glob.glob('test/%s/*.in' % problem):
         base = os.path.splitext(input_path)[0]
         result = master.run(input_path)
-        message, line, diff, count_ok = 'OK', 0, {}, 0
+        message, line, diff = 'OK', 0, {}
         if isinstance(result, tuple):
             message = 'EXC'
             line = result[1]
@@ -71,17 +102,32 @@ class EditorJudge(SocketServer.BaseRequestHandler):
         submit_id = data['submit_id']
         problem = data['problem']
         code = data['code']
+        custom = data['custom']
+        custom_input = data['custom_input']
 
         protokol = Element('protokol')
 
-        master = MasterRunner(code)
+        os.makedirs('submits/%s/' % submit_id)
+
+        with open('submits/%s/data.code' % submit_id, 'w') as out:
+            for content, lang in code:
+                out.write('%s: %s\n' % (lang, content))
+
+        master = MasterRunner(code, prefix=str(submit_id))
         result = master.prepare()
         if result is not None:
             add_compile(protokol, result)
-        else:
+        elif not custom:
             run_tests(problem, master, protokol)
+        else:
+            with open('submits/%s/data.custom' % submit_id, 'w') as out:
+                out.write('%s' % custom_input)
+            run_custom(master, protokol, custom_input)
 
         protocol_data = tostring(protokol)
+
+        with open('submits/%s/data.protocol' % submit_id, 'w') as out:
+            out.write('%s' % protocol_data)
 
         data = urllib.parse.urlencode({
             'submit_id': int(submit_id),

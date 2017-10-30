@@ -28,6 +28,8 @@
                                     success
                                {% elif test.result == result.IGNORED %}
                                     warning
+                               {% elif test.result == result.DONE %}
+                                    info
                                {% else %}
                                     danger
                                {% endif %}">

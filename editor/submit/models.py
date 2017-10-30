@@ -24,20 +24,31 @@ class Row(models.Model):
     problem = models.ForeignKey(Problem)
     order = models.IntegerField(default=1)
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
-    content = models.CharField(max_length=80, default="", blank=True)
+    content = models.CharField(max_length=80, default='', blank=True)
 
     def __unicode__(self):
-        return "(Row-%s-%s-%s-%s)" % (user, problem, order, lang)
+        return '(Row-%s-%s-%s-%s)' % (user, problem, order, lang)
 
     class Meta:
-        unique_together = ("user", "problem", "order")
+        unique_together = ('user', 'problem', 'order')
+
+class CustomInput(models.Model):
+    user = models.ForeignKey(User)
+    problem = models.ForeignKey(Problem)
+    content = models.TextField(blank=True, default='')
+
+    def __unicode__(self):
+        return '(CustomInput-%s-%s)' % (user, problem)
+
+    class Meta:
+        unique_together = ('user', 'problem')
 
 class SpareRow(models.Model):
     user = models.ForeignKey(User)
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
 
     def __unicode__(self):
-        return "(SpareRow-%s-%s-%s)" % (id, user, lang)
+        return '(SpareRow-%s-%s-%s)' % (id, user, lang)
 
 class ActiveProblem(models.Model):
     user = models.OneToOneField(User)
@@ -50,6 +61,7 @@ class SubmitOutput(models.Model):
     status = models.CharField(max_length=128, blank=True,
                               choices=constants.ReviewResponse.all_items_as_choices())
     score = models.IntegerField()
+    custom = models.BooleanField(default=False)
 
     def dir_path(self):
         return os.path.join(django_settings.SUBMIT_PATH, 'submits',
@@ -64,6 +76,9 @@ class SubmitOutput(models.Model):
     def lang_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_LANG_FILE_EXTENSION)
 
+    def custom_input_path(self):
+        return os.path.join(self.dir_path(), str(self.id) + constants.SUBMITTED_CUSTOM_INPUT_FILE_EXTENSION)
+
     def raw_path(self):
         return os.path.join(self.dir_path(), str(self.id) + constants.TESTING_RAW_EXTENSION)
 
@@ -74,4 +89,4 @@ class SubmitOutput(models.Model):
         return os.path.exists(self.protocol_path())
 
     def __unicode__(self):
-        return "(Output-%s-%s-%s-%s)" % (timestamp, user, problem, status)
+        return '(Output-%s-%s-%s-%s-%s)' % (timestamp, user, problem, status, custom)

@@ -10,7 +10,7 @@ from unidecode import unidecode
 import json
 
 from submit.constants import JudgeTestResult, ReviewResponse
-from submit.models import SubmitOutput, Row
+from submit.models import SubmitOutput, Row, CustomInput
 from submit.helpers import (write_chunks_to_file, write_lines_to_file)
 from submit.constants import ReviewResponse
 
@@ -19,10 +19,11 @@ class JudgeConnectionError(Exception):
     pass
 
 
-def create_submit_and_send_to_judge(problem, user):
-    submit = SubmitOutput(user=user, problem=problem, score=0, status=ReviewResponse.SENDING_TO_JUDGE)
+def create_submit_and_send_to_judge(problem, user, custom=False):
+    # TODO: custom
+    submit = SubmitOutput(user=user, problem=problem, score=0, custom=custom, status=ReviewResponse.SENDING_TO_JUDGE)
     submit.save()
-    _prepare_raw_file(submit)
+    _prepare_raw_file(submit, custom)
     try:
         _send_to_judge(submit)
         submit.status = ReviewResponse.SENT_TO_JUDGE
@@ -43,8 +44,9 @@ def _send_to_judge(submit):
     finally:
         sock.close()
 
-def _prepare_raw_file(submit):
+def _prepare_raw_file(submit, custom):
     rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
+    custom_input = CustomInput.objects.get(user=submit.user, problem=submit.problem)
 
     submit_id = str(submit.id)
     user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
@@ -58,12 +60,15 @@ def _prepare_raw_file(submit):
         'timestamp': timestamp,
         'problem': submit.problem.order,
         'code': [(row.content, row.get_lang_display()) for row in rows],
+        'custom': custom,
+        'custom_input': '{ %s }' % custom_input.content,
     }
 
     # write because of code in submit view
-    # TODO: do it with json dump
     write_lines_to_file(submit.file_path(), [row.content for row in rows])
     write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
+    if custom:
+        write_lines_to_file(submit.custom_input_path(), custom_input.content.split('\n'))
     with open(submit.raw_path(), 'w') as outfile:
        json.dump(info, outfile)
 
@@ -127,7 +132,7 @@ def parse_protocol(protocol_path, force_show_details=False):
             test['line'] = int(runtest[2].text)
             details = runtest[3].text if len(runtest) > 3 else None
             test['details'] = details
-            test['show_details'] = details is not None and ('sample' in test['name'] or force_show_details)
+            test['show_details'] = details is not None and ('sample' in test['name'] or 'custom' in test['name'] or  force_show_details)
             tests.append(test)
     data['tests'] = sorted(tests, key=lambda test: test['name'])
     data['have_tests'] = len(tests) > 0

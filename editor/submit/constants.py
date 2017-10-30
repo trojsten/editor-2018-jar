@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 SUBMITTED_FILE_EXTENSION = '.submit'
+SUBMITTED_CUSTOM_INPUT_FILE_EXTENSION = '.custom'
 SUBMITTED_LANG_FILE_EXTENSION = '.langs'
 TESTING_PROTOCOL_EXTENSION = '.protocol'
 TESTING_RAW_EXTENSION = '.raw'
@@ -17,6 +18,7 @@ class JudgeTestResult(object):
     SECURITY_EXCEPTION = 'SEC'
     IGNORED = 'IGN'
     COMPILATION_ERROR = 'CERR'
+    DONE = 'DONE'
 
     VERBOSE_RESULT = {
         OK: _('OK'),
@@ -26,6 +28,7 @@ class JudgeTestResult(object):
         SECURITY_EXCEPTION: _('Security exception'),
         IGNORED: _('Ignored'),
         COMPILATION_ERROR: _('Compilation error'),
+        DONE: _('Done'),
     }
 
     @classmethod
