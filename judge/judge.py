@@ -22,9 +22,7 @@ def run_tests(problem, master, protokol):
     for input_path in glob.glob('test/%s/*.in' % problem):
         base = os.path.splitext(input_path)[0]
         result = master.run(input_path)
-        message = 'OK'
-        line = 0
-        diff = {}
+        message, line, diff, count_ok = 'OK', 0, {}, 0
         if isinstance(result, tuple):
             message = 'EXC'
             line = result[1]
@@ -41,6 +39,7 @@ def run_tests(problem, master, protokol):
                         diff[premenna] = (hodnota, memory[premenna])
                 if ok:
                     message = 'OK'
+                    count_ok += 1
                 else:
                     message = 'WA'
 
@@ -59,6 +58,8 @@ def run_tests(problem, master, protokol):
                 s += 'nas %s: %s\n' % (premenna, nasa)
                 s += 'tvoj %s: %s\n' % (premenna, tvoja)
             details.text = s
+    score = SubElement(runLog, 'score')
+    score.text = str(count_ok)
 
 class EditorJudge(SocketServer.BaseRequestHandler):
     def handle(self):

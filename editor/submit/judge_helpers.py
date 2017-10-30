@@ -129,7 +129,7 @@ def parse_protocol(protocol_path, force_show_details=False):
             test['details'] = details
             test['show_details'] = details is not None and ('sample' in test['name'] or force_show_details)
             tests.append(test)
-    data['tests'] = tests
+    data['tests'] = sorted(tests, key=lambda test: test['name'])
     data['have_tests'] = len(tests) > 0
 
     try:
