@@ -247,6 +247,9 @@ def view_submit(request, submit_id):
         force_show_details = is_staff
         context_dict['protocol'] = parse_protocol(submit.protocol_path(), force_show_details)
         context_dict['result'] = constants.JudgeTestResult
+    if submit.custom:
+        with open(submit.custom_input_path(), 'r') as inp:
+            context_dict['custom_input'] = inp.read()
 
     return render(request, 'submit/view_submit.html', context_dict)
 
@@ -343,7 +346,7 @@ def view_results(request):
         count_ok = 0
         for problem in problems:
             last_submit = SubmitOutput.objects.filter(
-                    user=user, problem=problem).order_by('timestamp').last()
+                    user=user, problem=problem).exclude(status=constants.ReviewResponse.DONE).order_by('timestamp').last()
             last_ok_submit = SubmitOutput.objects.filter(
                     user=user, problem=problem,
                     status=constants.ReviewResponse.OK).order_by('timestamp').last()
