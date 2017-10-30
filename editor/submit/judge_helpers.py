@@ -61,7 +61,7 @@ def _prepare_raw_file(submit, custom):
         'problem': submit.problem.order,
         'code': [(row.content, row.get_lang_display()) for row in rows],
         'custom': custom,
-        'custom_input': '{ %s }' % custom_input.content,
+        'custom_input': json.loads('{ %s }' % custom_input.content),
     }
 
     # write because of code in submit view
@@ -71,33 +71,6 @@ def _prepare_raw_file(submit, custom):
         write_lines_to_file(submit.custom_input_path(), custom_input.content.split('\n'))
     with open(submit.raw_path(), 'w') as outfile:
        json.dump(info, outfile)
-
-def _prepare_raw_file_old(submit):
-    rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
-    write_lines_to_file(submit.file_path(), [row.content for row in rows])
-    write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
-    with open(submit.file_path(), 'rb') as submitted_file:
-        submitted_source = submitted_file.read()
-        with open(submit.lang_path(), 'rb') as submitted_lang_file:
-            submitted_langs = submitted_lang_file.read()
-
-            submit_id = str(submit.id)
-            user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
-
-            timestamp = int(time.time())
-
-            raw_head = "%s\n%s\n%s\n%d\n" % (
-                django_settings.JUDGE_INTERFACE_IDENTITY,
-                submit_id,      # judge expects submit_id, but at front-end it is Review that stores all feedback data
-                user_id,
-                timestamp,
-            )
-
-            raw_separator = "\n\n%s\n\n" % "##### LANGS #####"
-
-            write_chunks_to_file(submit.raw_path(), [raw_head.encode('UTF-8'), submitted_source,
-                raw_separator.encode('UTF-8'), submitted_langs])
-
 
 def parse_protocol(protocol_path, force_show_details=False):
     """

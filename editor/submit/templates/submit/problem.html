@@ -36,7 +36,7 @@
                                 <br/>
                                 <div class="btn-group pull-right" role="group" aria-label="...">
                                     <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
-                                    <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-custom-run">Save & Run for custom input</button>
+                                    <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-custom-run" id="save-custom-run">Save & Run for custom input</button>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -116,4 +116,41 @@
         </table>
     </div>
 </div>
+{% endblock %}
+ 
+{% block js %}
+    {{ block.super }}
+    <script>
+        function isJson(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+        $('#custom-input').bind('input propertychange', function() {
+            if (isJson("{" + this.value + "}")) {
+                this.classList.remove('invalid');
+                this.classList.add('valid');
+                $("#save-custom-run").attr("disabled", false);
+            } else {
+                this.classList.remove('valid');
+                this.classList.add('invalid');
+                $("#save-custom-run").attr("disabled", true);
+            }
+        });
+        window.onload = function (e) {
+            var inp = $("#custom-input");
+            if (isJson("{" + inp.val() + "}")) {
+                inp.removeClass('invalid');
+                inp.addClass('valid');
+                $("#save-custom-run").attr("disabled", false);
+            } else {
+                inp.removeClass('valid');
+                inp.addClass('invalid');
+                $("#save-custom-run").attr("disabled", true);
+            }
+        }
+    </script>
 {% endblock %}

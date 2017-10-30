@@ -117,10 +117,8 @@ class EditorJudge(SocketServer.BaseRequestHandler):
         elif not custom:
             run_tests(problem, master, protokol)
         else:
-            print(custom_input)
-            print(json.loads(custom_input))
             input_path = 'submits/%s/data.custom' % submit_id
-            prepare_memory(json.loads(custom_input), input_path)
+            prepare_memory(custom_input, input_path)
             run_custom(master, protokol, input_path)
 
         protocol_data = tostring(protokol)
