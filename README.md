@@ -37,6 +37,8 @@ Technicky detajl na zaver. Specialne znaky v stringoch pouziajte len na vlastne 
 
 Chod na https://github.com/Zajozor/editor-2017-jesen/issues/1 a vyber si jazyk ktory mas rad este nie je urobeny.
 
+Bud do issue napiste, ze chcete robit dany jazyk, alebo ho rovno zaskrtnite.
+
 Nasledne mas dve moznosti:
 
 ### 1) napisat vlastny runner
