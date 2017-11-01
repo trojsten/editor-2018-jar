@@ -5,6 +5,15 @@ Editor na jesenne KSP sustredko 2017.
 
 To copy CKEditor run: `python manage.py collectstatic`.
 
+First run: (optimalne mat virtualenv s python3 a djangom)
+
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
 
 ## Apt-gets
 `fp-compiler`: free pascal
