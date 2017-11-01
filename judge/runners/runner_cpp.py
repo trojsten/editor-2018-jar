@@ -18,6 +18,7 @@ class CppRunner(Runner):
           '#include <vector>\n' +
           '#include <cmath>\n' +
           '#include <string>\n' +
+          '#include <bits/stdc++.h>
           'using namespace std;\n' +
           '\n' +
           'char BUFFER[600000];\n' +

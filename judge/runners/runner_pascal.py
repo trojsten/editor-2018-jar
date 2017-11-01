@@ -5,8 +5,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-class CppRunner(Runner):
-    NAME = 'C++'
+class PascalRunner(Runner):
+    NAME = 'Pascal'
 
     def begin_ceremony(self):
 
