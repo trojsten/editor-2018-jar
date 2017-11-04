@@ -18,8 +18,8 @@ python manage.py runserver
 ## Apt-gets
 `fp-compiler`: free pascal
 `g++`: C++ compiler
-`python3`: pytohn compiler
-
+`python3`: Python interpreter
+`golang-go`: Go compiler & toolchain
 
 ## Jazyk
 
