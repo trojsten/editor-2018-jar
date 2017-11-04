@@ -5,59 +5,74 @@ the_genesis = '''
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
 )
 
-func loadIt(r io.Reader, value interface{}) {
-	var dummy string
-	fmt.Fscan(r, &dummy) // <TYPE>
-	fmt.Fscan(r, &dummy) // <name>
-	fmt.Fscan(r, value)
+func loadLine(r *bufio.Reader) string {
+	line, err := r.ReadString('\\n')
+	if err != nil {
+		panic(err)
+	}
+	return line[:len(line)-1]
 }
 
-func loadInts(r io.Reader) []int {
-	var dummy string
-	fmt.Fscan(r, &dummy) // VECTOR_INT
-	fmt.Fscan(r, &dummy) // <name>
+func loadValue(r *bufio.Reader, value interface{}) {
+	fmt.Sscan(loadLine(r), value)
+}
+
+func loadIt(r *bufio.Reader, value interface{}) {
+	loadLine(r) // <TYPE>
+	loadLine(r) // <name>
+	loadValue(r, value)
+}
+
+func loadString(r *bufio.Reader) string {
+	loadLine(r) // STR:
+	loadLine(r) // <name>
+	return loadLine(r)
+}
+
+func loadInts(r *bufio.Reader) []int {
+	loadLine(r) // VECTOR_INT
+	loadLine(r) // <name>
 
 	var size int
-	fmt.Fscan(r, &size)
+	loadValue(r, &size)
 
 	ints := make([]int, size)
 	for i := range ints {
-		fmt.Fscan(r, &ints[i])
+		loadValue(r, &ints[i])
 	}
 	return ints
 }
 
-func loadFloats(r io.Reader) []float64 {
-	var dummy string
-	fmt.Fscan(r, &dummy) // VECTOR_FLOAT
-	fmt.Fscan(r, &dummy) // <name>
+func loadFloats(r *bufio.Reader) []float64 {
+	loadLine(r) // VECTOR_FLOAT
+	loadLine(r) // <name>
 
 	var size int
-	fmt.Fscan(r, &size)
+	loadValue(r, &size)
 
 	floats := make([]float64, size)
 	for i := range floats {
-		fmt.Fscan(r, &floats[i])
+		loadValue(r, &floats[i])
 	}
 	return floats
 }
 
-func loadStrings(r io.Reader) []string {
-	var dummy string
-	fmt.Fscan(r, &dummy) // VECTOR_STRING
-	fmt.Fscan(r, &dummy) // <name>
+func loadStrings(r *bufio.Reader) []string {
+	loadLine(r) // VECTOR_STRING
+	loadLine(r) // <name>
 
 	var size int
-	fmt.Fscan(r, &size)
+	loadValue(r, &size)
 
 	strings := make([]string, size)
 	for i := range strings {
-		fmt.Fscan(r, &strings[i])
+		strings[i] = loadLine(r)
 	}
 	return strings
 }
@@ -96,15 +111,16 @@ func saveStrings(w io.Writer, name string, strings []string) {
 }
 
 func main() {
-	in, err := os.Open(os.Args[1])
+	inFile, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
+	in := bufio.NewReader(inFile)
 	out, err := os.Create(os.Args[2])
 	if err != nil {
 		panic(err)
 	}
-	defer in.Close()
+	defer inFile.Close()
 	defer out.Close()
 '''
 
@@ -135,8 +151,7 @@ class GoRunner(Runner):
     
     def load_str(self, name):
         return '''
-        var {0} string
-        loadIt(in, &{0})
+        {0} := loadString(in)
         '''.format(name)
     
     def load_int_vector(self, name):
