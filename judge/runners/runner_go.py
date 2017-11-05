@@ -1,5 +1,6 @@
 from runners.runner import Runner, InitRunner
-import os, logging
+import os
+import logging
 
 the_genesis = '''
 package main
@@ -128,6 +129,7 @@ the_apocalypse = '''
 }
 '''
 
+
 class GoRunner(Runner):
     NAME = "Go"
 
@@ -142,58 +144,58 @@ class GoRunner(Runner):
         var {0} int
         loadIt(in, &{0})
         '''.format(name)
-    
+
     def load_float(self, name):
         return '''
         var {0} float64
         loadIt(in, &{0})
         '''.format(name)
-    
+
     def load_str(self, name):
         return '''
         {0} := loadString(in)
         '''.format(name)
-    
+
     def load_int_vector(self, name):
         return '''
         {0} := loadInts(in)
         '''.format(name)
-    
+
     def load_float_vector(self, name):
         return '''
         {0} := loadFloats(in)
         '''.format(name)
-    
+
     def load_str_vector(self, name):
         return '''
         {0} := loadStrings(in)
         '''.format(name)
-    
+
     def save_int(self, name):
         return '''
         saveIt(out, "INT:", "{0}", {0})
         '''.format(name)
-    
+
     def save_float(self, name):
         return '''
         saveIt(out, "FLOAT:", "{0}", {0})
         '''.format(name)
-    
+
     def save_str(self, name):
         return '''
         saveIt(out, "STR:", "{0}", {0})
         '''.format(name)
-    
+
     def save_int_vector(self, name):
         return '''
         saveInts(out, "{0}", {0})
         '''.format(name)
-    
+
     def save_float_vector(self, name):
         return '''
         saveFloats(out, "{0}", {0})
         '''.format(name)
-    
+
     def save_str_vector(self, name):
         return '''
         saveStrings(out, "{0}", {0})
@@ -212,3 +214,16 @@ class GoRunner(Runner):
         cmd = './{} {} {}'.format(self.codename, in_memory, out_memory)
         logging.info('Executing: %s', cmd)
         return os.system(cmd)
+
+
+if __name__ == '__main__':
+    init = InitRunner()
+    init.create_init_memory('tmp/memory.txt')
+    runner = GoRunner('{0} = append({0}, "one", "two");'.format(
+      Runner.SOME_STR_VECTOR), 'tmp/tmp')
+    runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_go.txt')
+    print(init.load_memory('tmp/memory2_go.txt'))
+    runner2 = GoRunner('{0} = 0.5678;'.format(
+      Runner.SOME_FLOAT), 'tmp/tmp')
+    runner2.simple_full_run('tmp/memory2_go.txt', 'tmp/memory3_go.txt')
+    print(init.load_memory('tmp/memory3_go.txt'))
