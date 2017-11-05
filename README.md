@@ -16,10 +16,11 @@ python manage.py runserver
 
 
 ## Apt-gets
-`fp-compiler`: free pascal
-`g++`: C++ compiler
-`python3`: Python interpreter
-`golang-go`: Go compiler & toolchain
+ - `fp-compiler`: free pascal
+ - `g++`: C++ compiler
+ - `python3`: Python interpreter
+ - `golang-go`: Go compiler & toolchain
+ - `php7.0-cli`: Php?  nie som si ale uplne isty verziou
 
 ## Jazyk
 

@@ -34,7 +34,7 @@ class PHPRunner(Runner):
           '$_ = fgets($IN_MEMORY);\n' +
           '$SIZE = fgets($IN_MEMORY);\n' +
           'for ($i = 0; $i < $SIZE; $i++) {\n' +
-          '  array_push(${}, fgets($IN_MEMORY));'.format(vector) +
+          '  array_push(${}, trim(fgets($IN_MEMORY)));'.format(vector) +
           '}\n'
         )
         return code
@@ -46,7 +46,7 @@ class PHPRunner(Runner):
           '$_ = fgets($IN_MEMORY);\n' +
           '$SIZE = fgets($IN_MEMORY);\n' +
           'for ($i = 0; $i < $SIZE; $i++) {\n' +
-          '  array_push(${}, fgets($IN_MEMORY));'.format(vector) +
+          '  array_push(${}, trim(fgets($IN_MEMORY)));'.format(vector) +
           '}\n'
         )
         return code
@@ -58,7 +58,7 @@ class PHPRunner(Runner):
           '$_ = fgets($IN_MEMORY);\n' +
           '$SIZE = fgets($IN_MEMORY);\n' +
           'for ($i = 0; $i < $SIZE; $i++) {\n' +
-          '  array_push(${}, fgets($IN_MEMORY));'.format(vector) +
+          '  array_push(${}, trim(fgets($IN_MEMORY)));'.format(vector) +
           '}\n'
         )
         return code
@@ -67,7 +67,7 @@ class PHPRunner(Runner):
         code = (
           '$_ = fgets($IN_MEMORY);\n' +
           '$_ = fgets($IN_MEMORY);\n' +
-          '${} = fgets($IN_MEMORY);\n'.format(intt)
+          '${} = trim(fgets($IN_MEMORY));\n'.format(intt)
         )
         return code
 
@@ -75,7 +75,7 @@ class PHPRunner(Runner):
         code = (
           '$_ = fgets($IN_MEMORY);\n' +
           '$_ = fgets($IN_MEMORY);\n' +
-          '${} = fgets($IN_MEMORY);\n'.format(floatt)
+          '${} = trim(fgets($IN_MEMORY));\n'.format(floatt)
         )
         return code
 
@@ -83,7 +83,7 @@ class PHPRunner(Runner):
         code = (
           '$_ = fgets($IN_MEMORY);\n' +
           '$_ = fgets($IN_MEMORY);\n' +
-          '${} = fgets($IN_MEMORY);\n'.format(strr)
+          '${} = trim(fgets($IN_MEMORY));\n'.format(strr)
         )
         return code
 
@@ -111,7 +111,7 @@ class PHPRunner(Runner):
 
     def save_str_vector(self, vector):
         code = (
-          'fwrite($OUT_MEMORY, "VECTOR_INT:\\n");\n' +
+          'fwrite($OUT_MEMORY, "VECTOR_STR:\\n");\n' +
           'fwrite($OUT_MEMORY, "{}\\n");\n'.format(vector) +
           'fwrite($OUT_MEMORY, count(${})."\\n");\n'.format(vector) +
           'for ($_i = 0; $_i < count(${}); $_i++) {{\n'.format(vector) +
@@ -158,10 +158,15 @@ class PHPRunner(Runner):
     def name(self):
         return 'PHP'
 
+
 if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    runner = PHPRunner('array_push(${}, "blue", "green");'.format(Runner.SOME_STR_VECTOR), 'tmp/tmp')
+    runner = PHPRunner('array_push(${}, "blue", "green");'.format(
+      Runner.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_php.txt')
+    print(init.load_memory('tmp/memory2_php.txt'))
+
     runner2 = PHPRunner('$' + Runner.SOME_FLOAT + ' = 4.5;\n', 'tmp/tmp2')
     runner2.simple_full_run('tmp/memory2_php.txt', 'tmp/memory3_php.txt')
+    print(init.load_memory('tmp/memory3_php.txt'))
