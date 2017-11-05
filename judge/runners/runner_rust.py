@@ -1,0 +1,158 @@
+from runners.runner import Runner, InitRunner
+import os, logging
+
+the_genesis = '''
+fn get_line(input: &mut std::io::BufRead) -> String {
+    let mut line = String::new();
+    input.read_line(&mut line).expect("failed to read line");
+    let len = line.len();
+    line[..len - 1].to_string()
+}
+
+fn get_value<T>(input: &mut std::io::BufRead) -> T
+where
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    get_line(input).parse::<T>().expect("failed to parse value")
+}
+
+fn get_it<T>(input: &mut std::io::BufRead) -> T
+where
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    get_line(input); // <TYPE>
+    get_line(input); // <name>
+    get_value(input) // <value>
+}
+
+fn get_vec<T>(input: &mut std::io::BufRead) -> Vec<T>
+where
+    T: std::str::FromStr,
+    <T as std::str::FromStr>::Err: std::fmt::Debug,
+{
+    get_line(input); // <TYPE>
+    get_line(input); // <name>
+    let len = get_value::<usize>(input); // <len>
+    (0..len).map(|_| get_value::<T>(input)).collect() // <values...>
+}
+
+fn put_it<T>(output: &mut std::io::Write, typ: &str, name: &str, x: T)
+where
+    T: std::fmt::Display,
+{
+    writeln!(output, "{}", typ).unwrap();
+    writeln!(output, "{}", name).unwrap();
+    writeln!(output, "{}", x).unwrap();
+}
+
+fn put_vec<T>(output: &mut std::io::Write, typ: &str, name: &str, xs: Vec<T>)
+where
+    T: std::fmt::Display,
+{
+    writeln!(output, "{}", typ).unwrap();
+    writeln!(output, "{}", name).unwrap();
+    writeln!(output, "{}", xs.len()).unwrap();
+    for x in xs {
+        writeln!(output, "{}", x).unwrap();
+    }
+}
+
+fn main() {
+    let mut args = std::env::args();
+    args.next();
+    let input_name = args.next().expect("input file name not provided");
+    let output_name = args.next().expect("output file name not provided");
+    let mut input_file = std::fs::File::open(input_name).expect("error opening input file");
+    let mut output_file = std::fs::File::create(output_name).expect("error creating output file");
+    let mut input = std::io::BufReader::new(input_file);
+    let mut output = std::io::BufWriter::new(output_file);
+'''
+
+the_apocalypse = '''
+}
+'''
+
+class RustRunner(Runner):
+    NAME = "Rust"
+
+    def begin_ceremony(self):
+        return the_genesis
+
+    def end_ceremony(self):
+        return the_apocalypse
+
+    def load_int(self, name):
+        return '''
+        let mut {0} = get_it::<i64>(&mut input);
+        '''.format(name)
+
+    def load_float(self, name):
+        return '''
+        let mut {0} = get_it::<f64>(&mut input);
+        '''.format(name)
+
+    def load_str(self, name):
+        return '''
+        let mut {0} = get_it::<String>(&mut input);
+        '''.format(name)
+
+    def load_int_vector(self, name):
+        return '''
+        let mut {0} = get_vec::<i64>(&mut input);
+        '''.format(name)
+
+    def load_float_vector(self, name):
+        return '''
+        let mut {0} = get_vec::<f64>(&mut input);
+        '''.format(name)
+
+    def load_str_vector(self, name):
+        return '''
+        let mut {0} = get_vec::<String>(&mut input);
+        '''.format(name)
+
+    def save_int(self, name):
+        return '''
+        put_it(&mut output, "INT:", "{0}", {0});
+        '''.format(name)
+
+    def save_float(self, name):
+        return '''
+        put_it(&mut output, "FLOAT:", "{0}", {0});
+        '''.format(name)
+
+    def save_str(self, name):
+        return '''
+        put_it(&mut output, "STR:", "{0}", {0});
+        '''.format(name)
+
+    def save_int_vector(self, name):
+        return '''
+        put_vec(&mut output, "VECTOR_INT:", "{0}", {0});
+        '''.format(name)
+
+    def save_float_vector(self, name):
+        return '''
+        put_vec(&mut output, "VECTOR_FLOAT:", "{0}", {0});
+        '''.format(name)
+
+    def save_str_vector(self, name):
+        return '''
+        put_vec(&mut output, "VECTOR_STR:", "{0}", {0});
+        '''.format(name)
+
+    def prepare(self):
+        filename = self.codename + ".rs"
+        f = open(filename, "w")
+        f.write(self.generate())
+        f.close()
+        cmd = 'rustc -o {} {}'.format(self.codename, filename)
+        logging.info("Running: %s", cmd)
+        return os.system(cmd)
+
+    def execute(self, in_memory, out_memory):
+        cmd = './{} {} {}'.format(self.codename, in_memory, out_memory)
+        logging.info('Executing: %s', cmd)
+        return os.system(cmd)
