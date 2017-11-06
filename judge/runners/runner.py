@@ -7,19 +7,19 @@ class Runner:
     # Variables.
     # If you add new variables, modify load_vars, save_vars and initrunner
     #  TODO zmente nazvy na nieco aspon trochu vtipne.
-    SOME_INT_VECTOR = "vector_intov"
-    SOME_STR_VECTOR = "vector_stringov"
-    SOME_FLOAT_VECTOR = "vector_floatov"
-    SOME_INT = "intt"
-    SOME_STR = "stringg"
-    SOME_FLOAT = "floatik"
 
-    INT_VECTORS = [SOME_INT_VECTOR]
-    STR_VECTORS = [SOME_STR_VECTOR]
-    FLOAT_VECTORS = [SOME_FLOAT_VECTOR]
-    INTS = [SOME_INT]
-    STRS = [SOME_STR, "string2"]
-    FLOATS = [SOME_FLOAT]
+    INT_VECTORS = ["kotlik", "hrniec"]
+    STR_VECTORS = ["kniha", "miska"]
+    FLOAT_VECTORS = ["magia", "maziar"]
+    INTS = ["jedna", "dumbier", "mandragora", "netopier"]
+    STRS = ["zaba", "recept", "zaklinadlo", "jednorozec"]
+    FLOATS = ["pomer", "tricelestrnast", "mana"]
+    SOME_INT_VECTOR = INT_VECTORS[0]
+    SOME_STR_VECTOR = STR_VECTORS[0]
+    SOME_FLOAT_VECTOR = FLOAT_VECTORS[0]
+    SOME_INT = INTS[0]
+    SOME_STR = STRS[0]
+    SOME_FLOAT = FLOATS[0]
     NAME = ''
 
     def __init__(self, code, codename):

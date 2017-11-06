@@ -206,7 +206,7 @@ if __name__ == '__main__':
       Runner.SOME_FLOAT + ":= 10.123;\n" +
       Runner.SOME_STR + ":= 'desat';\n"
     )
-    runner1 = CppRunner(code1, 'tmp/tmp')
+    runner1 = PascalRunner(code1, 'tmp/tmp')
     runner1.simple_full_run('tmp/memory.txt', 'tmp/memory2_pas.txt')
     memory = init.load_memory('tmp/memory2_pas.txt')
     print(memory)
