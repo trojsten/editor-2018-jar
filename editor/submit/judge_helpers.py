@@ -120,6 +120,8 @@ def parse_protocol(protocol_path, force_show_details=False):
     else:
         # Test result of review is set by first non-OK test result
         data['final_result'] = JudgeTestResult.OK
+        if not data['have_tests']:
+            data['final_result'] = ReviewResponse.PROTOCOL_CORRUPTED
         for test in data['tests']:
             if test['result'] != JudgeTestResult.OK:
                 data['final_result'] = test['result']

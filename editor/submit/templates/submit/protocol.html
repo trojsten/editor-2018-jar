@@ -9,7 +9,7 @@
     {% if protocol.compile_log_present %}
         <h4>Compiler output</h4>
         <div class="alert alert-danger">
-            Line {{ protocol.compile_log_line }} didn't compile.
+            Line <b>{{ protocol.compile_log_line }}</b> didn't compile.
         </div>
         <pre>{{ protocol.compile_log }}</pre>
     {% endif %}
@@ -52,5 +52,9 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% else %}
+        <div class="alert alert-warning">
+            This didn't run for any tests.
+        </div>
     {% endif %}
 {% endif %}

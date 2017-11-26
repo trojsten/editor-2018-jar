@@ -208,7 +208,7 @@ def receive_protocol(request):
         if next_problem is not None:
             active_problem.problem = next_problem
             active_problem.save()
-            CustomInput.objects.create(user=user, problem=next_problem)
+            CustomInput.objects.get_or_create(user=user, problem=next_problem)
         else:
             # uz nei je dalsi problem
             active_problem.delete()

@@ -1,24 +1,26 @@
-{% for row in rows %}
-    <div class="input-group">
-        <span class="input-group-addon line-number" id="basic-addon{{ row.order }}">{{ row.order }}</span>
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Write some {{ row.get_lang_display }} code here"
-            aria-label="Username"
-            aria-describedby="basic-addon{{ row.order }}"
-            value="{{ row.content | safe }}"
-            name="row-{{ row.order }}"
-            id="code-row-{{ row.order }}"
-            {% if readonly %}readonly=true{% endif %}
-        >
-        </input>
-        <span class="input-group-addon language" id="basic-addon{{ row.order }}">
-            {% if row.get_lang_display is None %}
-                {{row.lang }}
-            {% else %}
-                {{ row.get_lang_display }}
-            {% endif %}
-        </span>
-    </div>
-{% endfor %}
+<div class="rows">
+    {% for row in rows %}
+        <div class="input-group">
+            <span class="input-group-addon line-number" id="basic-addon{{ row.order }}">{{ row.order }}</span>
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Write some {{ row.get_lang_display }} code here"
+                aria-label="Username"
+                aria-describedby="basic-addon{{ row.order }}"
+                value="{{ row.content | safe }}"
+                name="row-{{ row.order }}"
+                id="code-row-{{ row.order }}"
+                {% if readonly %}readonly=true{% endif %}
+            >
+            </input>
+            <span class="input-group-addon language" id="basic-addon{{ row.order }}">
+                {% if row.get_lang_display is None %}
+                    {{row.lang }}
+                {% else %}
+                    {{ row.get_lang_display }}
+                {% endif %}
+            </span>
+        </div>
+    {% endfor %}
+</div>

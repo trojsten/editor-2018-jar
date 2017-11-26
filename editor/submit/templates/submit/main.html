@@ -6,13 +6,21 @@
         <link rel="stylesheet" href="{% static 'submit/css/bootstrap.min.css' %}">
         <link rel="icon" type="image/png" href="{% static "submit/favicon.ico" %}"/>
         <style>
+            .input-group * {
+                border-bottom-width: 0px;
+            }
+            .input-group:last-child * {
+                border-bottom-width: 1px;
+            }
+            .input-group-addon {
+                text-align:right;
+                border-radius: 0;
+            }
             .input-group-addon.line-number {
                 min-width:75px;
-                text-align:right;
             }
             .input-group-addon.language {
                 min-width:100px;
-                text-align:right;
             }
             .valid {
                 background-color: rgba(0, 255, 0, 0.3);
