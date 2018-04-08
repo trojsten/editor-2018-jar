@@ -1,0 +1,8 @@
+{
+    "INT_VECTORS": ["vector_intov"],
+    "STR_VECTORS": ["vector_stringov"],
+    "FLOAT_VECTORS": ["vector_floatov"],
+    "INTS": ["intt"],
+    "STRS": ["stringg"],
+    "FLOATS": ["floatik"]
+}

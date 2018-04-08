@@ -89,6 +89,15 @@ def run_tests(problem, master, protokol):
     score = SubElement(runLog, 'score')
     score.text = str(count_ok)
 
+
+def load_variables(problem):
+    variables_file = glob.glob('test/%s/variables.json' % problem):
+    if len(variables_file)==0
+        return None
+    else:
+        return json.load(open(variables_file[0]))
+
+
 class EditorJudge(SocketServer.BaseRequestHandler):
     def handle(self):
         input_data = self.request.recv(1024 * 1024).strip()
@@ -110,7 +119,7 @@ class EditorJudge(SocketServer.BaseRequestHandler):
             for content, lang in code:
                 out.write('%s: %s\n' % (lang, content))
 
-        master = MasterRunner(code, prefix=str(submit_id))
+        master = MasterRunner(code, prefix=str(submit_id), variables=load_variables(problem))
         result = master.prepare()
         if result is not None:
             add_compile(protokol, result)

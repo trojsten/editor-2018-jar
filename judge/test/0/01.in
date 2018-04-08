@@ -10,9 +10,6 @@ vector_stringov
 STR:
 stringg
 
-STR:
-string2
-
 VECTOR_FLOAT:
 vector_floatov
 0

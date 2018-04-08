@@ -12,14 +12,13 @@ class Runner:
         """
         variables should be a dict of a form: <type>: <variable names with given name>
         {
-            'INT_VECTORS': ['koza', 'capko'],
-            'STR_VECTORS': ['vr', 'rv'],
-            'FLOAT_VECTORS': ['omg', 'lol'],
-            'INTS': ['bobek', 'bobok'],
-            'STRS': ['gold', 'silver'],
-            'FLOATS': ['wilager']
-        }
-        """
+            "INT_VECTORS": ["koza", "capko"],
+            "STR_VECTORS": ["vr", "rv"],
+            "FLOAT_VECTORS": ["omg", "lol"],
+            "INTS": ["bobek", "bobok"],
+            "STRS": ["gold", "silver"],
+            "FLOATS": ["wilager"]
+        }        """
         self.code = code
         self.codename = codename
         if variables is not None:
