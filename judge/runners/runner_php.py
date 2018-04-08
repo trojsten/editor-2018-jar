@@ -1,4 +1,5 @@
-from runners.runner import Runner, InitRunner
+from runners.runner import Runner
+from runners.init_runner import InitRunner
 import os
 import logging
 
@@ -163,10 +164,10 @@ if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     runner = PHPRunner('array_push(${}, "blue", "green");'.format(
-      Runner.SOME_STR_VECTOR), 'tmp/tmp')
+      init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_php.txt')
     print(init.load_memory('tmp/memory2_php.txt'))
 
-    runner2 = PHPRunner('$' + Runner.SOME_FLOAT + ' = 4.5;\n', 'tmp/tmp2')
+    runner2 = PHPRunner('$' + init.SOME_FLOAT + ' = 4.5;\n', 'tmp/tmp2')
     runner2.simple_full_run('tmp/memory2_php.txt', 'tmp/memory3_php.txt')
     print(init.load_memory('tmp/memory3_php.txt'))

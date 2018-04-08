@@ -1,4 +1,5 @@
-from runners.runner import Runner, InitRunner
+from runners.runner import Runner
+from runners.init_runner import InitRunner
 import os
 import logging
 
@@ -220,10 +221,10 @@ if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     runner = GoRunner('{0} = append({0}, "one", "two");'.format(
-      Runner.SOME_STR_VECTOR), 'tmp/tmp')
+      init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_go.txt')
     print(init.load_memory('tmp/memory2_go.txt'))
     runner2 = GoRunner('{0} = 0.5678;'.format(
-      Runner.SOME_FLOAT), 'tmp/tmp')
+      init.SOME_FLOAT), 'tmp/tmp')
     runner2.simple_full_run('tmp/memory2_go.txt', 'tmp/memory3_go.txt')
     print(init.load_memory('tmp/memory3_go.txt'))

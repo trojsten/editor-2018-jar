@@ -1,4 +1,5 @@
-from runners.runner import Runner, InitRunner
+from runners.runner import Runner
+from runners.init_runner import InitRunner
 import os, logging
 
 the_genesis = '''
@@ -164,10 +165,10 @@ if __name__ == '__main__':
     init.create_init_memory('tmp/memory.txt')
     runner = RustRunner(
       '{0} = vec!["0".to_string(), "2".to_string(), "4".to_string(), "6".to_string()];'.format(
-        Runner.SOME_STR_VECTOR), 'tmp/tmp')
+        init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_rust.txt')
     print(init.load_memory('tmp/memory2_rust.txt'))
     runner2 = RustRunner('{0} = 0.5678;'.format(
-      Runner.SOME_FLOAT), 'tmp/tmp')
+      init.SOME_FLOAT), 'tmp/tmp')
     runner2.simple_full_run('tmp/memory2_rust.txt', 'tmp/memory3_rust.txt')
     print(init.load_memory('tmp/memory3_rust.txt'))

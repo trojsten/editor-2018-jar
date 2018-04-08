@@ -1,5 +1,4 @@
 import logging
-
 logging.basicConfig(level=logging.INFO)
 
 
@@ -7,25 +6,48 @@ class Runner:
     # Variables.
     # If you add new variables, modify load_vars, save_vars and initrunner
     #  TODO zmente nazvy na nieco aspon trochu vtipne.
-
-    INT_VECTORS = ["kotlik", "hrniec"]
-    STR_VECTORS = ["kniha", "miska"]
-    FLOAT_VECTORS = ["magia", "maziar"]
-    INTS = ["jedna", "dumbier", "mandragora", "netopier"]
-    STRS = ["zaba", "recept", "zaklinadlo", "jednorozec"]
-    FLOATS = ["pomer", "tricelestrnast", "mana"]
-    SOME_INT_VECTOR = INT_VECTORS[0]
-    SOME_STR_VECTOR = STR_VECTORS[0]
-    SOME_FLOAT_VECTOR = FLOAT_VECTORS[0]
-    SOME_INT = INTS[0]
-    SOME_STR = STRS[0]
-    SOME_FLOAT = FLOATS[0]
     NAME = ''
 
-    def __init__(self, code, codename):
+    def __init__(self, code, codename, variables=None):
+        """
+        variables should be a dict of a form: <type>: <variable names with given name>
+        {
+            'INT_VECTORS': ['koza', 'capko'],
+            'STR_VECTORS': ['vr', 'rv'],
+            'FLOAT_VECTORS': ['omg', 'lol'],
+            'INTS': ['bobek', 'bobok'],
+            'STRS': ['gold', 'silver'],
+            'FLOATS': ['wilager']
+        }
+        """
         self.code = code
         self.codename = codename
-        pass
+        if variables is not None:
+            self.INT_VECTORS = variables.get('INT_VECTORS', [])
+            self.STR_VECTORS = variables.get('STR_VECTORS', [])
+            self.FLOAT_VECTORS = variables.get('FLOAT_VECTORS', [])
+            self.INTS = variables.get('INTS', [])
+            self.STRS = variables.get('STRS', [])
+            self.FLOATS = variables.get('FLOATS', [])
+        else:
+            # defaultne harry potter mena premennych
+            self.INT_VECTORS = ["kotlik", "hrniec"]
+            self.STR_VECTORS = ["kniha", "miska"]
+            self.FLOAT_VECTORS = ["magia", "maziar"]
+            self.INTS = ["jedna", "dumbier", "mandragora", "netopier"]
+            self.STRS = ["zaba", "recept", "zaklinadlo", "jednorozec"]
+            self.FLOATS = ["pomer", "tricelestrnast", "mana"]
+
+
+        safe_zero = lambda x: None if len(x)==0 else x[0]
+        
+        self.SOME_INT_VECTOR = safe_zero(self.INT_VECTORS)
+        self.SOME_STR_VECTOR = safe_zero(self.STR_VECTORS)
+        self.SOME_FLOAT_VECTOR = safe_zero(self.FLOAT_VECTORS)
+        self.SOME_INT = safe_zero(self.INTS)
+        self.SOME_STR = safe_zero(self.STRS)
+        self.SOME_FLOAT = safe_zero(self.FLOATS)
+        
 
     def load_vars(self):
         code = ''
@@ -204,81 +226,5 @@ class Runner:
         logging.info("Execute status: %s", execute_status)
 
 
-class InitRunner(Runner):
-    def __init__(self):
-        pass
-
-    def create_init_memory(self, memory):
-        memory = open(memory, 'w')
-        for vector in self.INT_VECTORS:
-            print("VECTOR_INT:\n" + vector + "\n0", file=memory)
-
-        for intt in self.INTS:
-            print("INT:\n" + intt + "\n0", file=memory)
-
-        for vector in self.STR_VECTORS:
-            print("VECTOR_STR:\n" + vector + "\n0", file=memory)
-
-        for strr in self.STRS:
-            print("STR:\n" + strr + "\n", file=memory)
-
-        for vector in self.FLOAT_VECTORS:
-            print("VECTOR_FLOAT:\n" + vector + "\n0", file=memory)
-
-        for floatt in self.FLOATS:
-            print("FLOAT:\n" + floatt + "\n0", file=memory)
-        memory.close()
-
-    def load_memory(self, memory):
-        memory = open(memory, 'r')
-        variables = {}
-        for vector in self.INT_VECTORS:
-            _ = memory.readline().strip()
-            vector_name = memory.readline().strip()
-            vector_size = int(memory.readline().strip())
-            assert vector == vector_name
-            variables[vector_name] = [int(memory.readline().strip()) for _ in range(vector_size)]
-
-        for intt in self.INTS:
-            _ = memory.readline().strip()
-            intt_name = memory.readline().strip()
-            intt_value = memory.readline().strip()
-            assert intt == intt_name
-            variables[intt_name] = int(intt_value)
-
-        for vector in self.STR_VECTORS:
-            _ = memory.readline().strip()
-            vector_name = memory.readline().strip()
-            vector_size = int(memory.readline().strip())
-            assert vector == vector_name
-            variables[vector_name] = [memory.readline().strip() for _ in range(vector_size)]
-
-        for strr in self.STRS:
-            _ = memory.readline().strip()
-            strr_name = memory.readline().strip()
-            strr_value = memory.readline().strip()
-            assert strr == strr_name
-            variables[strr_name] = strr_value
-
-        for vector in self.FLOAT_VECTORS:
-            _ = memory.readline().strip()
-            vector_name = memory.readline().strip()
-            vector_size = int(memory.readline().strip())
-            assert vector == vector_name
-            variables[vector_name] = [float(memory.readline().strip()) for _ in range(vector_size)]
-
-        for floatt in self.FLOATS:
-            _ = memory.readline().strip()
-            floatt_name = memory.readline().strip()
-            floatt_value = float(memory.readline().strip())
-            assert floatt == floatt_name
-            variables[floatt_name] = float(floatt_value)
-
-        memory.close()
-        return variables
-
-
 if __name__ == '__main__':
-    init = InitRunner()
-    init.create_init_memory('tmp/memory_init.txt')
-    print(init.load_memory('tmp/memory_init.txt'))
+    pass

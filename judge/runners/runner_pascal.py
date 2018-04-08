@@ -1,4 +1,5 @@
-from runners.runner import Runner, InitRunner
+from runners.runner import Runner
+from runners.init_runner import InitRunner
 import os
 import logging
 
@@ -196,15 +197,15 @@ if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     code1 = (
-      "SetLength(" + Runner.SOME_INT_VECTOR + ", 10);\n" +
-      "SetLength(" + Runner.SOME_FLOAT_VECTOR + ", 10);\n" +
-      "SetLength(" + Runner.SOME_STR_VECTOR + ", 10);\n" +
-      Runner.SOME_INT_VECTOR + "[3]:= 10;\n" +
-      Runner.SOME_FLOAT_VECTOR + "[3]:= 10.123;\n" +
-      Runner.SOME_STR_VECTOR + "[3]:= 'desat';\n" +
-      Runner.SOME_INT + ":= 10;\n" +
-      Runner.SOME_FLOAT + ":= 10.123;\n" +
-      Runner.SOME_STR + ":= 'desat';\n"
+      "SetLength(" + init.SOME_INT_VECTOR + ", 10);\n" +
+      "SetLength(" + init.SOME_FLOAT_VECTOR + ", 10);\n" +
+      "SetLength(" + init.SOME_STR_VECTOR + ", 10);\n" +
+      init.SOME_INT_VECTOR + "[3]:= 10;\n" +
+      init.SOME_FLOAT_VECTOR + "[3]:= 10.123;\n" +
+      init.SOME_STR_VECTOR + "[3]:= 'desat';\n" +
+      init.SOME_INT + ":= 10;\n" +
+      init.SOME_FLOAT + ":= 10.123;\n" +
+      init.SOME_STR + ":= 'desat';\n"
     )
     runner1 = PascalRunner(code1, 'tmp/tmp')
     runner1.simple_full_run('tmp/memory.txt', 'tmp/memory2_pas.txt')
