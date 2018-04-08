@@ -10,7 +10,7 @@ import glob
 @click.command()
 @click.option('--generate/--no-generate', default=False, help='Regenerate the folder')
 @click.option('--test/--no-test', default=False, help='Test the solution')
-@click.option('--clean/--no-clean', default=False, help='Clean temporary files')
+@click.option('--clean/--no-clean', default=True, help='Clean temporary files')
 @click.option('--config_path', help='Path to config', required=True)
 def main(generate, test, clean, config_path):
     exec(open(config_path).read(), globals())
@@ -19,15 +19,15 @@ def main(generate, test, clean, config_path):
         json.dump(variables, open(task_path+'/variables.json', 'w'))
 
         init = InitRunner(variables)
-
+        samples_names = "abcdefgh"
         # generate samples
         for i, (sample_input, sample_output) in enumerate(sample_input_output_pairs):
-            init.prepare_memory(sample_input, task_path+"/{0:02d}.sample.in".format(i))
-            json.dump(sample_output, open(task_path+"/{0:02d}.sample.out".format(i), 'w'))
+            init.prepare_memory(sample_input, task_path+"/00.{}.sample.in".format(samples_names[i]))
+            json.dump(sample_output, open(task_path+"/00.{}.sample.out".format(samples_names[i]), 'w'))
 
         for i, (sample_input, sample_output) in enumerate(real_input_output_pairs):
-            init.prepare_memory(sample_input, task_path+"/{0:02d}.in".format(i))
-            json.dump(sample_output, open(task_path+"/{0:02d}.out".format(i), 'w'))
+            init.prepare_memory(sample_input, task_path+"/{0:02d}.in".format(i+1))
+            json.dump(sample_output, open(task_path+"/{0:02d}.out".format(i+1), 'w'))
     else:
         print('Not generating anything, --generate')
 
