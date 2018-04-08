@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^problem/(?P<problem_id>\d+)/$', views.problem, name='problem'),
     url(r'^problem/(?P<problem_id>\d+)/add_lang_row/(?P<lang_code>\d+)/$', views.add_lang_row, name='add_lang_row'),
     url(r'^view/(?P<submit_id>\d+)/$', views.view_submit, name='view_submit'),
-    url(r'^add_row_info/(?P<user_id>\d+)/$', views.add_row_info, name='add_row_info'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
 ]
