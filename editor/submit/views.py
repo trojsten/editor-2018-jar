@@ -79,17 +79,6 @@ def problems(request):
     return render(request, 'submit/problems.html', context_dict)
 
 @login_required(login_url='/submit/login/')
-def active_problem(request):
-    user = request.user
-
-    result = create_active_if_first_login(user)
-    if result['error'] is not None or result['no_more_problems']:
-        return HttpResponseRedirect('/submit/problems/')
-
-    active_problem = result['active_problem']
-    return HttpResponseRedirect('/submit/problem/%s' % active_problem.problem.id)
-
-@login_required(login_url='/submit/login/')
 @require_POST
 def add_lang_row(request, problem_id, lang_code):
     user = request.user
@@ -252,40 +241,6 @@ def view_submit(request, submit_id):
             context_dict['custom_input'] = inp.read()
 
     return render(request, 'submit/view_submit.html', context_dict)
-
-@login_required(login_url='/submit/login/')
-@staff_member_required
-def add_one_row(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user-select')
-        lang_number = request.POST.get('lang-select')
-
-        user = User.objects.get(pk=user_id)
-        active_problem = ActiveProblem.objects.filter(user=user).first()
-        if active_problem is None:
-            return HttpResponseRedirect('/submit/add_one_row/')
-
-        problem = active_problem.problem
-        row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
-        new_order = 1
-        if row is not None:
-            new_order = row.order + 1
-        Row.objects.create(
-                user=user,
-                problem=problem,
-                order=new_order,
-                lang=lang_number,
-                content="")
-        return HttpResponseRedirect('/submit/add_one_row/')
-    else:
-        users = User.objects.all()
-        langs = constants.Language.LANG_CHOICES
-
-        context_dict = {
-            'users': users,
-            'langs': langs,
-        }
-        return render(request, 'submit/add_one_row.html', context_dict)
 
 @login_required(login_url='/submit/login/')
 @staff_member_required

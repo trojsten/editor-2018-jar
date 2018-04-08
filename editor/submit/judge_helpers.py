@@ -20,7 +20,6 @@ class JudgeConnectionError(Exception):
 
 
 def create_submit_and_send_to_judge(problem, user, custom=False):
-    # TODO: custom
     submit = SubmitOutput(user=user, problem=problem, score=0, custom=custom, status=ReviewResponse.SENDING_TO_JUDGE)
     submit.save()
     _prepare_raw_file(submit, custom)
