@@ -1,0 +1,13 @@
+Mame dve rozne zaklinadla - chceme vediet, ktore je silnejsie. Vsetci vieme ze lexikograficky mensie 
+zaklinadla su silnejsie. Ale pozor, lebo v magickom jazyku existuje ine abecedne poradie...
+
+input:
+INT dumbier: dlzka prveho zaklinadla
+STR recept: prve zaklinadlo (dumbier lowercase znakov)
+INT mandragora: dlzka druheho zaklinadla
+STR zaklinadlo: druhe zaklinadlo (mandragora lowercase znakov)
+STR zaba: permutacia anglickej abecedy - magicke lexikograficke usporiadanie pismen
+INT jedna = 0: pomocna premenna
+INT netopier = 0: pomocna premenna
+output:
+v zaklinadle lexikograficky mensie zaklinadlo urceneho zabou.vlejd@red

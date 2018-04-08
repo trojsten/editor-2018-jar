@@ -2,8 +2,9 @@ Priecinok pre vsetky testy.
 
 Mal by mat podpriecinky s cislami 1,2,3 .... pocet uloh. Cislo sa musi zhodovat s poradovym cislom ulohy v DB.
 
-Na vyrobenie noveho prikladu treba vyrobit novi priecinok s cislom prikladu a do neho vyrobit subor `config.py`.
-Ide o pytonovy skript, ktory definuje tri premenne `variables`, `sample_input_output_pairs`, `real_input_output_pairs`.
+Na vyrobenie noveho prikladu treba vyrobit novi priecinok s cislom prikladu a do neho vyrobit subor `config.py` a subor `zadanie.txt`.
+`zadanie.txt` obsahuje zadanie.
+`config.py` definuje tri premenne `variables`, `sample_input_output_pairs`, `real_input_output_pairs`.
 Pre priklad sa pozrite do `tests/0/config.py`.
 
 Po napisani tohto configu preba pustit subor `python3 prepare_task.py --clean --generate --config <cesta ku knofigu>`.
