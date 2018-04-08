@@ -1,5 +1,10 @@
 from runners.runner_python import PythonRunner
 from runners.runner_cpp import CppRunner
+from runners.runner_go import GoRunner
+from runners.runner_pascal import PascalRunner
+from runners.runner_php import PHPRunner
+from runners.runner_rust import RustRunner
+
 from runners.runner import Runner
 from runners.init_runner import InitRunner
 
@@ -8,7 +13,7 @@ import re
 
 logging.basicConfig(level=logging.INFO)
 
-runners = [PythonRunner, CppRunner]
+runners = [PythonRunner, CppRunner, GoRunner, PascalRunner, PHPRunner, RustRunner]
 
 REGISTER = {r.NAME: r for r in runners}
 
