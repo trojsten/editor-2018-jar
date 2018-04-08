@@ -32,17 +32,6 @@ class Row(models.Model):
     class Meta:
         unique_together = ('user', 'problem', 'order')
 
-class CustomInput(models.Model):
-    user = models.ForeignKey(User)
-    problem = models.ForeignKey(Problem)
-    content = models.TextField(blank=True, default='')
-
-    def __unicode__(self):
-        return '(CustomInput-%s-%s)' % (user, problem)
-
-    class Meta:
-        unique_together = ('user', 'problem')
-
 class SpareRow(models.Model):
     user = models.ForeignKey(User)
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
@@ -50,9 +39,18 @@ class SpareRow(models.Model):
     def __unicode__(self):
         return '(SpareRow-%s-%s-%s)' % (id, user, lang)
 
-class ActiveProblem(models.Model):
-    user = models.OneToOneField(User)
+class Task(models.Model):
+    user = models.ForeignKey(User)
     problem = models.ForeignKey(Problem)
+    active = models.BooleanField()
+    solved = models.BooleanField(default=False)
+    custom_input = models.TextField(blank=True, default='')
+
+    def __unicode__(self):
+        return '(Task-%s-%s-%s)' % (id, user, problem, active)
+
+    class Meta:
+        unique_together = ('user', 'problem')
 
 class SubmitOutput(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -90,3 +88,20 @@ class SubmitOutput(models.Model):
 
     def __unicode__(self):
         return '(Output-%s-%s-%s-%s-%s)' % (timestamp, user, problem, status, custom)
+
+
+from django.db.models.signals import post_save
+
+def save_problem(sender, instance, created, **kwargs):
+    if created:
+        for user in User.objects.all():
+            active = len(Task.objects.filter(user=user, active=True))
+            Task.objects.create(user=user, problem=instance, active= active < constants.ACTIVE_PROBLEMS)
+
+def save_user(sender, instance, created, **kwargs):
+    if created:
+        for problem in Problem.objects.all():
+            Task.objects.create(user=instance, problem=problem, active=problem.order <= constants.ACTIVE_PROBLEMS)
+
+post_save.connect(save_problem, sender=Problem)
+post_save.connect(save_user, sender=User)

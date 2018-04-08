@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from submit.models import Problem, Row, ActiveProblem, SubmitOutput, SpareRow, CustomInput
+from submit.models import Problem, Row, SubmitOutput, SpareRow, Task
 from submit import constants
 from submit.helpers import write_chunks_to_file
 from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protocol)
@@ -19,38 +19,29 @@ from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protoco
 def index(request):
     return render(request, 'submit/index.html', {})
 
-def create_active_if_first_login(user):
-    problems = Problem.objects.all()
-    first = problems.first()
-
-    active_problem = ActiveProblem.objects.filter(user=user).first()
-    if active_problem is not None:
+def get_active(user):
+    active_problems = Task.objects.filter(user=user, active=True)
+    if len(active_problems) > 0:
         return {
             'error': None,
-            'active_problem': active_problem,
+            'active_problems': active_problems,
             'no_more_problems': False,
         }
 
+    problems = Problem.objects.all()
+    first = problems.first()
+
     error = None
-    active_problem = None
     no_more_problems = False
     if first is None:
         # ziadne ulohy ani nie su?
         error = "Neexistujú žiadne úlohy!"
     else:
-        last_ok_submit = SubmitOutput.objects.filter(
-                user=user, problem=first, status=constants.ReviewResponse.OK).last()
-        if last_ok_submit is None:
-            # Ak je to prvy krat, mozno sme im zabudli nastavit prvy aktivny problem.
-            # este nesubmitli nic ani k prvej ulohe
-            active_problem = ActiveProblem.objects.create(user=user, problem=first)
-            custom_input = CustomInput.objects.create(user=user, problem=first)
-        else:
-            # kedze nemaju aktivny problem, ale maju submit k prvemu, tak skoncili
-            no_more_problems = True
+        not_solved = Task.objects.filter(user=user, solved=False)
+        no_more_problems = len(not_solved) == 0
     return {
         'error': error,
-        'active_problem': active_problem,
+        'active_problems': active_problems,
         'no_more_problems': no_more_problems,
     }
 
@@ -58,21 +49,27 @@ def create_active_if_first_login(user):
 def problems(request):
     user = request.user
 
-    result = create_active_if_first_login(user)
+    result = get_active(user)
 
     past_problems = []
-    active_problem = result['active_problem']
     error = result['error']
+    active_problems = result['active_problems']
     no_more_problems = result['no_more_problems']
-    problem = None
+
+    if error is not None:
+        context_dict = {
+            'error': error,
+        }
+        return render(request, 'submit/problems.html', context_dict)
+
+    problems = active_problems
     if no_more_problems:
-        past_problems = Problem.objects.all()
-    elif active_problem is not None:
-        problem = Problem.objects.get(pk=active_problem.problem.id)
-        past_problems = Problem.objects.filter(order__lt=problem.order)
+        past_problems = Task.objects.filter(user=user)
+    elif len(active_problems) > 0:
+        past_problems = Task.objects.filter(user=user, solved=True)
     context_dict = {
         'past_problems': past_problems,
-        'active_problem': problem,
+        'active_problems': problems,
         'error': error,
         'no_more_problems': no_more_problems,
     }
@@ -83,8 +80,8 @@ def problems(request):
 def add_lang_row(request, problem_id, lang_code):
     user = request.user
 
-    active_problem = ActiveProblem.objects.filter(user=user).first()
-    if active_problem is None or int(active_problem.problem.id) != int(problem_id):
+    task = Task.objects.get(user=user, problem=problem_id)
+    if not task.active:
         return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
     spare_row = SpareRow.objects.filter(user=user, lang=lang_code).first()
@@ -92,7 +89,7 @@ def add_lang_row(request, problem_id, lang_code):
         # nemaju taky riadok
         return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
-    problem = active_problem.problem
+    problem = task.problem
     row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
     new_order = 1
     if row is not None:
@@ -102,7 +99,8 @@ def add_lang_row(request, problem_id, lang_code):
             problem=problem,
             order=new_order,
             lang=lang_code,
-            content="")
+            content=''
+    )
     spare_row.delete()
     return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
@@ -110,35 +108,29 @@ def add_lang_row(request, problem_id, lang_code):
 def problem(request, problem_id):
     user = request.user
 
-    result = create_active_if_first_login(user)
+    result = get_active(user)
     if result['error'] is not None:
         return HttpResponseRedirect('/submit/problems/')
 
-    readonly = True
     problem = Problem.objects.get(pk=problem_id)
-    if result['no_more_problems']:
-        readonly = True
-    else:
-        # active problem existuje
-        active = result['active_problem']
-        active_problem = Problem.objects.get(pk=active.problem.id)
-        readonly = (active_problem != problem)
+    task = Task.objects.get(user=user, problem=problem) 
+    readonly = not task.active
 
-        if problem.order > active_problem.order:
-            return HttpResponseRedirect('/submit/problems/')
+    # nemaju tu co robit
+    if not task.active and not task.solved:
+        return HttpResponseRedirect('/submit/problems/')
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     if request.method == 'POST':
-        # Save everytime, because we are redirecting everytinme.
         if readonly:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
+        # Save everytime, because we are redirecting everytinme.
         for row in rows:
             row.content = request.POST.get('row-%s' % row.order)
             row.save()
-        custom_input = CustomInput.objects.get(user=user, problem=problem)
-        custom_input.content = request.POST.get('custom-input')
-        custom_input.save()
+        task.custom_input = request.POST.get('custom-input')
+        task.save()
 
         if 'save' in request.POST:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
@@ -151,7 +143,7 @@ def problem(request, problem_id):
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
         lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
-        custom_input = CustomInput.objects.get(user=user, problem=problem)
+        custom_input = Task.objects.get(user=user, problem=problem).custom_input
         context_dict = {
             'problem': problem,
             'rows': rows,
@@ -174,8 +166,8 @@ def receive_protocol(request):
     submit_output = get_object_or_404(SubmitOutput, pk=submit_output_id)
     user = submit_output.user
 
-    active_problem = ActiveProblem.objects.filter(user=user).first()
-    if active_problem is None or active_problem.problem != submit_output.problem:
+    task = Task.objects.get(user=user, problem=submit_output.problem)
+    if not task.active:
         # nie je to aktivna uloha
         HttpResponse("")
 
@@ -193,14 +185,16 @@ def receive_protocol(request):
     if submit_output.status == constants.ReviewResponse.OK:
         user = submit_output.user
         problem_order = submit_output.problem.order
-        next_problem = Problem.objects.filter(order__gt = problem_order).first()
-        if next_problem is not None:
-            active_problem.problem = next_problem
-            active_problem.save()
-            CustomInput.objects.get_or_create(user=user, problem=next_problem)
-        else:
-            # uz nei je dalsi problem
-            active_problem.delete()
+        next_problems = Problem.objects.filter(order__gt = problem_order)
+        task.active = False
+        task.solved = True
+        task.save()
+        for next in next_problems:
+            next_task = Task.objects.get(user=user, problem=next)
+            if not next_task.active and not next_task.solved:
+                next_task.active = True
+                next_task.save()
+                break
 
     return HttpResponse("")
 
@@ -244,25 +238,6 @@ def view_submit(request, submit_id):
 
 @login_required(login_url='/submit/login/')
 @staff_member_required
-def add_row_info(request, user_id):
-    user = User.objects.get(pk=user_id)
-    active_problem = ActiveProblem.objects.filter(user=user).first()
-    if active_problem is None:
-        return JsonResponse({'no_active_problem': True});
-    problem = active_problem.problem
-    row = Row.objects.filter(user=user, problem=problem).last()
-    next_order = 1
-    if row is not None:
-        next_order = row.order + 1
-    return JsonResponse({
-        'no_active_problem': False,
-        'problem_id': problem.id,
-        'problem_title': problem.title,
-        'next_order': next_order,
-    })
-
-@login_required(login_url='/submit/login/')
-@staff_member_required
 def add_spare_rows(request):
     if request.method == 'POST':
         user_id = request.POST.get('user-select')
@@ -279,7 +254,7 @@ def add_spare_rows(request):
         langs = constants.Language.LANG_CHOICES
 
         n = len(langs)
-        k1, k2, k3 = n//3 + (n%3 == 1), n//3 + (n%3 == 2), n//3
+        k1, k2, k3 = n//3 + (n%3 != 0), n//3 + (n%3 == 2), n//3
 
         context_dict = {
             'users': users,
@@ -322,9 +297,6 @@ def view_results(request):
     }
     return render(request, 'submit/view_results.html', context_dict)
 
-def work_after_login(user):
-    result = create_active_if_first_login(user)
-
 def user_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -334,7 +306,6 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                work_after_login(user)
                 return HttpResponseRedirect('/submit/')
             else:
                 return HttpResponse("Your account is disabled.")
@@ -349,5 +320,3 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/submit/')
 
-
-# Create your views here.
