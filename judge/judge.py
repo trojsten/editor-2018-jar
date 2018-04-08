@@ -2,7 +2,7 @@ import os
 import json
 import glob
 
-from runners.run_all import MasterRunner, prepare_memory
+from runners.run_all import MasterRunner
 from runners.runner import InitRunner
 
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
@@ -127,7 +127,8 @@ class EditorJudge(SocketServer.BaseRequestHandler):
             run_tests(problem, master, protokol)
         else:
             input_path = 'submits/%s/data.custom' % submit_id
-            prepare_memory(custom_input, input_path)
+            init = InitRunner(code, prefix=str(submit_id), variables=master.variables)
+            init.prepare_memory(custom_input, input_path)
             run_custom(master, protokol, input_path)
 
         protocol_data = tostring(protokol)

@@ -80,8 +80,8 @@ class InitRunner(Runner):
         filename2 = filename + '_tmp'
         codefile = filename + '_tmp_code'
         self.create_init_memory(filename2)
-        code = '\n'.join(["{} = {}".format(key, val.__str__()) for key, val in variables_with_values.items()])
-        pyrunner = PythonRunner(code, codefile)
+        code = '\n'.join(["{} = {}".format(key, val.__repr__()) for key, val in variables_with_values.items()])
+        pyrunner = PythonRunner(code, codefile, self.variables)
         pyrunner.simple_full_run(filename2, filename)
 
 if __name__ == '__main__':

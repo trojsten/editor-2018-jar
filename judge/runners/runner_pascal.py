@@ -183,14 +183,15 @@ class PascalRunner(Runner):
         code_file = open(self.codename+".pas", "w")
         code_file.write(self.generate())
         code_file.close()
-        command = 'fpc {}.pas'.format(self.codename, self.codename)
-        logging.info("Running: %s", command)
-        return os.system(command)
+        log_fname = "{}.compile_log".format(self.codename)
+        command = 'fpc {}.pas 2>{}'.format(self.codename, log_fname)
+        return os.system(command), open(log_fname).read()
 
     def execute(self, in_memory, out_memory):
-        command = './{} {} {}'.format(self.codename, in_memory, out_memory)
+        log_fname = "{}.runtime_log".format(self.codename)
+        command = './{} {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
         logging.info('Executing: %s', command)
-        return os.system(command)
+        return os.system(command), open(log_fname).read()
 
 
 if __name__ == '__main__':

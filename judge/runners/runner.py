@@ -21,6 +21,7 @@ class Runner:
         }        """
         self.code = code
         self.codename = codename
+        self.variables = variables
         if variables is not None:
             self.INT_VECTORS = variables.get('INT_VECTORS', [])
             self.STR_VECTORS = variables.get('STR_VECTORS', [])

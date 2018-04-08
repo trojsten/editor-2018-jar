@@ -1,6 +1,0 @@
-netopier := zaklinadlo[jedna] - recept[jedna]; jedna := jedna + 1;
-IF netopier IS NOT ZERO GOTO 5
-if(jedna==mandragora) swap(recept,zaklinadlo); if(jedna == mandragora || jedna==dumbier) return 0;
-IF jedna IS NOT ZERO GOTO 1
-if zaba.index(recept[jedna-1]) < zaba.index(zaklinadlo[jedna-1]):
-	swap(recept,zaklinadlo)

@@ -63,6 +63,7 @@ class MasterRunner:
                 last_memory = out_memory
                 line += 1
             else:
+                logging.info('Line %d, counter %d, runner %s', line, counter, "jump")
                 logging.info('Jupming on line: %d', line)
                 variable = runner[0]
                 to_line = runner[1]-1
