@@ -3,7 +3,7 @@ import json
 import glob
 
 from runners.run_all import MasterRunner
-from runners.runner import InitRunner
+from runners.init_runner import InitRunner
 
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 
@@ -91,8 +91,8 @@ def run_tests(problem, master, protokol):
 
 
 def load_variables(problem):
-    variables_file = glob.glob('test/%s/variables.json' % problem):
-    if len(variables_file)==0
+    variables_file = glob.glob('test/%s/variables.json' % problem)
+    if len(variables_file) == 0:
         return None
     else:
         return json.load(open(variables_file[0]))
