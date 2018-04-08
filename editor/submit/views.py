@@ -254,7 +254,7 @@ def add_spare_rows(request):
         langs = constants.Language.LANG_CHOICES
 
         n = len(langs)
-        k1, k2, k3 = n//3 + (n%3 == 2), n//3 + (n%3 != 0), n//3
+        k1, k2, k3 = n//3 + (n%3 != 0), n//3 + (n%3 == 2), n//3
 
         context_dict = {
             'users': users,
