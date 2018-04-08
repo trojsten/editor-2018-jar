@@ -151,6 +151,7 @@ def problem(request, problem_id):
             'submits': submits,
             'lang_counts': lang_counts,
             'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
+            'lang_length': constants.Language.LANG_LINE_LENGTH,
             'custom_input': custom_input,
             'response': constants.ReviewResponse,
         }

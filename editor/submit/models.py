@@ -24,7 +24,7 @@ class Row(models.Model):
     problem = models.ForeignKey(Problem)
     order = models.IntegerField(default=1)
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
-    content = models.CharField(max_length=80, default='', blank=True)
+    content = models.CharField(max_length=1000, default='', blank=True)
 
     def __unicode__(self):
         return '(Row-%s-%s-%s-%s)' % (user, problem, order, lang)
@@ -90,7 +90,12 @@ class SubmitOutput(models.Model):
         return '(Output-%s-%s-%s-%s-%s)' % (timestamp, user, problem, status, custom)
 
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
+
+def pre_save_row(sender, instance, **kwargs):
+    lang = int(instance.lang)
+    length = constants.Language.LANG_LINE_LENGTH[lang]
+    instance.content = instance.content[:length]
 
 def save_problem(sender, instance, created, **kwargs):
     if created:
@@ -103,5 +108,6 @@ def save_user(sender, instance, created, **kwargs):
         for problem in Problem.objects.all():
             Task.objects.create(user=instance, problem=problem, active=problem.order <= constants.ACTIVE_PROBLEMS)
 
+pre_save.connect(pre_save_row, sender=Row)
 post_save.connect(save_problem, sender=Problem)
 post_save.connect(save_user, sender=User)

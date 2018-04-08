@@ -10,7 +10,7 @@
 <form id="problem_form" method="post" action="/submit/problem/{{ problem.id }}/">
 	{% csrf_token %}
     <p>
-        {% include 'submit/code_rows.html' with rows=rows readonly=readonly %}
+        {% include 'submit/code_rows.html' with rows=rows readonly=readonly lang_length=lang_length %}
     </p>
     <p>
         <div class="btn-group" role="group" aria-label="...">
