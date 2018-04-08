@@ -14,7 +14,7 @@
                 name="row-{{ row.order }}"
                 id="code-row-{{ row.order }}"
                 {% if readonly %}readonly=true{% endif %}
-                maxlength={{ lang_length | get_key:row.lang  }}
+                {% if not readonly %}maxlength={{ lang_length | get_key:row.lang  }}{% endif %}
             >
             </input>
             <span class="input-group-addon language" id="basic-addon{{ row.order }}">
