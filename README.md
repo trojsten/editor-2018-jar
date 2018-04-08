@@ -3,33 +3,7 @@ Editor na jesenne KSP sustredko 2017.
 
 ## Django
 
-First, best thing to do is create virtualenv.
-
-Second, install Python project requirements
-
-```
-pip install -r requirements.txt
-```
-
-Run Django database migrations.
-
-```
-python manage.py migrate
-```
-
-To copy CKEditor run: `python manage.py collectstatic`.
-
-Create admin user:
-
-```
-python manage.py createsuperuser
-```
-
-And finally, run server:
-
-```
-python manage.py runserver
-```
+See README in `editor` directory.
 
 ## Apt-gets
  - `fp-compiler`: free pascal
