@@ -13,24 +13,28 @@
                 Vyriešili ste všetky úlohy!
             </div>
         {% endif %}
-        {% if active_problem is not None%}
-            <h3>Active problem:</h3>
+        {% if active_problems is not None%}
+            <h3>Active problems:</h3>
             <table class="table hover">
-                <tr class="info">
-                    <td>
-                        <a href="/submit/problem/{{ active_problem.id }}" >
-                            {{ active_problem.order }}. {{ active_problem.title }}
-                        </a>
-                    </td>
-                </tr>
+                {% for task in active_problems %}
+                    <tr class="info">
+                        <td>
+                            <a href="/submit/problem/{{ task.problem.id }}" >
+                                {{ task.problem.order }}. {{ task.problem.title }}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
             </table>
         {% endif %}
         <h3>Past problems:</h3>
         <table class="table hover">
-            {% for problem in past_problems %}
+            {% for task in past_problems %}
                 <tr class="success">
                     <td>
-                        <a href="/submit/problem/{{ problem.id }}">{{ problem.order }}. {{ problem.title }}</a>
+                        <a href="/submit/problem/{{ task.problem.id }}">
+                            {{ task.problem.order }}. {{ task.problem.title }}
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

@@ -10,7 +10,7 @@ from unidecode import unidecode
 import json
 
 from submit.constants import JudgeTestResult, ReviewResponse
-from submit.models import SubmitOutput, Row, CustomInput
+from submit.models import SubmitOutput, Row, Task
 from submit.helpers import (write_chunks_to_file, write_lines_to_file)
 from submit.constants import ReviewResponse
 
@@ -45,7 +45,7 @@ def _send_to_judge(submit):
 
 def _prepare_raw_file(submit, custom):
     rows = Row.objects.filter(user=submit.user, problem=submit.problem).order_by('order')
-    custom_input = CustomInput.objects.get(user=submit.user, problem=submit.problem)
+    custom_input = Task.objects.get(user=submit.user, problem=submit.problem).custom_input
 
     submit_id = str(submit.id)
     user_id = '%s-%s' % (django_settings.JUDGE_INTERFACE_IDENTITY, str(submit.user.id))
@@ -60,14 +60,14 @@ def _prepare_raw_file(submit, custom):
         'problem': submit.problem.order,
         'code': [(row.content, row.get_lang_display()) for row in rows],
         'custom': custom,
-        'custom_input': json.loads('{ %s }' % custom_input.content),
+        'custom_input': json.loads('{ %s }' % custom_input),
     }
 
     # write because of code in submit view
     write_lines_to_file(submit.file_path(), [row.content for row in rows])
     write_lines_to_file(submit.lang_path(), [row.get_lang_display() for row in rows])
     if custom:
-        write_lines_to_file(submit.custom_input_path(), custom_input.content.split('\n'))
+        write_lines_to_file(submit.custom_input_path(), custom_input.split('\n'))
     with open(submit.raw_path(), 'w') as outfile:
        json.dump(info, outfile)
 
