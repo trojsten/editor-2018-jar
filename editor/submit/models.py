@@ -8,7 +8,7 @@ from django.conf import settings as django_settings
 from submit import constants
 
 class Problem(models.Model):
-    order = models.IntegerField(default=1, unique=True)
+    order = models.PositiveIntegerField(default=0, blank=False, null=False)
     title = models.CharField(max_length=128)
 
     content = RichTextUploadingField()
@@ -18,6 +18,9 @@ class Problem(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    class Meta:
+        ordering = ['order']
 
 class Row(models.Model):
     user = models.ForeignKey(User)
@@ -42,9 +45,18 @@ class SpareRow(models.Model):
 class Task(models.Model):
     user = models.ForeignKey(User)
     problem = models.ForeignKey(Problem)
-    active = models.BooleanField()
     solved = models.BooleanField(default=False)
     custom_input = models.TextField(blank=True, default='')
+
+    @property
+    def active(self):
+        if self.solved:
+            return False
+        order = self.problem.order
+        cnt_solved = Task.objects.filter(user=self.user, solved=True, problem__order__lt=order).count()
+        if order <= constants.ACTIVE_PROBLEMS + cnt_solved:
+            return True
+        return False
 
     def __unicode__(self):
         return '(Task-%s-%s-%s)' % (id, user, problem, active)
@@ -100,13 +112,12 @@ def pre_save_row(sender, instance, **kwargs):
 def save_problem(sender, instance, created, **kwargs):
     if created:
         for user in User.objects.all():
-            active = len(Task.objects.filter(user=user, active=True))
-            Task.objects.create(user=user, problem=instance, active= active < constants.ACTIVE_PROBLEMS)
+            Task.objects.create(user=user, problem=instance)
 
 def save_user(sender, instance, created, **kwargs):
     if created:
         for problem in Problem.objects.all():
-            Task.objects.create(user=instance, problem=problem, active=problem.order <= constants.ACTIVE_PROBLEMS)
+            Task.objects.create(user=instance, problem=problem)
 
 pre_save.connect(pre_save_row, sender=Row)
 post_save.connect(save_problem, sender=Problem)
