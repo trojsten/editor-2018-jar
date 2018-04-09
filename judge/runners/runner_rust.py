@@ -151,7 +151,7 @@ class RustRunner(Runner):
         f.write(self.generate())
         f.close()
         log_fname = "{}.compile_log".format(self.codename)
-        cmd = 'rustc -o {} {} 2>'.format(self.codename, filename, log_fname)
+        cmd = 'rustc -o {} {} 2>{}'.format(self.codename, filename, log_fname)
         logging.info("Running: %s", cmd)
         return os.system(cmd), open(log_fname).read()
 
