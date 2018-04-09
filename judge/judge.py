@@ -44,6 +44,13 @@ def run_custom(master, protokol, input_path):
     details = SubElement(test, 'details')
     details.text = detailsMsg
 
+def get_var_str(var):
+    if isinstance(var, str):
+        # z nejakeho dovodu toto funguje ak string obsahuje znaky \x01
+        s = "%s" % [var]
+        return s[1:-1]
+    return str(var)
+
 def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
     count_ok = 0
@@ -83,8 +90,9 @@ def run_tests(problem, master, protokol):
             details = SubElement(test, 'details')
             s = ''
             for premenna, (nasa, tvoja) in diff.items():
-                s += 'nas %s: %s\n' % (premenna, nasa)
-                s += 'tvoj %s: %s\n' % (premenna, tvoja)
+                s += 'nas %s: %s\n' % (premenna, get_var_str(nasa))
+                s += 'tvoj %s: %s' % (premenna, get_var_str(tvoja))
+                s += '\n'
             details.text = s
     score = SubElement(runLog, 'score')
     score.text = str(count_ok)
