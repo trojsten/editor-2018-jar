@@ -10,7 +10,7 @@
                 placeholder="Write some {{ row.get_lang_display }} code here"
                 aria-label="Username"
                 aria-describedby="basic-addon{{ row.order }}"
-                value="{{ row.content | safe }}"
+                value="{{ row.content }}"
                 name="row-{{ row.order }}"
                 id="code-row-{{ row.order }}"
                 {% if readonly %}readonly=true{% endif %}
