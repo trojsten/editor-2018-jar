@@ -82,7 +82,7 @@ class ReviewResponse(JudgeTestResult):
 class Language(object):
     CPP = 1
     PYTHON = 2
-    FREE_PASCAL = 3
+    PASCAL = 3
     GO = 4
     PHP = 5
     RUST = 6
@@ -91,10 +91,20 @@ class Language(object):
     LANG_CHOICES = (
             (CPP, 'C++'),
             (PYTHON, 'Python'),
-            (FREE_PASCAL, 'FreePascal'),
+            (PASCAL, 'Pascal'),
             (GO, 'Go'),
             (PHP, 'PHP'),
             (RUST, 'Rust'),
             (PERL, 'Perl'),
             (R, 'R'),
     )
+    LANG_LINE_LENGTH = {
+        CPP: 20,
+        PYTHON: 10,
+        PASCAL: 25,
+        GO: 20,
+        PHP: 20,
+        RUST: 30,
+        PERL: 10,
+        R: 25,
+    }

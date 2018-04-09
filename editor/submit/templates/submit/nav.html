@@ -19,6 +19,7 @@
                     {% if user.is_staff %}
                         <li><a href="{% url 'add_spare_rows' %}">Add multiple rows</a></td>
                         <li><a href="{% url 'view_results' %}">Results</a></td>
+                        <li><a href="/admin" target="_blank">Admin</a></td>
                     {% endif %}
                 {% endif %}
             </ul>

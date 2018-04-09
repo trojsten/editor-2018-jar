@@ -1,25 +1,25 @@
 from django.contrib import admin
+from adminsortable2.admin import SortableAdminMixin
+
 from submit.models import Problem, Row, SpareRow, SubmitOutput, Task
 
-class ProblemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'order')
+@admin.register(Problem)
+class ProblemAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ('title', 'id')
 
+@admin.register(Row)
 class RowAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'problem', 'lang', 'order')
 
+@admin.register(SpareRow)
 class SpareRowAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'lang')
 
+@admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'problem', 'active', 'solved')
 
+@admin.register(SubmitOutput)
 class SubmitOutputAdmin(admin.ModelAdmin):
     list_display = ('id', 'timestamp', 'user', 'problem', 'custom', 'status')
 
-admin.site.register(Problem, ProblemAdmin)
-admin.site.register(Row, RowAdmin)
-admin.site.register(SpareRow, SpareRowAdmin)
-admin.site.register(Task, TaskAdmin)
-admin.site.register(SubmitOutput, SubmitOutputAdmin)
-
-# Register your models here.

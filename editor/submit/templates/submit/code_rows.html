@@ -1,3 +1,5 @@
+{% load submit_parts %}
+
 <div class="rows">
     {% for row in rows %}
         <div class="input-group">
@@ -8,17 +10,18 @@
                 placeholder="Write some {{ row.get_lang_display }} code here"
                 aria-label="Username"
                 aria-describedby="basic-addon{{ row.order }}"
-                value="{{ row.content | safe }}"
+                value="{{ row.content }}"
                 name="row-{{ row.order }}"
                 id="code-row-{{ row.order }}"
                 {% if readonly %}readonly=true{% endif %}
+                {% if not readonly %}maxlength={{ lang_length | get_key:row.lang  }}{% endif %}
             >
             </input>
             <span class="input-group-addon language" id="basic-addon{{ row.order }}">
                 {% if row.get_lang_display is None %}
                     {{row.lang }}
                 {% else %}
-                    {{ row.get_lang_display }}
+                    {{ row.get_lang_display }}:{{ lang_length | get_key:row.lang  }}
                 {% endif %}
             </span>
         </div>

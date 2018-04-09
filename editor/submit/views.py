@@ -20,7 +20,10 @@ def index(request):
     return render(request, 'submit/index.html', {})
 
 def get_active(user):
-    active_problems = Task.objects.filter(user=user, active=True)
+    active_problems = list(filter(
+        lambda task: task.active,
+        Task.objects.filter(user=user).order_by('problem__order')
+    ))
     if len(active_problems) > 0:
         return {
             'error': None,
@@ -66,7 +69,7 @@ def problems(request):
     if no_more_problems:
         past_problems = Task.objects.filter(user=user)
     elif len(active_problems) > 0:
-        past_problems = Task.objects.filter(user=user, solved=True)
+        past_problems = Task.objects.filter(user=user, solved=True).order_by('problem__order')
     context_dict = {
         'past_problems': past_problems,
         'active_problems': problems,
@@ -151,6 +154,7 @@ def problem(request, problem_id):
             'submits': submits,
             'lang_counts': lang_counts,
             'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
+            'lang_length': constants.Language.LANG_LINE_LENGTH,
             'custom_input': custom_input,
             'response': constants.ReviewResponse,
         }
@@ -183,18 +187,8 @@ def receive_protocol(request):
     submit_output.save()
 
     if submit_output.status == constants.ReviewResponse.OK:
-        user = submit_output.user
-        problem_order = submit_output.problem.order
-        next_problems = Problem.objects.filter(order__gt = problem_order)
-        task.active = False
         task.solved = True
         task.save()
-        for next in next_problems:
-            next_task = Task.objects.get(user=user, problem=next)
-            if not next_task.active and not next_task.solved:
-                next_task.active = True
-                next_task.save()
-                break
 
     return HttpResponse("")
 
@@ -254,7 +248,7 @@ def add_spare_rows(request):
         langs = constants.Language.LANG_CHOICES
 
         n = len(langs)
-        k1, k2, k3 = n//3 + (n%3 == 2), n//3 + (n%3 != 0), n//3
+        k1, k2, k3 = n//3 + (n%3 != 0), n//3 + (n%3 == 2), n//3
 
         context_dict = {
             'users': users,
