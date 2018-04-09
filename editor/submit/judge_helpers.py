@@ -57,7 +57,7 @@ def _prepare_raw_file(submit, custom):
         'submit_id': submit_id,
         'user_id': user_id,
         'timestamp': timestamp,
-        'problem': submit.problem.order,
+        'problem': submit.problem.id,
         'code': [(row.content, row.get_lang_display()) for row in rows],
         'custom': custom,
         'custom_input': json.loads('{ %s }' % custom_input),
