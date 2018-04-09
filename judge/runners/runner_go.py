@@ -207,14 +207,17 @@ class GoRunner(Runner):
         f = open(filename, "w")
         f.write(self.generate())
         f.close()
-        cmd = 'go build -o {} {}'.format(self.codename, filename)
+        log_fname = "{}.compile_log".format(self.codename)
+        cmd = 'go build -o {} {} 2>{}'.format(self.codename, filename, log_fname)
         logging.info("Running: %s", cmd)
-        return os.system(cmd)
+        return os.system(cmd), open(log_fname).read()
+
 
     def execute(self, in_memory, out_memory):
-        cmd = './{} {} {}'.format(self.codename, in_memory, out_memory)
+        log_fname = "{}.runtime_log".format(self.codename)
+        cmd = './{} {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
         logging.info('Executing: %s', cmd)
-        return os.system(cmd)
+        return os.system(cmd), open(log_fname).read()
 
 
 if __name__ == '__main__':
