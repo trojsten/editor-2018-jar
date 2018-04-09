@@ -52,6 +52,8 @@ def _prepare_raw_file(submit, custom):
 
     timestamp = int(time.time())
 
+    custom_input_json = json.loads('{ %s }' % custom_input) if custom else ''
+
     info = {
         'judge': django_settings.JUDGE_INTERFACE_IDENTITY,
         'submit_id': submit_id,
@@ -60,7 +62,7 @@ def _prepare_raw_file(submit, custom):
         'problem': submit.problem.id,
         'code': [(row.content, row.get_lang_display()) for row in rows],
         'custom': custom,
-        'custom_input': json.loads('{ %s }' % custom_input),
+        'custom_input': custom_input_json,
     }
 
     # write because of code in submit view

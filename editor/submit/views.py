@@ -135,13 +135,20 @@ def problem(request, problem_id):
         task.custom_input = request.POST.get('custom-input')
         task.save()
 
+        custom_valid = True
+        try:
+            json.loads('{ %s }' % taskcustom_input)
+        except:
+            custom_valid = False
+
         if 'save' in request.POST:
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
         elif 'save-submit' in request.POST:
             create_submit_and_send_to_judge(problem, user)
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
         elif 'save-custom-run' in request.POST:
-            create_submit_and_send_to_judge(problem, user, custom=True)
+            if custom_valid:
+                create_submit_and_send_to_judge(problem, user, custom=True)
             return HttpResponseRedirect('/submit/problem/%s' % problem_id)
     else:
         submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
