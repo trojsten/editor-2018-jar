@@ -80,35 +80,6 @@ def problems(request):
     return render(request, 'submit/problems.html', context_dict)
 
 @login_required(login_url='/submit/login/')
-@require_POST
-def add_lang_row(request, problem_id, lang_code):
-    user = request.user
-
-    task = Task.objects.get(user=user, problem=problem_id)
-    if not task.active:
-        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-
-    spare_row = SpareRow.objects.filter(user=user, lang=lang_code).first()
-    if spare_row is None:
-        # nemaju taky riadok
-        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-
-    problem = task.problem
-    row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
-    new_order = 1
-    if row is not None:
-        new_order = row.order + 1
-    Row.objects.create(
-            user=user,
-            problem=problem,
-            order=new_order,
-            lang=lang_code,
-            content=''
-    )
-    spare_row.delete()
-    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-
-@login_required(login_url='/submit/login/')
 @require_GET
 def problem(request, problem_id):
     user = request.user
@@ -155,6 +126,43 @@ def save_all(request, problem_id):
         row.save()
     task.custom_input = request.POST.get('custom-input')
     task.save()
+
+@login_required(login_url='/submit/login/')
+@require_POST
+def add_lang_row(request, problem_id, lang_code):
+    user = request.user
+
+    result = get_active(user)
+    if result['error'] is not None:
+        return HttpResponseRedirect('/submit/problems/')
+
+    problem = Problem.objects.get(pk=problem_id)
+    task = Task.objects.get(user=user, problem=problem)
+
+    # nemaju tu co robit
+    if not task.active:
+        return HttpResponseRedirect('/submit/problems/')
+
+    save_all(request, problem_id)
+
+    spare_row = SpareRow.objects.filter(user=user, lang=lang_code).first()
+    if spare_row is None:
+        # nemaju taky riadok
+        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+    row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
+    new_order = 1
+    if row is not None:
+        new_order = row.order + 1
+    Row.objects.create(
+            user=user,
+            problem=problem,
+            order=new_order,
+            lang=lang_code,
+            content=''
+    )
+    spare_row.delete()
+    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
 @login_required(login_url='/submit/login/')
 @require_POST
