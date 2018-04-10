@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.db.models import Count
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 
@@ -86,7 +86,7 @@ def problem(request, problem_id):
 
     result = get_active(user)
     if result['error'] is not None:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     problem = Problem.objects.get(pk=problem_id)
     task = Task.objects.get(user=user, problem=problem) 
@@ -94,7 +94,7 @@ def problem(request, problem_id):
 
     # nemaju tu co robit
     if not task.active and not task.solved:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
     submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
@@ -134,21 +134,21 @@ def add_lang_row(request, problem_id, lang_code):
 
     result = get_active(user)
     if result['error'] is not None:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     problem = Problem.objects.get(pk=problem_id)
     task = Task.objects.get(user=user, problem=problem)
 
     # nemaju tu co robit
     if not task.active:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     save_all(request, problem_id)
 
     spare_row = SpareRow.objects.filter(user=user, lang=lang_code).first()
     if spare_row is None:
         # nemaju taky riadok
-        return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+        return redirect('problem',  problem_id=problem_id)
 
     row = Row.objects.filter(user=user, problem=problem).order_by('order').last()
     new_order = 1
@@ -162,7 +162,7 @@ def add_lang_row(request, problem_id, lang_code):
             content=''
     )
     spare_row.delete()
-    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    return redirect('problem',  problem_id=problem_id)
 
 @login_required
 @require_POST
@@ -171,17 +171,17 @@ def save_problem(request, problem_id):
 
     result = get_active(user)
     if result['error'] is not None:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     task = Task.objects.get(user=user, problem__id=problem_id) 
 
     # nemaju tu co robit
     if not task.active:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     save_all(request, problem_id)
 
-    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    return redirect('problem',  problem_id=problem_id)
 
 @login_required
 @require_POST
@@ -190,19 +190,19 @@ def submit_problem(request, problem_id):
 
     result = get_active(user)
     if result['error'] is not None:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     problem = Problem.objects.get(pk=problem_id)
     task = Task.objects.get(user=user, problem=problem) 
 
     # nemaju tu co robit
     if not task.active:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     save_all(request, problem_id)
 
     create_submit_and_send_to_judge(problem, user)
-    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    return redirect('problem',  problem_id=problem_id)
 
 @login_required
 @require_POST
@@ -211,14 +211,14 @@ def submit_problem_custom(request, problem_id):
 
     result = get_active(user)
     if result['error'] is not None:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     problem = Problem.objects.get(pk=problem_id)
     task = Task.objects.get(user=user, problem=problem) 
 
     # nemaju tu co robit
     if not task.active:
-        return HttpResponseRedirect('/submit/problems/')
+        return redirect('problems')
 
     save_all(request, problem_id)
     task = Task.objects.get(user=user, problem=problem) 
@@ -232,7 +232,7 @@ def submit_problem_custom(request, problem_id):
 
     if custom_valid:
         create_submit_and_send_to_judge(problem, user, custom=True)
-    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    return redirect('problem',  problem_id=problem_id)
 
 @csrf_exempt
 @require_POST
@@ -316,7 +316,7 @@ def add_spare_rows(request):
             count = 0 if count == '' else int(count)
             for i in range(count):
                 SpareRow.objects.create(user=user, lang=number)
-        return HttpResponseRedirect('/submit/add_spare_rows/')
+        return redirect('add_spare_rows')
     else:
         users = User.objects.all()
         langs = constants.Language.LANG_CHOICES
@@ -374,7 +374,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/submit/')
+                return redirect('index')
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -386,5 +386,5 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/submit/')
+    return redirect('index')
 

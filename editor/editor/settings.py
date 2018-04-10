@@ -175,3 +175,6 @@ SUBMIT_PATH = env('SUBMIT_PATH', os.path.join(PROJECT_DIR, 'submit'))
 JUDGE_INTERFACE_IDENTITY = env('JUDGE_INTERFACE_IDENTITY', 'Editor')
 JUDGE_ADDRESS = env('JUDGE_ADDRESS', '127.0.0.1')
 JUDGE_PORT = int(env('JUDGE_PORT', 12347))
+
+LOGIN_URL = '/submit/login/'
+LOGIN_REDIRECT_URL = '/submit/'
