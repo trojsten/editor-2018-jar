@@ -147,7 +147,15 @@
                             <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
                             <td>{{ submit.get_status_display }}</td>
                             <td>{{ submit.score }}</td>
-                            <td><a class="btn btn-primary btn-xs" href="{% url 'view_submit' submit_id=submit.id %}">Detaily</a></td>
+                            <td>
+                                <a
+                                    class="btn btn-primary btn-xs"
+                                    href="{% url 'view_submit' submit_id=submit.id %}"
+                                    target="_blank"
+                                >
+                                    Detaily
+                                </a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

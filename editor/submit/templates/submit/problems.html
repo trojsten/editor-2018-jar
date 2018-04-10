@@ -19,7 +19,7 @@
                 {% for task in active_problems %}
                     <tr class="info">
                         <td>
-                            <a href="/submit/problem/{{ task.problem.id }}" >
+                            <a href="{% url 'problem' problem_id=task.problem.id %}" >
                                 {{ task.problem.order }}. {{ task.problem.title }}
                             </a>
                         </td>
@@ -32,7 +32,7 @@
             {% for task in past_problems %}
                 <tr class="success">
                     <td>
-                        <a href="/submit/problem/{{ task.problem.id }}">
+                        <a href="{% url 'problem' problem_id=task.problem.id %}" >
                             {{ task.problem.order }}. {{ task.problem.title }}
                         </a>
                     </td>

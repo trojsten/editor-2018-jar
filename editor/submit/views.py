@@ -49,7 +49,7 @@ def get_active(user):
         'no_more_problems': no_more_problems,
     }
 
-@login_required(login_url='/submit/login/')
+@login_required
 def problems(request):
     user = request.user
 
@@ -79,7 +79,7 @@ def problems(request):
     }
     return render(request, 'submit/problems.html', context_dict)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @require_GET
 def problem(request, problem_id):
     user = request.user
@@ -127,7 +127,7 @@ def save_all(request, problem_id):
     task.custom_input = request.POST.get('custom-input')
     task.save()
 
-@login_required(login_url='/submit/login/')
+@login_required
 @require_POST
 def add_lang_row(request, problem_id, lang_code):
     user = request.user
@@ -164,7 +164,7 @@ def add_lang_row(request, problem_id, lang_code):
     spare_row.delete()
     return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @require_POST
 def save_problem(request, problem_id):
     user = request.user
@@ -183,7 +183,7 @@ def save_problem(request, problem_id):
 
     return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @require_POST
 def submit_problem(request, problem_id):
     user = request.user
@@ -204,7 +204,7 @@ def submit_problem(request, problem_id):
     create_submit_and_send_to_judge(problem, user)
     return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @require_POST
 def submit_problem_custom(request, problem_id):
     user = request.user
@@ -267,7 +267,7 @@ def receive_protocol(request):
     return HttpResponse("")
 
 
-@login_required(login_url='/submit/login/')
+@login_required
 def view_submit(request, submit_id):
     submit = get_object_or_404(SubmitOutput, pk=submit_id)
     is_staff = request.user.is_staff
@@ -304,7 +304,7 @@ def view_submit(request, submit_id):
 
     return render(request, 'submit/view_submit.html', context_dict)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @staff_member_required
 def add_spare_rows(request):
     if request.method == 'POST':
@@ -331,7 +331,7 @@ def add_spare_rows(request):
         }
         return render(request, 'submit/add_spare_rows.html', context_dict)
 
-@login_required(login_url='/submit/login/')
+@login_required
 @staff_member_required
 def view_results(request):
     users = User.objects.all()
@@ -383,7 +383,7 @@ def user_login(request):
     else:
         return render(request, 'submit/login.html', {})
 
-@login_required(login_url='/submit/login/')
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/submit/')

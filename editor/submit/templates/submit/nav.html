@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/submit">Editor</a>
+            <a class="navbar-brand" href="{% url 'index' %}">Editor</a>
         </div>
 
 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -19,6 +19,8 @@
                     {% if user.is_staff %}
                         <li><a href="{% url 'add_spare_rows' %}">Add multiple rows</a></td>
                         <li><a href="{% url 'view_results' %}">Results</a></td>
+                    {% endif %}
+                    {% if user.is_superuser %}
                         <li><a href="/admin" target="_blank">Admin</a></td>
                     {% endif %}
                 {% endif %}

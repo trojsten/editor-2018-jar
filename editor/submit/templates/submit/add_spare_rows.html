@@ -9,7 +9,7 @@
 Keď pridáš riadky družinke, tak sa im uložia do DB, a potom si ich vedia sami pridávať tak ako chcú.
 </p>
 
-<form id="add_rows_form" method="post" action="/submit/add_spare_rows/">
+<form id="add_rows_form" method="post" action="{% url 'add_spare_rows' %}">
     {% csrf_token %}
     <div class="form-group">
         <label for="username-input">Druzinka</label>
