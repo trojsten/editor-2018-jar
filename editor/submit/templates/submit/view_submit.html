@@ -54,5 +54,11 @@
         </p>
     {% endif %}
     <h3>Protocol</h3>
+    {% if submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
+        <p>
+            <a href="{% url 'view_submit' submit_id=submit.id %}" class="btn btn-success btn-sm">Refresh</a>
+            Skús stlačiť Refresh. Ak stále nevidíš protokol, volaj vedúceho.
+        </p>
+    {% endif %}
     {% include 'submit/protocol.html' %}
 {% endblock content %}

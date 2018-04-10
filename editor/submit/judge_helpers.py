@@ -31,6 +31,7 @@ def create_submit_and_send_to_judge(problem, user, custom=False):
         raise JudgeConnectionError
     finally:
         submit.save()
+        return submit.id
 
 def _send_to_judge(submit):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

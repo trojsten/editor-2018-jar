@@ -201,8 +201,8 @@ def submit_problem(request, problem_id):
 
     save_all(request, problem_id)
 
-    create_submit_and_send_to_judge(problem, user)
-    return redirect('problem',  problem_id=problem_id)
+    submit_id = create_submit_and_send_to_judge(problem, user)
+    return redirect('view_submit',  submit_id=submit_id)
 
 @login_required
 @require_POST
@@ -231,7 +231,8 @@ def submit_problem_custom(request, problem_id):
     print(custom_valid, task.custom_input)
 
     if custom_valid:
-        create_submit_and_send_to_judge(problem, user, custom=True)
+        submit_id = create_submit_and_send_to_judge(problem, user, custom=True)
+        return redirect('view_submit',  submit_id=submit_id)
     return redirect('problem',  problem_id=problem_id)
 
 @csrf_exempt
@@ -277,6 +278,7 @@ def view_submit(request, submit_id):
 
     context_dict = {
         'submit': submit,
+        'response': constants.ReviewResponse,
     }
 
     with open(submit.file_path(), 'rb') as submitted_file:
