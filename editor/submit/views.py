@@ -100,6 +100,11 @@ def problem(request, problem_id):
     submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
     lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
     custom_input = Task.objects.get(user=user, problem=problem).custom_input
+    variables = None
+    try:
+        variables = json.loads(problem.variables)
+    except json.decoder.JSONDecodeError:
+        pass
     context_dict = {
         'problem': problem,
         'rows': rows,
@@ -110,6 +115,7 @@ def problem(request, problem_id):
         'lang_length': constants.Language.LANG_LINE_LENGTH,
         'custom_input': custom_input,
         'response': constants.ReviewResponse,
+        'variables': variables,
     }
     return render(request, 'submit/problem.html', context_dict)
 

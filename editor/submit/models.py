@@ -12,6 +12,7 @@ class Problem(models.Model):
     title = models.CharField(max_length=128)
 
     content = RichTextUploadingField()
+    variables = models.TextField(default='{}')
 
     def __str__(self):
         return self.title
