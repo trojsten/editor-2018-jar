@@ -7,15 +7,31 @@
 <h2>{{ problem.title }}</h2>
 {{ problem.content | safe }}
 <h2>Riešenie:</h2>
-<form id="problem_form" method="post" action="/submit/problem/{{ problem.id }}/">
+<form id="problem_form" method="post" action="">
 	{% csrf_token %}
     <p>
         {% include 'submit/code_rows.html' with rows=rows readonly=readonly lang_length=lang_length %}
     </p>
     <p>
         <div class="btn-group" role="group" aria-label="...">
-            <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
-            <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-submit">Save & Submit</button>
+            <button
+                type="submit"
+                class="btn btn-success"
+                {% if readonly %}disabled{% endif %}
+                name="save"
+                formaction="{% url 'save_problem' problem_id=problem.id %}"
+            >
+                Save
+            </button>
+            <button
+                type="submit"
+                class="btn btn-primary"
+                {% if readonly %}disabled{% endif %}
+                name="save-submit"
+                formaction="{% url 'submit_problem' problem_id=problem.id %}"
+            >
+                Save & Submit
+            </button>
         </div>
     </p>
     <p>
@@ -40,8 +56,25 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="btn-group pull-right" role="group" aria-label="...">
-                                            <button type="submit" class="btn btn-success" {% if readonly %}disabled{% endif %} name="save">Save</button>
-                                            <button type="submit" class="btn btn-primary" {% if readonly %}disabled{% endif %} name="save-custom-run" id="save-custom-run">Save & Run for custom input</button>
+                                            <button
+                                                type="submit"
+                                                class="btn btn-success"
+                                                {% if readonly %}disabled{% endif %}
+                                                name="save"
+                                                formaction="{% url 'save_problem' problem_id=problem.id %}"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary"
+                                                {% if readonly %}disabled{% endif %}
+                                                name="save-custom-run"
+                                                id="save-custom-run"
+                                                formaction="{% url 'submit_problem_custom' problem_id=problem.id %}"
+                                            >
+                                                Save & Run for custom input
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

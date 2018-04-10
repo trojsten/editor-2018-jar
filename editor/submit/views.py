@@ -1,4 +1,5 @@
 import sys
+import json
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -9,7 +10,7 @@ from django.db.models import Count
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 
 from submit.models import Problem, Row, SubmitOutput, SpareRow, Task
 from submit import constants
@@ -108,6 +109,7 @@ def add_lang_row(request, problem_id, lang_code):
     return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
 @login_required(login_url='/submit/login/')
+@require_GET
 def problem(request, problem_id):
     user = request.user
 
@@ -124,48 +126,105 @@ def problem(request, problem_id):
         return HttpResponseRedirect('/submit/problems/')
 
     rows = Row.objects.filter(problem=problem, user=user).order_by('order')
-    if request.method == 'POST':
-        if readonly:
-            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+    submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
+    lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
+    custom_input = Task.objects.get(user=user, problem=problem).custom_input
+    context_dict = {
+        'problem': problem,
+        'rows': rows,
+        'readonly': readonly,
+        'submits': submits,
+        'lang_counts': lang_counts,
+        'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
+        'lang_length': constants.Language.LANG_LINE_LENGTH,
+        'custom_input': custom_input,
+        'response': constants.ReviewResponse,
+    }
+    return render(request, 'submit/problem.html', context_dict)
 
-        # Save everytime, because we are redirecting everytinme.
-        for row in rows:
-            row.content = request.POST.get('row-%s' % row.order)
-            row.save()
-        task.custom_input = request.POST.get('custom-input')
-        task.save()
+def save_all(request, problem_id):
+    user = request.user
+    problem = Problem.objects.get(pk=problem_id)
+    task = Task.objects.get(user=user, problem=problem) 
+    if not task.active:
+        return
 
-        custom_valid = True
-        try:
-            json.loads('{ %s }' % taskcustom_input)
-        except:
-            custom_valid = False
+    rows = Row.objects.filter(problem=problem, user=user).order_by('order')
+    for row in rows:
+        row.content = request.POST.get('row-%s' % row.order)
+        row.save()
+    task.custom_input = request.POST.get('custom-input')
+    task.save()
 
-        if 'save' in request.POST:
-            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-        elif 'save-submit' in request.POST:
-            create_submit_and_send_to_judge(problem, user)
-            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-        elif 'save-custom-run' in request.POST:
-            if custom_valid:
-                create_submit_and_send_to_judge(problem, user, custom=True)
-            return HttpResponseRedirect('/submit/problem/%s' % problem_id)
-    else:
-        submits = SubmitOutput.objects.filter(user=user, problem=problem).order_by('-timestamp')
-        lang_counts = SpareRow.objects.filter(user=user).values('lang').annotate(num_rows=Count('lang')).order_by('-num_rows')
-        custom_input = Task.objects.get(user=user, problem=problem).custom_input
-        context_dict = {
-            'problem': problem,
-            'rows': rows,
-            'readonly': readonly,
-            'submits': submits,
-            'lang_counts': lang_counts,
-            'lang_codes': { code: name for code,name in constants.Language.LANG_CHOICES },
-            'lang_length': constants.Language.LANG_LINE_LENGTH,
-            'custom_input': custom_input,
-            'response': constants.ReviewResponse,
-        }
-        return render(request, 'submit/problem.html', context_dict)
+@login_required(login_url='/submit/login/')
+@require_POST
+def save_problem(request, problem_id):
+    user = request.user
+
+    result = get_active(user)
+    if result['error'] is not None:
+        return HttpResponseRedirect('/submit/problems/')
+
+    task = Task.objects.get(user=user, problem__id=problem_id) 
+
+    # nemaju tu co robit
+    if not task.active:
+        return HttpResponseRedirect('/submit/problems/')
+
+    save_all(request, problem_id)
+
+    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+@login_required(login_url='/submit/login/')
+@require_POST
+def submit_problem(request, problem_id):
+    user = request.user
+
+    result = get_active(user)
+    if result['error'] is not None:
+        return HttpResponseRedirect('/submit/problems/')
+
+    problem = Problem.objects.get(pk=problem_id)
+    task = Task.objects.get(user=user, problem=problem) 
+
+    # nemaju tu co robit
+    if not task.active:
+        return HttpResponseRedirect('/submit/problems/')
+
+    save_all(request, problem_id)
+
+    create_submit_and_send_to_judge(problem, user)
+    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
+
+@login_required(login_url='/submit/login/')
+@require_POST
+def submit_problem_custom(request, problem_id):
+    user = request.user
+
+    result = get_active(user)
+    if result['error'] is not None:
+        return HttpResponseRedirect('/submit/problems/')
+
+    problem = Problem.objects.get(pk=problem_id)
+    task = Task.objects.get(user=user, problem=problem) 
+
+    # nemaju tu co robit
+    if not task.active:
+        return HttpResponseRedirect('/submit/problems/')
+
+    save_all(request, problem_id)
+    task = Task.objects.get(user=user, problem=problem) 
+
+    custom_valid = True
+    try:
+        json.loads('{ %s }' % task.custom_input)
+    except json.decoder.JSONDecodeError:
+        custom_valid = False
+    print(custom_valid, task.custom_input)
+
+    if custom_valid:
+        create_submit_and_send_to_judge(problem, user, custom=True)
+    return HttpResponseRedirect('/submit/problem/%s' % problem_id)
 
 @csrf_exempt
 @require_POST
