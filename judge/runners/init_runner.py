@@ -4,8 +4,8 @@ from runners.runner_python import PythonRunner
 import logging
 
 class InitRunner(Runner):
-    def __init__(self, variables=None):
-        super().__init__('', '', variables)
+    def __init__(self, variables=None, codename=''):
+        super().__init__('', codename+"init", variables)
 
     def create_init_memory(self, memory):
         memory = open(memory, 'w')

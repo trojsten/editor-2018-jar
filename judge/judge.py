@@ -135,7 +135,7 @@ class EditorJudge(SocketServer.BaseRequestHandler):
             run_tests(problem, master, protokol)
         else:
             input_path = 'submits/%s/data.custom' % submit_id
-            init = InitRunner(code, prefix=str(submit_id), variables=master.variables)
+            init = InitRunner(variables=load_variables(problem), codename=str(submit_id))
             init.prepare_memory(custom_input, input_path)
             run_custom(master, protokol, input_path)
 
