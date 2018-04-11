@@ -8,3 +8,4 @@ rm editor/db.sqlite3
 cd editor
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py populate_problems ../judge/test/
