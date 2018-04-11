@@ -327,7 +327,7 @@ def add_spare_rows(request):
                 SpareRow.objects.create(user=user, lang=number)
         return redirect('add_spare_rows')
     else:
-        users = User.objects.all()
+        users = User.objects.filter(profile__is_player=True)
         langs = constants.Language.LANG_CHOICES
 
         n = len(langs)
@@ -343,7 +343,7 @@ def add_spare_rows(request):
 @login_required
 @staff_member_required
 def view_results(request):
-    users = User.objects.all()
+    users = User.objects.filter(profile__is_player=True)
     problems = Problem.objects.all().order_by('order')
 
     results = {}

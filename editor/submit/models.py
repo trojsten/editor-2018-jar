@@ -4,9 +4,17 @@ from django.contrib.auth.models import User
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings as django_settings
+from django.dispatch import receiver
 
 from submit import constants
 from submit.helpers import get_default_custom_input
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_player = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '(Profile-%s-%s-%s)' % (self.id, self.user, self.is_player)
 
 class Problem(models.Model):
     order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -31,8 +39,8 @@ class Row(models.Model):
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
     content = models.CharField(max_length=1000, default='', blank=True)
 
-    def __unicode__(self):
-        return '(Row-%s-%s-%s-%s)' % (user, problem, order, lang)
+    def __str__(self):
+        return '(Row-%s-%s-%s-%s)' % (self.user, self.problem, self.order, self.lang)
 
     class Meta:
         unique_together = ('user', 'problem', 'order')
@@ -41,8 +49,8 @@ class SpareRow(models.Model):
     user = models.ForeignKey(User)
     lang = models.IntegerField(choices=constants.Language.LANG_CHOICES)
 
-    def __unicode__(self):
-        return '(SpareRow-%s-%s-%s)' % (id, user, lang)
+    def __str__(self):
+        return '(SpareRow-%s-%s-%s)' % (self.id, self.user, self.lang)
 
 class Task(models.Model):
     user = models.ForeignKey(User)
@@ -60,8 +68,8 @@ class Task(models.Model):
             return True
         return False
 
-    def __unicode__(self):
-        return '(Task-%s-%s-%s)' % (id, user, problem, active)
+    def __str__(self):
+        return '(Task-%s-%s-%s)' % (self.id, self.user, self.problem, self.active)
 
     class Meta:
         unique_together = ('user', 'problem')
@@ -100,27 +108,36 @@ class SubmitOutput(models.Model):
     def protocol_exists(self):
         return os.path.exists(self.protocol_path())
 
-    def __unicode__(self):
-        return '(Output-%s-%s-%s-%s-%s)' % (timestamp, user, problem, status, custom)
+    def __str__(self):
+        return '(Output-%s-%s-%s-%s-%s)' % (self.timestamp, self.user, self.problem, self.status, self.custom)
 
 
 from django.db.models.signals import post_save, pre_save
 
+@receiver(pre_save, sender=Row)
 def pre_save_row(sender, instance, **kwargs):
     lang = int(instance.lang)
     length = constants.Language.LANG_LINE_LENGTH[lang]
     instance.content = instance.content[:length]
 
+@receiver(post_save, sender=Problem)
 def save_problem(sender, instance, created, **kwargs):
     if created:
         for user in User.objects.all():
             Task.objects.create(user=user, problem=instance, custom_input=get_default_custom_input(instance))
 
+@receiver(post_save, sender=User)
 def save_user(sender, instance, created, **kwargs):
     if created:
         for problem in Problem.objects.all():
             Task.objects.create(user=instance, problem=problem, custom_input=get_default_custom_input(problem))
 
-pre_save.connect(pre_save_row, sender=Row)
-post_save.connect(save_problem, sender=Problem)
-post_save.connect(save_user, sender=User)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
