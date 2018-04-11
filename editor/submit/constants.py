@@ -8,6 +8,15 @@ SUBMITTED_LANG_FILE_EXTENSION = '.langs'
 TESTING_PROTOCOL_EXTENSION = '.protocol'
 TESTING_RAW_EXTENSION = '.raw'
 
+DEFAULT_VAR = {
+    'INT_VECTORS': '[1, 2, 3]',
+    'FLOAT_VECTORS': '[0.42, 0.47]',
+    'INTS': '0',
+    'FLOATS': '0.0',
+    'STRS': '""',
+    'STR_VECTORS': '["ahojte", "vsetci"]',
+}
+
 class JudgeTestResult(object):
     """
     Groups all common values of test results in protocol.

@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST, require_GET
 
 from submit.models import Problem, Row, SubmitOutput, SpareRow, Task
 from submit import constants
-from submit.helpers import write_chunks_to_file
+from submit.helpers import write_chunks_to_file, get_default_custom_input
 from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protocol)
 
 def index(request):
@@ -116,6 +116,7 @@ def problem(request, problem_id):
         'custom_input': custom_input,
         'response': constants.ReviewResponse,
         'variables': variables,
+        'custom_example': get_default_custom_input(problem)
     }
     return render(request, 'submit/problem.html', context_dict)
 

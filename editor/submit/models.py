@@ -6,6 +6,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings as django_settings
 
 from submit import constants
+from submit.helpers import get_default_custom_input
 
 class Problem(models.Model):
     order = models.PositiveIntegerField(default=0, blank=False, null=False)
@@ -113,12 +114,12 @@ def pre_save_row(sender, instance, **kwargs):
 def save_problem(sender, instance, created, **kwargs):
     if created:
         for user in User.objects.all():
-            Task.objects.create(user=user, problem=instance)
+            Task.objects.create(user=user, problem=instance, custom_input=get_default_custom_input(instance))
 
 def save_user(sender, instance, created, **kwargs):
     if created:
         for problem in Problem.objects.all():
-            Task.objects.create(user=instance, problem=problem)
+            Task.objects.create(user=instance, problem=problem, custom_input=get_default_custom_input(problem))
 
 pre_save.connect(pre_save_row, sender=Row)
 post_save.connect(save_problem, sender=Problem)
