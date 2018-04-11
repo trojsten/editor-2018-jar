@@ -29,6 +29,15 @@
             .invalid {
                 background-color: rgba(255, 0, 0, 0.3);
             }
+            table.sortable thead {
+                background-color:#eee;
+                color:#666666;
+                font-weight: bold;
+                cursor: default;
+            }
+            table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after { 
+                content: " \25B4\25BE" 
+            }
         </style>
         <title>{% block title %}Editor{% endblock %}</title>
     </head>
@@ -45,6 +54,7 @@
             <script src="{% static 'submit/js/jquery-latest.min.js' %}" type="text/javascript"></script>
             <script src="{% static 'submit/js/popper.min.js' %}" type="text/javascript"></script>
             <script src="{% static 'submit/js/bootstrap.min.js' %}" type="text/javascript"></script>
+            <script src="{% static 'submit/js/sorttable.js' %}" type="text/javascript"></script>
         {% endblock js %}
     </body>
 

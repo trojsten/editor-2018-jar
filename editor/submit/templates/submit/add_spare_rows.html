@@ -13,7 +13,7 @@ Keď pridáš riadky družinke, tak sa im uložia do DB, a potom si ich vedia sa
     {% csrf_token %}
     <div class="form-group">
         <label for="username-input">Druzinka</label>
-        <select class="form-control" onchange="changeInfo()" id="user-select" name="user-select">
+        <select class="form-control" onchange="changeInfo()" id="user-select" name="user-select" size={{ users|length|add:1 }}>
             <option disabled selected value> -- select an option -- </option>
             {% for user in users %}
                 <option value="{{ user.id }}">
