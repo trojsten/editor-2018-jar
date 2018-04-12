@@ -1,0 +1,20 @@
+Prebieha boj - my mame N <= 100 vojakov, nepriatel M <= 100. Nasi vojaci maju H_i zivotov, nepriatelski h_i. (tieto cisla su, co ja viem, do 100). Kazdu sekundu sa udeje nasledovne:
+Kazdy nepriatelsky vojak, jeden za druhym, da 1 damage lubovolnemu nasmu vojakovi. Maju strategiu: udriem do vojaka, ktory je na vstupe co najskor a este zije. (teda ‘lubovolnemu’ = prvemu zivemu). Ak nas vojak po damagi ma 0 zivotov, zomrie.
+Kazdy z nasich (zivych) vojakov da 1 uder lubovolnemu nepriatelovi.
+
+Ovladame nasich vojakov, teda vieme kazdemu vzdy povedat ktoreho nepriatelskeho vojaka maju udriet. Kolko z nasich vojakov vie prezit tuto bitku?
+
+Na vstupe dostanu asi zopar intov navyse
+
+input:
+INT N: pocet nasich vojakov
+INT M: pocet nepriatelskych vojakov
+VECTOR<INT> hrdinovia: zivoty nasich vojakov
+VECTOR<INT> darebaci: zivoty nepriatelskych vojakov
+INT strategia: pomocna premenna
+INT utok: pomocna premenna
+INT obrana: pomocna premenna
+INT vitazstvo: pomocna premenna
+
+output:
+INT N: najvyssi pocet nasich vojakov, ktori dokazu prezit bitku
