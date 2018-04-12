@@ -12,10 +12,10 @@ class PascalRunner(Runner):
     def begin_ceremony(self):
 
         variables = (
-          '\n'.join([x+': array of integer;' for x in self.INT_VECTORS]) + '\n' +
+          '\n'.join([x+': array of int64;' for x in self.INT_VECTORS]) + '\n' +
           '\n'.join([x+': array of ansistring;' for x in self.STR_VECTORS]) + '\n' +
           '\n'.join([x+': array of double;' for x in self.FLOAT_VECTORS]) + '\n' +
-          '\n'.join([x+': integer;' for x in self.INTS]) + '\n' +
+          '\n'.join([x+': int64;' for x in self.INTS]) + '\n' +
           '\n'.join([x+': ansistring;' for x in self.STRS]) + '\n' +
           '\n'.join([x+': double;' for x in self.FLOATS]) + '\n'
         )
@@ -201,7 +201,7 @@ if __name__ == '__main__':
       "SetLength(" + init.SOME_INT_VECTOR + ", 10);\n" +
       "SetLength(" + init.SOME_FLOAT_VECTOR + ", 10);\n" +
       "SetLength(" + init.SOME_STR_VECTOR + ", 10);\n" +
-      init.SOME_INT_VECTOR + "[3]:= 10;\n" +
+      init.SOME_INT_VECTOR + "[3]:= 100000000000;\n" +
       init.SOME_FLOAT_VECTOR + "[3]:= 10.123;\n" +
       init.SOME_STR_VECTOR + "[3]:= 'desat';\n" +
       init.SOME_INT + ":= 10;\n" +
