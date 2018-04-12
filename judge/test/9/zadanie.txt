@@ -1,0 +1,17 @@
+N lodi obkruzilo nas ostrov. i-ta lod susedi v tomto kruhu si i+1ou, a N-ta lod susedi s prvou.
+i-ta lod obsahuje a_i nepriatelskych bojovnikov. Musime zobrat nasu armadu, zacat nejakou lodou,
+a potom ist dokola po pobrezi a utocit na vsetky lode jednu za druhou.
+
+Niet dost casu, aby sme si zvolili optimalnu strategiu. Narychlo zvolime aspon aku-taku strategiu
+na minimalizovanie strat: povedzme, ze pocet bojovnikov na lodiach ktore porazime 
+je postupne b_1, b_2,...,b_N. Chceme, aby zo vsetkych moznych poradi v ktorom lode mozeme porazit,
+bol tento lexikograficky najmensi - teda ak zoberieme lubovolne ine poradie c_1,...,c_N a najdeme prve i take ze b_i sa nerovna c_i, tak b_i < c_i. Najdite, v akom poradi mame lode porazit!
+
+input:
+VECTOR<INT> lode: permutacia cisel 1 az N, N <= 100: pocty bojovnikov v jednotlivych lodiach.
+lode[i] susedi s lode[i+1] pre vsetky zmysluplne i, a posledna lod susedi s prvou (tvoria kruh). 
+INT nepouzijestentointnadarmo: pomocna premenna. Nepouzite ju nadarmo.
+
+output:
+VECTOR<INT> lode: lexikograficky najmensie poradie lodi, v ktorom ich mozeme porazit
+(inak povedane, lexikograficky najmensi zapis rovnakeho kruhu)

@@ -1,0 +1,26 @@
+Vlejd ma kasaren. Baska ma kasaren.
+
+
+Priebeh hry: Na zaciatku nikto nema vojaka. V kazdej sekunde si kazda zo stran, ak nema vojaka, vytvori jedneho vojaka. Oznacme silu i-teho vojaka vyrobeneho L_i a R_i pre lavu a pravu stranu. L_0 = R_0 = 1.
+Kazda strana ma magicke cislo, nazvyme ich mod_left a mod_right, a mame jedno magicke globalne cislo P. Sila vojaka i+1-eho vyrobeneho lavou stranu je L_i * P % mod_left, pravou stranou R_i * P % mod_right.
+
+P,mod_left,mod_right <= 100.
+
+Teda v kazdej sekunde ma kazda strana 1 vojaka. Teraz: ak su obaja vojaci rovnako silny, je remiza (biju sa donekonecna). Inak silnejsi zabije slabsieho, a potom urobi 1 damage na nepriatelov base. Base ma N <= 10^9 zivotov.
+
+input:
+
+INT N: Pocet zivotov oboch zakladni. 1<=N<=10^9
+INT P: Konstanta relativnej polohy planet a hviezd 1<=P<=1000
+INT Vlejd: Vlejdova astrologicka konstanta  1<=Vlejd<=100
+INT Baska: Baskina astrologicka konstanta 1<=Baska<=100
+INT kopijnik: pomocna premenna
+INT lukostrelec: pomocna premenna
+INT delostrelec: pomocna premenna
+INT musketier: pomocna premenna
+STRING V: pomocna premenna
+STRING B: pomocna premenna
+
+output:
+STRING V: "Vlejd" ak vyhra Vlejd, "Baska" ak vyhra Baska, alebo "Remiza" ak nikto nevyhra.
+
