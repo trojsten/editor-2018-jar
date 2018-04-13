@@ -1,0 +1,20 @@
+Tvojej armade veli ostrielany vojnovy strateg Matus. Prave nahliada na mapu nepriatelskeho tabora.
+Duma nad nou dobrych 10 minut. Velavravne kichne - vsetci generali stichnu a cakaju na plan, ktory
+Matus vymyslel. 
+
+'Zabudol som si okuliare. Na blizko nevidim, uz 10 minut sa snazim zistit aky velky ten nepriatelsky tabor je. Nepomoze mi niekto?'
+
+Ach jaj. Pomozte Matusovi. 
+
+input:
+INT velkostmapy: Dlzka strany mapy. Mapa je stvorcova. 1<=velkostmapy<=20
+VECTOR<STR> mapa : 'velkostmapy' stringov dlzky 'velkostmapy' -> mapa uzemia.
+znak '#' je nepriatelska stena, ostatne znaky su nepodstatne. Na mape je prave jeden
+(nevyplneny) obdlznik z '#'.
+INT vyska: pomocna premenna
+INT dlzka: pomocna premenna
+INT okuliare: pomocna premenna
+
+output:
+INT vyska: vyska nepriatelskeho tabora (vertikalny rozmer, i.e. stena ktora pretina viacero stringov)
+INT dlzka: dlzka nepriatelskeho tabora (horizontalny rozmer, i.e. stena ktora je vramci jedneho stringu)

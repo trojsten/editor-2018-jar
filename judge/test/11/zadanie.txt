@@ -1,0 +1,25 @@
+Chystas velke zmeny velitelstva tvojej armady. Ale komu sa chce prepisovat tituly?
+
+input:
+STRING General
+STRING Plukovnik
+STRING Podplukovnik
+STRING Strateg
+STRING Spion
+STRING Programator
+STRING Velmajstermaxisupergeneralveduci
+STRING Nadpodpredzadplukovnikazarovendokoncaajgeneral
+
+vsetky retazce su neprazdne, z pismen anglickej abecedy, dlhe najviac 10 znakov
+
+output:
+STRING General: to, co bolo povodne v Strateg
+STRING Plukovnik: to, co bolo povodne v Podplukovnik
+STRING Podplukovnik: to, co bolo povodne v General
+STRING Strateg: to, co bolo povodne v Spion
+STRING Spion: to, co bolo povodne v Programator
+STRING Programator: to, co bolo povodne v Plukovnik
+STRING Velmajstermaxisupergeneralveduci: to, co bolo povodne v Nadpodpredzadplukovnikazarovendokoncaajgeneral
+STRING Nadpodpredzadplukovnikazarovendokoncaajgeneral: to, co bolo povodne v Velmajstermaxisupergeneralveduci
+
+
