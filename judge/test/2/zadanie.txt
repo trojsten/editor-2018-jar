@@ -1,0 +1,26 @@
+Drevo je nesmierne dôležitá survoina. Preto musíme vedieť, koľko ho vlastne máme k dispozícií - koľko stromov je v lese pri našej základni?
+
+Ako dobre vieme, strom je neorientovaný súvislý acyklický graf. Les je disjunktné zjednotenie niekoľkých stromov (teda jednotlivé stromy nemajú spoločné vrcholy).
+
+Na vstupe máte les. Spočítajte, koľko je v ňom stromov.
+
+
+input:
+INT N: počet vrcholov v lese. 1<=N<=10^5
+INT M: počet hrán v lese. 1<=M<=10^5
+VECTOR<INT> Hrany1: M čísel z rozmedzia [1,N]
+VECTOR<INT> Hrany2: M čísel z rozmedzia [1,N].
+INT i: pomocna
+INT j: pomocna
+INT k: pomocna
+INT l: pomocna
+VECTOR<INT> drevo: pomocna
+VECTOR<STR> sekera: pomocna
+STR pouzivajmaopatrne: pomocna
+
+Hrana vedie medzi vrcholmi Hrany1[i] a Hrany2[i] pre všetky platné indexy i. Vrcholy číslujeme od jednotky.
+
+Môžete predpokladať, že každá hrana je na vstupe len raz a že na vstupe je naozaj les.
+
+output:
+int N: počet stromov v lese.
