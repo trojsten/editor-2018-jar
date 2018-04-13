@@ -67,20 +67,22 @@ for i in range(N):
 	pair = (dict_vstup,dict_vystup)
 	real_input_output_pairs.append(pair)
 
-	dict_vstup = {"dumbier":len(string),"zaklinadlo":string2,"mandragora":len(string),"recept":string,"zaba":abeceda}
+	dict_vstup = {"dumbier":len(string2),"zaklinadlo":string2,"mandragora":len(string),"recept":string,"zaba":abeceda}
 	dict_vystup = {"zaklinadlo":solve(string,string2,abeceda)}
 	pair = (dict_vstup,dict_vystup)
 	real_input_output_pairs.append(pair)	
 
 vzorak = [
-    ("jedna := 0;", "Pascal"),
     ("netopier = zaklinadlo[jedna] - recept[jedna];", "C++"),
     ("jedna := jedna + 1;", "Pascal"),
     ("IF netopier IS NOT ZERO GOTO 10", "Rust"),
-    ("netopier=1;", "C++"),
-    ("if(jedna==mandragora) {netopier=0; zaklinadlo=recept;}; if(jedna == mandragora || jedna==dumbier) {netopier=0; }", "C++"),
-    ("IF netopier IS NOT ZERO GOTO 2", "C++"),
     ("netopier:=1;", "Pascal"),
-    ("IF netopier IS NOT ZERO GOTO 100", "C++"),
-    ("if zaba.index(recept[jedna-1]) < zaba.index(zaklinadlo[jedna-1]): zaklinadlo = recept", "Python"),
+    ("if(jedna==mandragora){netopier=0;zaklinadlo=recept;}","C++"),
+    ("if(jedna==mandragora||jedna==dumbier) netopier=0;","C++"),
+    ("IF netopier IS NOT ZERO GOTO 1", "Rust"),
+    ("netopier:=1;", "Pascal"),
+    ("IF netopier IS NOT ZERO GOTO 100", "Go"),
+    ("dumbier=zaba.index(recept[jedna-1])", "Python"),
+    ("mandragora=zaba.index(zaklinadlo[jedna-1])","Python"),
+    ("if (dumbier<mandragora) swap(zaklinadlo,recept);","C++")
 ]

@@ -7,10 +7,10 @@ Ovladame nasich vojakov, teda vieme kazdemu vzdy povedat ktoreho nepriatelskeho 
 Na vstupe dostanu asi zopar intov navyse
 
 input:
-INT N: pocet nasich vojakov
-INT M: pocet nepriatelskych vojakov
-VECTOR<INT> hrdinovia: zivoty nasich vojakov
-VECTOR<INT> darebaci: zivoty nepriatelskych vojakov
+INT N: pocet nasich vojakov 1<=N<=100
+INT M: pocet nepriatelskych vojakov 1<=N<=100
+VECTOR<INT> hrdinovia: zivoty nasich vojakov 1<=zivot_i<=100
+VECTOR<INT> darebaci: zivoty nepriatelskych vojakov 1<=zivot_i<=100
 INT strategia: pomocna premenna
 INT utok: pomocna premenna
 INT obrana: pomocna premenna
