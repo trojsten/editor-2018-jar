@@ -59,7 +59,7 @@ class PascalRunner(Runner):
           'for TMP_INT2:=1 to TMP_INT do\n' +
           'begin\n' +
           '  readln(tfIn, TMP_STRING);\n' +
-          '  {}[TMP_INT2] := StrToInt(TMP_STRING);\n'.format(vector) +
+          '  {}[TMP_INT2-1] := StrToInt(TMP_STRING);\n'.format(vector) +
           'end;\n'
         )
         return code
@@ -75,7 +75,7 @@ class PascalRunner(Runner):
           'for TMP_INT2:=1 to TMP_INT do\n' +
           'begin\n' +
           '  readln(tfIn, TMP_STRING);\n' +
-          '  {}[TMP_INT2] := TMP_STRING;\n'.format(vector) +
+          '  {}[TMP_INT2-1] := TMP_STRING;\n'.format(vector) +
           'end;\n'
         )
         return code
@@ -91,7 +91,7 @@ class PascalRunner(Runner):
           'for TMP_INT2:=1 to TMP_INT do\n' +
           'begin\n' +
           '  readln(tfIn, TMP_STRING);\n' +
-          '  {}[TMP_INT2] := StrToFloat(TMP_STRING);\n'.format(vector) +
+          '  {}[TMP_INT2-1] := StrToFloat(TMP_STRING);\n'.format(vector) +
           'end;\n'
         )
         return code
@@ -127,8 +127,8 @@ class PascalRunner(Runner):
         return code
 
     def vector_saver(self, vector, pom_str, isfloat=False):
-        floatprint = '  writeln(tfOut, {}[TMP_INT2]:0:6);\n'.format(vector)
-        normalprint = '  writeln(tfOut, {}[TMP_INT2]);\n'.format(vector)
+        floatprint = '  writeln(tfOut, {}[TMP_INT2-1]:0:6);\n'.format(vector)
+        normalprint = '  writeln(tfOut, {}[TMP_INT2-1]);\n'.format(vector)
 
         code = (
           '\n' +
@@ -198,10 +198,11 @@ if __name__ == '__main__':
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
     code1 = (
-      "SetLength(" + init.SOME_INT_VECTOR + ", 10);\n" +
+      "SetLength(" + init.SOME_INT_VECTOR + ", 2);\n" +
       "SetLength(" + init.SOME_FLOAT_VECTOR + ", 10);\n" +
       "SetLength(" + init.SOME_STR_VECTOR + ", 10);\n" +
-      init.SOME_INT_VECTOR + "[3]:= 100000000000;\n" +
+      init.SOME_INT_VECTOR + "[0]:= 100000000000;\n" +
+      init.SOME_INT_VECTOR + "[1]:= 100000000000;\n" +
       init.SOME_FLOAT_VECTOR + "[3]:= 10.123;\n" +
       init.SOME_STR_VECTOR + "[3]:= 'desat';\n" +
       init.SOME_INT + ":= 10;\n" +
