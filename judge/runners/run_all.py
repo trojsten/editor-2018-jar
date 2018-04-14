@@ -53,7 +53,7 @@ class MasterRunner:
             counter += 1
             runner = self.runners[line]
             if not isinstance(runner, tuple):
-                logging.info('Line %d, counter %d, runner %s', line, counter, runner.NAME)
+                logging.info('Line %d, counter %d, runner %s code %s', line+1, counter, runner.NAME, runner.code)
                 out_memory = self.location.format("_mem_"+str(counter))
                 logging.info('From: %s, To: %s', last_memory, out_memory)
                 execute_result = self.runners[line].execute(last_memory, out_memory)
@@ -63,8 +63,8 @@ class MasterRunner:
                 last_memory = out_memory
                 line += 1
             else:
-                logging.info('Line %d, counter %d, runner %s', line, counter, "jump")
-                logging.info('Jupming on line: %d', line)
+                logging.info('Line %d, counter %d, runner %s', line+1, counter, "jump")
+                logging.info('Jupming on line: %d', line+1)
                 variable = runner[0]
                 to_line = runner[1]-1
                 memory = init_runner.load_memory(last_memory)

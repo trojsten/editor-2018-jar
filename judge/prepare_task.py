@@ -10,9 +10,10 @@ import glob
 @click.command()
 @click.option('--generate/--no-generate', default=False, help='Regenerate the folder')
 @click.option('--test/--no-test', default=False, help='Test the solution')
+@click.option('--test_sample', help='Test only one sample')
 @click.option('--clean/--no-clean', default=True, help='Clean temporary files')
 @click.option('--config_path', help='Path to config', required=True)
-def main(generate, test, clean, config_path):
+def main(generate, test, test_sample, clean, config_path):
     exec(open(config_path).read(), globals())
     task_path = os.path.dirname(config_path)
     if generate:
@@ -31,12 +32,15 @@ def main(generate, test, clean, config_path):
     else:
         print('Not generating anything, --generate')
 
-    if test:
+    if test or test_sample is not None:
         master = MasterRunner(vzorak, prefix='_tmp_', variables=variables)
         result = master.prepare()
         print(result)
         count_ok = 0
+        all_results = []
         for input_path in glob.glob(task_path + '/*.in'):
+            if test_sample is not None and test_sample not in input_path:
+                continue
             base = os.path.splitext(input_path)[0]
             result = master.run(input_path)
             print(result)
@@ -61,12 +65,15 @@ def main(generate, test, clean, config_path):
                     else:
                         message = 'WA'
             print(message, line)
+            all_results.append((input_path, message, line))
             if len(diff) > 0:
                 s = ''
                 for premenna, (nasa, tvoja) in diff.items():
                     s += 'nas %s: %s\n' % (premenna, nasa)
                     s += 'tvoj %s: %s\n' % (premenna, tvoja)
                 print(s)
+        for result in all_results:
+            print(result)
 
     else:
         print('Not testing anything, --test')

@@ -1,3 +1,4 @@
+click==6.7
 Django==1.11.6
 django-admin-sortable2==0.6.19
 django-ckeditor==5.3.0
