@@ -1,1 +1,1 @@
-{"INT_VECTORS": ["Hrany1", "Hrany2", "drevo"], "INTS": ["N", "M", "i", "j", "k", "l", "m"], "STR_VECTORS": ["sekera"], "STRS": ["pouzivajmaopatrne"], "FLOAT_VECTORS": [], "FLOATS": []}
+{"INT_VECTORS": ["Hrany1", "Hrany2", "drevo"], "FLOAT_VECTORS": [], "FLOATS": [], "INTS": ["N", "M", "i", "j", "k", "l", "m"], "STRS": ["pouzivajmaopatrne"], "STR_VECTORS": ["sekera"]}

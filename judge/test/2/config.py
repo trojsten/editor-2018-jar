@@ -8,12 +8,6 @@ variables = {
 }
 
 sample_input_output_pairs = [
-    ( # sample 00
-        # input
-        {"N":1,"P":47,"Vlejd":46,"Baska":48},
-        # output
-        {"V":"Baska"}
-    ),
 
 ]
 
