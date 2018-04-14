@@ -76,6 +76,8 @@ def main(generate, test, test_sample, clean, config_path):
         for result in all_results:
             print(result)
 
+        print(all([x[1]=='OK' for x in all_results]))
+
     else:
         print('Not testing anything, --test')
 
