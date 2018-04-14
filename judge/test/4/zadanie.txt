@@ -1,0 +1,25 @@
+Mame 'zlato' zlata. Vieme ze za 'vestba' sekund na nas pride zautocit nepriatelske vojsko, dovtedy chceme naverbovat co najviac vojakov. Na to mame jednu kasaren. Na zaciatku, vojak stoji 'cena' zlata a naverbovat jedneho nam trva 'naverbovanie' sekund. Mame M roznych vylepseni pre kasaren: i-te z nich stoji vylepsi[i] zlata, a sposobi aby sa vojak verboval o urychlenie[i] sekund rychlejsie (ale nie rychlejsie ako 1 za sekundu). Kasaren vieme vylepsit kolko krat chceme, ale kazde vylepsenie vieme pouzit len raz. Kolko vojakov stihame naverbovat?
+
+zlato,cena,vylepsenie <= 1000, vestba,naverbovanie,urychlenie <= 10^9
+
+Riesenie: skusime vsetkych (Z/N) moznosti kolkokrat upgradeneme kasaren, a vypocitame kolko vojakov stihame/mame zlata na vyrobenie, zoberieme max.
+
+vstup:
+INT zlato: pocet zlata 1<=zlato<=1000
+INT vestba: pocet sekund do prichodu nepriatelskeho vojska 1<=vestba<=10^9
+INT cena: pociatocna cena na naverbovanie jedneho vojaka 1<=cena<=1000
+INT naverbovanie: cas potrebny na naverbovanie jedneho vojaka 1<=naverbovanie<=10^9
+INT N: pocet roznych vylepseni. 1<=N<=20
+VECTOR<INT> vylepsi: ceny vylepseni. 1<=vylepsi[i]<=1000 
+VECTOR<INT> urychlenie: pocet sekund ktory znizi dane vylepsenie na naverbovanie vojaka. 1<=urychlenie[i]<=10^9
+INT armada = 0: pomocna premenna
+INT iha: pomocna premenna
+INT joj: pomocna premenna
+INT kuk: pomocna premenna
+INT lol: pomocna premenna
+VECTOR<INT> teraz: pomocna premenna
+VECTOR<INT> potom: pomocna premenna
+
+vystup:
+INT armada: maximalny pocet vojakov, ktorych stihame naverbovat.
+

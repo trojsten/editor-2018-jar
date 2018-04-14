@@ -88,7 +88,7 @@ vzorak = [
     ("if(!hrdinovia[N-1]){N--;hrdinovia.pop_back();}","C++"),
     ("IF utok IS NOT ZERO GOTO 4","Rust"),
     ("utok:=N;","Pascal"),
-    ("strategia=(!M);if(M)obrana=min(utok,darebaci[M-1]);","C++"),				
+    ("strategia=(!M);if(M)obrana=min(utok,darebaci[M-1]);","C++"),
     ("IF strategia IS NOT ZERO GOTO 100","Rust"),      #hrdinovia utocia
     ("utok-=obrana;","Pascal"),
     ("darebaci[M-1]:=darebaci[M-1]-obrana;","Pascal"),
