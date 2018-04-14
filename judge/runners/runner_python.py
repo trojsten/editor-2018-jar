@@ -57,7 +57,7 @@ class PythonRunner(Runner):
           '_ = IN_MEMORY.readline()\n' +
           'SIZE = IN_MEMORY.readline().strip()\n' +
           'for I in range(int(SIZE)):\n' +
-          '    {}.append(IN_MEMORY.readline().strip())\n'.format(vector)
+          '    {}.append(IN_MEMORY.readline().strip("\\n"))\n'.format(vector)
         )
         return code
 
@@ -81,7 +81,7 @@ class PythonRunner(Runner):
         code = (
           '_ = IN_MEMORY.readline()\n' +
           '_ = IN_MEMORY.readline()\n' +
-          strr + ' = IN_MEMORY.readline().strip()\n'
+          strr + ' = IN_MEMORY.readline().strip("\\n")\n'
         )
         return code
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     from runners.init_runner import InitRunner
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    runner = PythonRunner(init.SOME_STR_VECTOR + '.append("f")\n', 'tmp/tmp')
+    runner = PythonRunner(init.SOME_STR_VECTOR + '.append("d   ")\n', 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_py.txt')
     print(init.load_memory('tmp/memory2_py.txt'))
     runner2 = PythonRunner(init.SOME_FLOAT_VECTOR + '.append(0.5)\n', 'tmp/tmp2')

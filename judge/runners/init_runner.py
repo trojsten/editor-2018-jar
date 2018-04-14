@@ -50,12 +50,12 @@ class InitRunner(Runner):
             vector_name = memory.readline().strip()
             vector_size = int(memory.readline().strip())
             assert vector == vector_name
-            variables[vector_name] = [memory.readline().strip() for _ in range(vector_size)]
+            variables[vector_name] = [memory.readline().strip('\n') for _ in range(vector_size)]
 
         for strr in self.STRS:
             _ = memory.readline().strip()
             strr_name = memory.readline().strip()
-            strr_value = memory.readline().strip()
+            strr_value = memory.readline().strip('\n')
             assert strr == strr_name
             variables[strr_name] = strr_value
 
