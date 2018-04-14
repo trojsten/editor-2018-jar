@@ -11,7 +11,7 @@ See README in `editor` directory.
  - `python3`: Python interpreter
  - `golang-go`: Go compiler & toolchain
  - `php7.0-cli`: Php?  nie som si ale uplne isty verziou
- - `curl https://sh.rustup.rs -sSf | sh` : Rust
+ - `rustc` : Rust
 
 
 ## Jazyk

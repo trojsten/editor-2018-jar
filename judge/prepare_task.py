@@ -6,6 +6,7 @@ import os
 import click
 import json
 import glob
+import math
 
 @click.command()
 @click.option('--generate/--no-generate', default=False, help='Regenerate the folder')
@@ -56,7 +57,7 @@ def main(generate, test, test_sample, clean, config_path):
                     ok = True
                     for premenna, hodnota in output.items():
                         # TODO: floaty su meh
-                        if hodnota != memory[premenna]:
+                        if not compare(memory, premenna, hodnota, variables):
                             ok = False
                             diff[premenna] = (hodnota, memory[premenna])
                     if ok:
@@ -84,6 +85,15 @@ def main(generate, test, test_sample, clean, config_path):
             os.remove(f)
     else:
         print('Not cleaning anything, --clean')
+
+def compare(memory, premenna, hodnota, variables):
+    if premenna in variables['FLOATS']:
+        return math.isclose(memory[premenna],hodnota, rel_tol=1e-05, abs_tol=0.00001)
+    elif premenna in variables['FLOAT_VECTORS']:
+        return all(list(map(lambda x:math.isclose(x[0],x[1],rel_tol=1e-05, abs_tol=0.00001), zip(memory[premenna],hodnota))))
+    else:
+        return hodnota == memory[premenna]
+
 
 
 if __name__=="__main__":

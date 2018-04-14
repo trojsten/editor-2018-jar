@@ -1,1 +1,1 @@
-{"STR_VECTORS": [], "INTS": ["dumbier", "mandragora", "jedna", "netopier"], "FLOAT_VECTORS": [], "INT_VECTORS": [], "FLOATS": [], "STRS": ["zaklinadlo", "recept", "zaba"]}
+{"INT_VECTORS": ["intv"], "STR_VECTORS": ["strv"], "FLOAT_VECTORS": ["floatv"], "INTS": ["intt"], "STRS": ["strr"], "FLOATS": ["floatt"]}

@@ -1,6 +1,7 @@
 import os
 import json
 import glob
+import math
 
 from runners.run_all import MasterRunner
 from runners.init_runner import InitRunner
@@ -51,6 +52,16 @@ def get_var_str(var):
         return s[1:-1]
     return str(var)
 
+def compare(memory, premenna, hodnota, problem):
+    variables = load_variables(problem)
+    if premenna in variables['FLOATS']:
+        return math.isclose(memory[premenna],hodnota, rel_tol=1e-05, abs_tol=0.00001)
+    elif premenna in variables['FLOAT_VECTORS']:
+        return all(list(map(lambda x:math.isclose(x[0],x[1],rel_tol=1e-05, abs_tol=0.00001), zip(memory[premenna],hodnota))))
+    else:
+        return hodnota == memory[premenna]
+
+
 def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
     count_ok = 0
@@ -69,7 +80,7 @@ def run_tests(problem, master, protokol):
                 ok = True
                 for premenna, hodnota in output.items():
                     # TODO: floaty su meh
-                    if hodnota != memory[premenna]:
+                    if notcompare(memory, premenna, hodnota, problem):
                         ok = False
                         diff[premenna] = (hodnota, memory[premenna])
                 if ok:

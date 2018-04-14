@@ -1,39 +1,42 @@
 variables = {
-    "INT_VECTORS": [],
-    "STR_VECTORS": [],
-    "FLOAT_VECTORS": [],
-    "INTS": ["dumbier", "mandragora","jedna","netopier"],
-    "STRS": ["zaklinadlo","recept","zaba"],
-    "FLOATS": []
+    "INT_VECTORS": ["intv"],
+    "STR_VECTORS": ["strv"],
+    "FLOAT_VECTORS": ["floatv"],
+    "INTS": ["intt",],
+    "STRS": ["strr"],
+    "FLOATS": ["floatt"]
 }
 
 sample_input_output_pairs = [
     ( # sample 00
         # input
-        {"dumbier": 4, "zaklinadlo": "abcd", "mandragora": 5, "recept": "abefg", "zaba":"qwertyuiopasdfghjklzxcvbnm"},
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
+        "floatt":0.001, "strr":"ddgf"},
         # output
-        {"zaklinadlo": "abefg"}
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
+        "floatt":0.001, "strr":"ddgf"},
     ),
+    ( # sample 00
+        # input
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
+        "floatt":0.001, "strr":"ddgf"},
+        # output
+        {"intv": [1,2,4,4], "strv": ["abcd","sfb"], "floatv": [0.11,0.2,0.3], "intt": 11, 
+        "floatt":0.0001, "strr":"ddgf3"},
+    ),
+    ( # sample 00
+        # input
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
+        "floatt":0.001, "strr":"ddgf"},
+        # output
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.30000000001], "intt": 10, 
+        "floatt":0.0010000000001, "strr":"ddgf"},
+    )
 ]
 
 real_input_output_pairs = [
-    ( # input 1
-        # input
-        {"dumbier": 4, "zaklinadlo": "abcd", "mandragora": 5, "recept": "abefg", "zaba":"qwertyuiopasdfghjklzxcvbnm"},
-        # output
-        {"zaklinadlo": "abefg"}
-    ),
 ]
 
 vzorak = [
-    ("jedna := 0;", "Pascal"),
-    ("netopier = zaklinadlo[jedna] - recept[jedna];", "C++"),
-    ("jedna := jedna + 1;", "Pascal"),
-    ("IF netopier IS NOT ZERO GOTO 10", "Rust"),
-    ("netopier=1;", "C++"),
-    ("if(jedna==mandragora) {netopier=0; zaklinadlo=recept;}; if(jedna == mandragora || jedna==dumbier) {netopier=0; }", "C++"),
-    ("IF netopier IS NOT ZERO GOTO 2", "C++"),
-    ("netopier:=1;", "Pascal"),
-    ("IF netopier IS NOT ZERO GOTO 100", "C++"),
-    ("if zaba.index(recept[jedna-1]) < zaba.index(zaklinadlo[jedna-1]): zaklinadlo = recept", "Python"),
+    ("","Python")
 ]

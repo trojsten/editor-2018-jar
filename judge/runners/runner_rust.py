@@ -170,7 +170,7 @@ if __name__ == '__main__':
         init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_rust.txt')
     print(init.load_memory('tmp/memory2_rust.txt'))
-    runner2 = RustRunner('{0} = 0.5678;'.format(
+    runner2 = RustRunner('{0} = 0.11;'.format(
       init.SOME_FLOAT), 'tmp/tmp')
     runner2.simple_full_run('tmp/memory2_rust.txt', 'tmp/memory3_rust.txt')
     print(init.load_memory('tmp/memory3_rust.txt'))
