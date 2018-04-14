@@ -6,6 +6,7 @@ tmp/
 /editor/editor/static/
 /editor/editor/media/
 /editor/editor/submit/
+*.sqlite3
 
 /judge/submits/
 /judge/test/0/
