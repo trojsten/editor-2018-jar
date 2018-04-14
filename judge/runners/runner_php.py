@@ -156,9 +156,6 @@ class PHPRunner(Runner):
         command = 'php {}.php {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
         return os.system(command), open(log_fname).read()
 
-    def name(self):
-        return 'PHP'
-
 
 if __name__ == '__main__':
     init = InitRunner()

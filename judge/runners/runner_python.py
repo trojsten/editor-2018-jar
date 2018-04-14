@@ -149,10 +149,7 @@ class PythonRunner(Runner):
         log_fname = "{}.log_file".format(self.codename)
         command = 'python3 {}.py {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
         return os.system(command), open(log_fname).read()
-
-    def name(self):
-        return 'Python'
-
+        
 
 if __name__ == '__main__':
     from runners.init_runner import InitRunner
