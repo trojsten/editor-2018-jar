@@ -1,0 +1,22 @@
+Mame krasny domcek. Barbari nam ho chcu znicit. Nasa armada je prave na platenej dovolenke,
+takze ich nema kto zastavit. Iba ze by niekolki nasi workeri zacali pred domom buchat kladivom o zem...
+
+Domcek ma N zivotov. M sekund donho budu utocit barbari; v i-tej sekunde spravia d_i damage. Mozeme na zaciatku nechat niekolko, nazvyme to W, workerov aby opravovali domcek.
+Domceku sa potom v i-tej sekunde stane nasledovne: 
+zivot = min(N,zivot-d_i+W)
+ak zivot <= 0: domcek bol zniceny.
+
+Zistite, kolko najmenej workerov potrebujeme, aby domcek nebol zniceny.
+
+
+input:
+INT N: pocet zivotov domceka. 1 <= N <= 1000000
+INT M: pocet barbarskych utokov 1 <= M <= 20
+VECTOR<INT> utoky: barbarske utoky>. M cisel 0<=M<=N
+INT zima: pomocna premenna
+INT teplo: pomocna premenna
+INT akurat: pomocna premenna
+INT nazvyniesunahoda: hintovacia premenna
+
+output:
+INT teplo: najnizsi pocet workerov potrebnych na to, aby domcek nezomrel
