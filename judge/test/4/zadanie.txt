@@ -1,8 +1,5 @@
 Mame 'zlato' zlata. Vieme ze za 'vestba' sekund na nas pride zautocit nepriatelske vojsko, dovtedy chceme naverbovat co najviac vojakov. Na to mame jednu kasaren. Na zaciatku, vojak stoji 'cena' zlata a naverbovat jedneho nam trva 'naverbovanie' sekund. Mame M roznych vylepseni pre kasaren: i-te z nich stoji vylepsi[i] zlata, a sposobi aby sa vojak verboval o urychlenie[i] sekund rychlejsie (ale nie rychlejsie ako 1 za sekundu). Kasaren vieme vylepsit kolko krat chceme, ale kazde vylepsenie vieme pouzit len raz. Kolko vojakov stihame naverbovat?
 
-zlato,cena,vylepsenie <= 1000, vestba,naverbovanie,urychlenie <= 10^9
-
-Riesenie: skusime vsetkych (Z/N) moznosti kolkokrat upgradeneme kasaren, a vypocitame kolko vojakov stihame/mame zlata na vyrobenie, zoberieme max.
 
 vstup:
 INT zlato: pocet zlata 1<=zlato<=1000
