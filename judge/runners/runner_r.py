@@ -31,8 +31,9 @@ class RRunner(Runner):
           'FAKE_SHIT <- readLines(IN_MEMORY, n = 1);\n' +
           'FAKE_SHIT <- readLines(IN_MEMORY, n = 1);\n' +
           'SIZE <- readLines(IN_MEMORY, n = 1);\n' +
-          '{} <- c(1:SIZE);\n'.format(vector) +
+          '{} <- c();\n'.format(vector) +
           'if (SIZE > 0) {\n' +
+          '    {} <- c(1:SIZE);\n'.format(vector) +
           '    for (I in 1:SIZE) {\n' +
           '        {}[I] <- as.integer(readLines(IN_MEMORY, n = 1));\n'.format(vector) + 
           '    }\n' +
@@ -45,11 +46,13 @@ class RRunner(Runner):
           'FAKE_SHIT <- readLines(IN_MEMORY, n = 1);\n' +
           'FAKE_SHIT <- readLines(IN_MEMORY, n = 1);\n' +
           'SIZE <- readLines(IN_MEMORY, n = 1);\n' +
-          '{} <- c(1:SIZE);\n'.format(vector) +
           'if (SIZE > 0) {\n' +
+          '    {} <- c(1:SIZE);\n'.format(vector) +
           '    for (I in 1:SIZE) {\n' +
           '        {}[I] <- as.double(readLines(IN_MEMORY, n = 1));\n'.format(vector) + 
           '    }\n' +
+          '} else {\n' +
+          '    {} <- c();\n'.format(vector) +
           '}\n'
         )
         return code
@@ -97,7 +100,7 @@ class RRunner(Runner):
           'writeLines("VECTOR_INT:", con = OUT_MEMORY);\n' +
           'writeLines("{}", con = OUT_MEMORY);\n'.format(vector) +
           'SIZE <- length({});\n'.format(vector) +
-          'writeLines(as.character(SIZE), con = OUT_MEMORY);\n'.format(vector) +
+          'writeLines(as.character(SIZE), con = OUT_MEMORY);\n' +
           'if (SIZE > 0) {\n' +
           '    for (I in %s) {\n' % (vector, ) +
           '        writeLines(as.character(I), con = OUT_MEMORY);\n'
@@ -111,7 +114,7 @@ class RRunner(Runner):
           'writeLines("VECTOR_FLOAT:", con = OUT_MEMORY);\n' +
           'writeLines("{}", con = OUT_MEMORY);\n'.format(vector) +
           'SIZE <- length({});\n'.format(vector) +
-          'writeLines(as.character(SIZE), con = OUT_MEMORY);\n'.format(vector) +
+          'writeLines(as.character(SIZE), con = OUT_MEMORY);\n' +
           'if (SIZE > 0) {\n' +
           '    for (I in %s) {\n' % (vector, ) +
           '        writeLines(as.character(I), con = OUT_MEMORY);\n'
@@ -174,9 +177,24 @@ if __name__ == '__main__':
     from runners.init_runner import InitRunner
     init = InitRunner()
     init.create_init_memory('tmp/memory.txt')
-    runner = RRunner('{} <- c({}, "f");\n'.format(init.SOME_STR_VECTOR, init.SOME_STR_VECTOR), 'tmp/tmp')
+    init.create_init_memory('tmp/memory2.txt') # just to be sure
+    init.create_init_memory('tmp/memory3.txt') # just to be sure
+    runner = RRunner(
+      '{} <- c({}, "f");\n'.format(init.SOME_STR_VECTOR, init.SOME_STR_VECTOR) +
+      '{} <- c({}, 0.112, 0.4652);\n'.format(init.SOME_FLOAT_VECTOR, init.SOME_FLOAT_VECTOR) +
+      '{} <- ({}+5)*5;\n'.format(init.SOME_INT, init.SOME_INT) 
+      , 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2.txt')
-    print(init.load_memory('tmp/memory2.txt'))
-    runner2 = RRunner('{} <- c({}, 0.4652);\n'.format(init.SOME_FLOAT_VECTOR, init.SOME_FLOAT_VECTOR), 'tmp/tmp2')
-    runner2.simple_full_run('tmp/memory2.txt', 'tmp/memory3.txt')
-    print(init.load_memory('tmp/memory3.txt'))
+    mem = init.load_memory('tmp/memory2.txt')
+    print(mem)
+    assert mem[init.SOME_FLOAT_VECTOR] == [0.112, 0.4652]
+    assert mem[init.SOME_STR_VECTOR] == ['1', '0', 'f']
+    assert mem[init.SOME_INT] == 25
+    runner.simple_full_run('tmp/memory2.txt', 'tmp/memory3.txt')
+    mem = init.load_memory('tmp/memory3.txt')
+    print(mem)
+    assert mem[init.SOME_FLOAT_VECTOR] == [0.112, 0.4652, 0.112, 0.4652]
+    assert mem[init.SOME_STR_VECTOR] == ['1', '0', 'f','f']
+    assert mem[init.SOME_INT] == 150
+
+
