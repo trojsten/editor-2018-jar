@@ -2,7 +2,7 @@
 
 variables = {
     "INT_VECTORS": [],
-    "STR_VECTORS": ["bojovisko"],
+    "STR_VECTORS": ["polemrkvy"],
     "FLOAT_VECTORS": [],
     "INTS": ["N","wololo","modry","cerveny","modrocerveny","priest"],
     "STRS": [],
@@ -11,14 +11,14 @@ variables = {
 
 sample_input_output_pairs = [
    (
-     {"N":3,"bojovisko":[ "pPP","PPp","KsP" ] },
+     {"N":3,"polemrkvy":[ "pPP","PPp","KsP" ] },
      {"wololo": 3 }
  )
 ]
 
 real_input_output_pairs = [
   (
-     {"N":3,"bojovisko":[ "pPP","PPp","KsP" ] },
+     {"N":3,"polemrkvy":[ "pPP","PPp","KsP" ] },
      {"wololo": 3 }
  )
 ]
@@ -36,7 +36,7 @@ def solve(N,mapa):
 	return wololo
 
 def sprav_vstup(N,mapa):
-	vstup = {"N":N,"bojovisko":mapa}
+	vstup = {"N":N,"polemrkvy":mapa}
 	vystup = {"wololo":solve(N,mapa)}
 	real_input_output_pairs.append((vstup,vystup))
 
@@ -65,8 +65,8 @@ for i in range(tc):
 vzorak = [
     ("priest=N;","Rust"),
     ("modry=1;cerveny=N;","C++"),
-    ("modrocerveny=(modry&&bojovisko[priest-1][N-cerveny]=='p');","C++"),
-    ("modrocerveny+=(!modry&&bojovisko[priest-1][N-cerveny]=='P');","C++"),
+    ("modrocerveny=(modry&&polemrkvy[priest-1][N-cerveny]=='p');","C++"),
+    ("modrocerveny+=(!modry&&polemrkvy[priest-1][N-cerveny]=='P');","C++"),
     ("IF modrocerveny IS NOT ZERO GOTO 12","Rust"),
     ("cerveny-=1;","Rust"),
     ("IF cerveny IS NOT ZERO GOTO 3","Go"),

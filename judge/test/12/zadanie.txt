@@ -1,10 +1,10 @@
-Vojaci idú cez obdĺžnikové bojisko. Na začiatku je každý vojak modrý. Keď **modrý** vojak stretne ‘p’ (to je priest), zmení sa na červeného. Keď **červený** vojak stretne ‘P’ (to je modrý priest), zmení sa na modrého. Spočítajte, koľko krát vojaci zmenia farbu.
+Vojaci idú cez obdĺžnikové pole oranžovej mrkvy. Na začiatku je každý vojak modrý. Keď **modrý** vojak stretne ‘p’ (to je priest), zmení sa na červeného. Keď **červený** vojak stretne ‘P’ (to je modrý priest), zmení sa na modrého. Spočítajte, koľko krát vojaci zmenia farbu.
 
-V každom riadku bojiska je vojak, a ide zľava doprava.
+V každom riadku poľa mrkvy je vojak, a ide zľava doprava.
 
 Input:
-INT N: veľkosť bojiska (N*N matrix)
-VECTOR<STRING> bojovisko: N stringov dĺžky N, pozostávajúcich z písmen
+INT N: veľkosť poľa mrkvy (N*N matrix)
+VECTOR<STRING> polemrkvy: N stringov dĺžky N, pozostávajúcich z písmen
 INT modry: pomocná premenná
 INT cerveny: pomocná premenná
 INT modrocerveny: pomocná premenná
