@@ -1,18 +1,17 @@
-Mame 'zlato' zlata. Vieme ze za 'vestba' sekund na nas pride zautocit nepriatelske vojsko, dovtedy chceme naverbovat co najviac vojakov. Na to mame jednu kasaren. Na zaciatku, vojak stoji 'cena' zlata a naverbovat jedneho nam trva 'naverbovanie' sekund. Kasaren vieme ze 'vylepsenie' zlata instantne upgradenut, aby sa vojak verboval o 'urychlenie' sekund rychlejsie (ale nie rychlejsie ako 1 za sekundu). Kasaren vieme vylepsit kolko krat chceme. Kolko vojakov stihame naverbovat?
+Máme 'zlato' zlata. Vieme že za 'vestba' sekúnd na nás príde zaútočiť nepriateľské vojsko. Dovtedy chceme naverbovať čo najviac vojakov. Na to máme jednu kasáreň. Na začiatku, vojak stojí 'cena' zlata a naverbovať jedného nám trvá 'naverbovanie' sekúnd. Kasáreň vieme za 'vylepsenie' zlata instantne upgradenuť, aby sa vojak verboval o 'urychlenie' sekúnd rýchlejsie (ale nie rýchlejšie ako 1 za sekundu). Kasáreň vieme vylepšiť koľko krát chceme. Koľko vojakov stíhame naverbovať?
 
-zlato,cena,vylepsenie <= 1000, vestba,naverbovanie,urychlenie <= 10^9
+Obmedzenia:
+zlato,cena,vylepsenie <= 1000
+vestba,naverbovanie,urychlenie <= 10^9
 
-Riesenie: skusime vsetkych (Z/N) moznosti kolkokrat upgradeneme kasaren, a vypocitame kolko vojakov stihame/mame zlata na vyrobenie, zoberieme max.
+Input:
+INT zlato: počet zlata
+INT vestba: počet sekúnd do príchodu nepriateľského vojska
+INT cena: počiatočná cena na naverbovanie jedného vojaka
+INT naverbovanie: čas potrebný na naverbovanie jedného vojaka
+INT vylepsenie: cena vylepšenia kasárne
+INT urychlenie: počet sekúnd ktorý zníži jedno vylepšenie
+INT armada = 0: pomocná premenná
 
-vstup:
-INT zlato: pocet zlata
-INT vestba: pocet sekund do prichodu nepriatelskeho vojska
-INT cena: pociatocna cena na naverbovanie jedneho vojaka
-INT naverbovanie: cas potrebny na naverbovanie jedneho vojaka
-INT vylepsenie: cena vylepsenia kasarne
-INT urychlenie: pocet sekund ktory znizi jedno vylepsenie
-INT armada = 0: pomocna premenna
-
-vystup:
-INT armada: maximalny pocet vojakov, ktorych stihame naverbovat.
-
+Output:
+INT armada: maximálny počet vojakov, ktorých stíhame naverbovať

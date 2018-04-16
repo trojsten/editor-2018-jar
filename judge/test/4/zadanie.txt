@@ -1,22 +1,22 @@
-Mame 'zlato' zlata. Vieme ze za 'vestba' sekund na nas pride zautocit nepriatelske vojsko, dovtedy chceme naverbovat co najviac vojakov. Na to mame jednu kasaren. Na zaciatku, vojak stoji 'cena' zlata a naverbovat jedneho nam trva 'naverbovanie' sekund. Mame M roznych vylepseni pre kasaren: i-te z nich stoji vylepsi[i] zlata, a sposobi aby sa vojak verboval o urychlenie[i] sekund rychlejsie (ale nie rychlejsie ako 1 za sekundu). Kasaren vieme vylepsit kolko krat chceme, ale kazde vylepsenie vieme pouzit len raz. Kolko vojakov stihame naverbovat?
+Máme 'zlato' zlata. Vieme že za 'vestba' sekúnd na nás príde zaútočiť nepriateľské vojsko. Dovtedy chceme naverbovať čo najviac vojakov. Na to máme jednu kasáreň. Na začiatku, vojak stojí 'cena' zlata a naverbovať jedného nám trvá 'naverbovanie' sekúnd. Máme M rôznych vylepšeni pre kasáreň: i-te z nich stojí vylepsi[i] zlata, a spôsobí aby sa vojak verboval o urychlenie[i] sekúnd rýchlejšie (ale nie rýchlejšie ako 1 za sekundu). Kasáreň vieme vylepsiť koľko krát chceme, ale každé vylepšenie vieme použiť len raz. Koľko vojakov stíhame naverbovať?
 
 
-vstup:
-INT zlato: pocet zlata 1<=zlato<=1000
-INT vestba: pocet sekund do prichodu nepriatelskeho vojska 1<=vestba<=10^9
-INT cena: pociatocna cena na naverbovanie jedneho vojaka 1<=cena<=1000
-INT naverbovanie: cas potrebny na naverbovanie jedneho vojaka 1<=naverbovanie<=10^9
-INT N: pocet roznych vylepseni. 1<=N<=20
-VECTOR<INT> vylepsi: ceny vylepseni. 1<=vylepsi[i]<=1000 
-VECTOR<INT> urychlenie: pocet sekund ktory znizi dane vylepsenie na naverbovanie vojaka. 1<=urychlenie[i]<=10^9
-INT armada = 0: pomocna premenna
-INT iha: pomocna premenna
-INT joj: pomocna premenna
-INT kuk: pomocna premenna
-INT lol: pomocna premenna
-VECTOR<INT> teraz: pomocna premenna
-VECTOR<INT> potom: pomocna premenna
+Input:
+INT zlato: počet zlata; 1<=zlato<=1000
+INT vestba: počet sekúnd do príchodu nepriateľského vojska; 1<=vestba<=10^9
+INT cena: počiatočná cena na naverbovanie jedného vojaka; 1<=cena<=1000
+INT naverbovanie: čas potrebný na naverbovanie jedného vojaka; 1<=naverbovanie<=10^9
+INT N: počet rôznych vylepšení; 1<=N<=20
+VECTOR<INT> vylepsi: ceny vylepšení; 1<=vylepsi[i]<=1000 
+VECTOR<INT> urychlenie: počet sekúnd ktorý zníži dané vylepšenie na naverbovanie vojaka; 1<=urychlenie[i]<=10^9
+INT armada = 0: pomocná premenná
+INT iha: pomocná premenná
+INT joj: pomocná premenná
+INT kuk: pomocná premenná
+INT lol: pomocná premenná
+VECTOR<INT> teraz: pomocná premenná
+VECTOR<INT> potom: pomocná premenná
 
-vystup:
-INT armada: maximalny pocet vojakov, ktorych stihame naverbovat.
+Output:
+INT armada: maximálny počet vojakov, ktorých stíhame naverbovať
 
