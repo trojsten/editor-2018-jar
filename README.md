@@ -14,6 +14,7 @@ See README in `editor` directory.
  - `rustc` : Rust
  - `perl` : Perl5
  - `r-base` : R-ko
+ - `sudo apt install fp-compiler g++ python3 golang-go php7.0-cli rustc perl r-base`
 
 
 ## Jazyk
