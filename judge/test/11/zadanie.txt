@@ -1,6 +1,6 @@
-Chystas velke zmeny velitelstva tvojej armady. Ale komu sa chce prepisovat tituly?
+Chystáš veľké zmeny veliteľstva tvojej armády. Ale komu sa chce prepisovať tituly?
 
-input:
+Input:
 STRING General
 STRING Plukovnik
 STRING Podplukovnik
@@ -10,16 +10,15 @@ STRING Programator
 STRING Velmajstermaxisupergeneralveduci
 STRING Nadpodpredzadplukovnikazarovendokoncaajgeneral
 
-vsetky retazce su neprazdne, z pismen anglickej abecedy, dlhe najviac 10 znakov
+Všetky reťazce sú neprázdne, z písmen anglickej abecedy, dlhé najviac 10 znakov.
 
-output:
-STRING General: to, co bolo povodne v Strateg
-STRING Plukovnik: to, co bolo povodne v Podplukovnik
-STRING Podplukovnik: to, co bolo povodne v General
-STRING Strateg: to, co bolo povodne v Spion
-STRING Spion: to, co bolo povodne v Programator
-STRING Programator: to, co bolo povodne v Plukovnik
-STRING Velmajstermaxisupergeneralveduci: to, co bolo povodne v Nadpodpredzadplukovnikazarovendokoncaajgeneral
-STRING Nadpodpredzadplukovnikazarovendokoncaajgeneral: to, co bolo povodne v Velmajstermaxisupergeneralveduci
-
+Output:
+STRING General: to, čo bolo pôvodne v Strateg
+STRING Plukovnik: to, čo bolo pôvodne v Podplukovnik
+STRING Podplukovnik: to, čo bolo pôvodne v General
+STRING Strateg: to, čo bolo pôvodne v Spion
+STRING Spion: to, čo bolo pôvodne v Programator
+STRING Programator: to, čo bolo pôvodne v Plukovnik
+STRING Velmajstermaxisupergeneralveduci: to, čo bolo pôvodne v Nadpodpredzadplukovnikazarovendokoncaajgeneral
+STRING Nadpodpredzadplukovnikazarovendokoncaajgeneral: to, čo bolo pôvodne v Velmajstermaxisupergeneralveduci
 
