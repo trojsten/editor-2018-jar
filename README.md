@@ -5,6 +5,8 @@ Editor na jesenne KSP sustredko 2017.
 
 See README in `editor` directory.
 
+Odporúčam si nainštalovať všetky requirements z `editor` priečinku, a potom pustiť `./hard_reset.sh`, ktorý robí všetko potrebné, a ešte aj sa opýta na nastavenie super usera. Toho treba vytvoriť, aby ste sa mohli prihlásiť do appky.
+
 ## Apt-gets
  - `fp-compiler`: free pascal
  - `g++`: C++ compiler
