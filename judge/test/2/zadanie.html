@@ -1,0 +1,29 @@
+<p>Drevo je nesmierne d&ocirc;ležit&aacute; surovina. Preto mus&iacute;me vedieť, koľko ho vlastne m&aacute;me k dispoz&iacute;ci&iacute; - koľko stromov je v lese pri na&scaron;ej z&aacute;kladni?</p>
+
+<p>Ako dobre vieme, strom je neorientovan&yacute; s&uacute;visl&yacute; acyklick&yacute; graf. Les je disjunktn&eacute; zjednotenie niekoľk&yacute;ch stromov (teda jednotliv&eacute; stromy nemaj&uacute; spoločn&eacute; vrcholy).</p>
+
+<p>Na vstupe m&aacute;te les. Spoč&iacute;tajte, koľko je v ňom stromov.</p>
+
+<p>Input:</p>
+
+<pre>
+<code>INT N: počet vrcholov v lese. 1&lt;=N&lt;=10^5
+INT M: počet hrán v lese. 1&lt;=M&lt;=10^5
+VECTOR&lt;INT&gt; Hrany1: M čísel z rozmedzia [1,N]
+VECTOR&lt;INT&gt; Hrany2: M čísel z rozmedzia [1,N]
+INT i: pomocna
+INT j: pomocna
+INT k: pomocna
+INT l: pomocna
+VECTOR&lt;INT&gt; drevo: pomocná
+VECTOR&lt;STR&gt; sekera: pomocná
+STR pouzivajmaopatrne: pomocná</code></pre>
+
+<p>Hrana vedie medzi vrcholmi <code>Hrany1[i]</code> a <code>Hrany2[i]</code> pre v&scaron;etky platn&eacute; indexy <code>i</code>. Vrcholy č&iacute;slujeme od jednotky.</p>
+
+<p>M&ocirc;žete predpokladať, že každ&aacute; hrana je na vstupe len raz a že na vstupe je naozaj les.</p>
+
+<p>Output:</p>
+
+<pre>
+<code>int N: počet stromov v lese</code></pre>
