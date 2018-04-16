@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-ACTIVE_PROBLEMS = 3
+ACTIVE_PROBLEMS = 13
 
 SUBMITTED_FILE_EXTENSION = '.submit'
 SUBMITTED_CUSTOM_INPUT_FILE_EXTENSION = '.custom'
@@ -108,12 +108,12 @@ class Language(object):
             (R, 'R'),
     )
     LANG_LINE_LENGTH = {
-        CPP: 20,
-        PYTHON: 10,
-        PASCAL: 25,
-        GO: 20,
-        PHP: 20,
-        RUST: 30,
-        PERL: 10,
-        R: 25,
+        CPP: 60,
+        PYTHON: 60,
+        PASCAL: 65,
+        GO: 60,
+        PHP: 60,
+        RUST: 60,
+        PERL: 60,
+        R: 65,
     }
