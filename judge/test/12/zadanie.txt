@@ -9,6 +9,7 @@ INT modry: pomocná premenná
 INT cerveny: pomocná premenná
 INT modrocerveny: pomocná premenná
 INT priest
+INT wololo
 
 Output:
 INT wololo: koľko krát vojaci zmenili farbu
