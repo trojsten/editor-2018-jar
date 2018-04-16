@@ -26,4 +26,8 @@
             </span>
         </div>
     {% endfor %}
+    {% if rows|length == 0 %}
+        <span style="color: red;">Prázdny kód.</span>
+        {% if not readonly %}Pridaj riadky.{% endif %}
+    {% endif %}
 </div>
