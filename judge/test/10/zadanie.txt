@@ -1,20 +1,20 @@
-Tvojej armade veli ostrielany vojnovy strateg Matus. Prave nahliada na mapu nepriatelskeho tabora.
-Duma nad nou dobrych 10 minut. Velavravne kichne - vsetci generali stichnu a cakaju na plan, ktory
-Matus vymyslel. 
+Tvojej armáde velí ostrieľaný vojnový stratég Matúš. Práve nahliada na mapu nepriateľského tábora.
+Dumá nad ňou dobrých 10 minút. Veľavravne kýchne - všetci generáli stíchnu a čakajú na plán, ktorý Matúš vymyslel. 
 
-'Zabudol som si okuliare. Na blizko nevidim, uz 10 minut sa snazim zistit aky velky ten nepriatelsky tabor je. Nepomoze mi niekto?'
+“Zabudol som si okuliare. Na blízko nevidim, už 10 minút sa snažím zistiť aký veľký ten nepriateľský tábor je. Nepomôže mi niekto?”
 
-Ach jaj. Pomozte Matusovi. 
+Ach jaj. Pomôžte Matúšovi. 
 
-input:
-INT velkostmapy: Dlzka strany mapy. Mapa je stvorcova. 1<=velkostmapy<=20
-VECTOR<STR> mapa : 'velkostmapy' stringov dlzky 'velkostmapy' -> mapa uzemia.
-znak '#' je nepriatelska stena, ostatne znaky su nepodstatne. Na mape je prave jeden
-(nevyplneny) obdlznik z '#'.
-INT vyska: pomocna premenna
-INT dlzka: pomocna premenna
-INT okuliare: pomocna premenna
+Input:
+INT velkostmapy: Dĺžka strany mapy. Mapa je štvorcová; 1<=velkostmapy<=20
+VECTOR<STR> mapa : 'velkostmapy' stringov dĺžky 'velkostmapy' => mapa územia.
+    Znak '#' je nepriateľská stena, ostatné znaky sú nepodstatné.
+    Na mape je práve jeden (nevyplnený) obdĺžnik z '#'.
+INT vyska: pomocná premenná
+INT dlzka: pomocná premenná
+INT okuliare: pomocná premenná
 
-output:
-INT vyska: vyska nepriatelskeho tabora (vertikalny rozmer, i.e. stena ktora pretina viacero stringov)
-INT dlzka: dlzka nepriatelskeho tabora (horizontalny rozmer, i.e. stena ktora je vramci jedneho stringu)
+Output:
+INT vyska: výška nepriateľského tábora (vertikálny rozmer, i.e. stena ktorá pretína viacero stringov)
+INT dlzka: dlzka nepriateľskeho tabora (horizontálny rozmer, i.e. stena ktora je vrámci jedného stringu)
+

@@ -1,0 +1,19 @@
+<p><code>N</code> lod&iacute; obkr&uacute;žilo n&aacute;&scaron; ostrov. <code>i</code>-ta loď sused&iacute; v tomto kruhu s <code>i+1</code>-ou, a <code>N</code>-t&aacute; loď sused&iacute; s prvou.<br />
+<code>i</code>-ta loď obsahuje <code>a_i</code> nepriateľsk&yacute;ch bojovn&iacute;kov. Mus&iacute;me zobrať na&scaron;u arm&aacute;du, začať nejakou loďou, a potom &iacute;sť dokola po pobrež&iacute; a &uacute;točiť na v&scaron;etky lode jednu za druhou.</p>
+
+<p>Niet dosť času, aby sme si zvolili optim&aacute;lnu strat&eacute;giu. Nar&yacute;chlo zvol&iacute;me aspoň ak&uacute;-tak&uacute; strat&eacute;giu na minimalizovanie str&aacute;t: povedzme, že počet bojovn&iacute;kov na lodiach ktor&eacute; poraz&iacute;me je postupne <code>b_1, b_2,...,b_N</code>. Chceme, aby zo v&scaron;etk&yacute;ch možn&yacute;ch porad&iacute; v ktorom lode m&ocirc;žeme poraziť, bol tento lexikografick&yacute; najmen&scaron;&iacute; - teda ak zoberieme ľubovoľn&eacute; in&eacute; poradie <code>c_1,...,c_N</code> a n&aacute;jdeme prv&eacute; <code>i</code> tak&eacute; že <code>b_i</code> sa nerovn&aacute; <code>c_i</code>, tak <code>b_i &lt; c_i</code>. N&aacute;jdite, v akom porad&iacute; m&aacute;me lode poraziť!</p>
+
+<p><strong>Input:</strong></p>
+
+<pre>
+<code>VECTOR&lt;INT&gt; lode: permutácia čísel 1 až N, N &lt;= 100: počty bojovníkov v jednotlivých lodiach.
+lode[i] susedí s lode[i+1] pre všetky zmysluplné i, a posledná loď susedí s prvou (tvoria kruh). 
+INT nepouzijestentointnadarmo: pomocná premenná. Nepoužite ju nadarmo.</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<pre>
+<code>VECTOR&lt;INT&gt; lode: lexikograficky najmenšie poradie lodí, v ktorom ich môžeme poraziť</code></pre>
+
+<p>(inak povedan&eacute;, lexikograficky najmen&scaron;&iacute; z&aacute;pis rovnak&eacute;ho kruhu)</p>
+
