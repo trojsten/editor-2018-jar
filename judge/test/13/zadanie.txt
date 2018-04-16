@@ -1,22 +1,21 @@
-Mame krasny domcek. Barbari nam ho chcu znicit. Nasa armada je prave na platenej dovolenke,
-takze ich nema kto zastavit. Iba ze by niekolki nasi workeri zacali pred domom buchat kladivom o zem...
+Máme krásny domček. Barbari nám ho chcú zničíť. Naša armáda je práve na platenej dovolenke, takže ich nemá kto zastaviť. Iba žeby niekoľkí naši workeri začali pred domom búchať kladivom o zem...
 
-Domcek ma N zivotov. M sekund donho budu utocit barbari; v i-tej sekunde spravia d_i damage. Mozeme na zaciatku nechat niekolko, nazvyme to W, workerov aby opravovali domcek.
-Domceku sa potom v i-tej sekunde stane nasledovne: 
+Domček má N životov. M sekúnd doňho budú útočiť barbari; v i-tej sekunde spravia d_i damage. Môžeme na začiatku nechať niekoľko, nazvime to W, workerov aby opravovali domček.
+Domčeku sa potom v i-tej sekunde stane nasledovné: 
 zivot = min(N,zivot-d_i+W)
-ak zivot <= 0: domcek bol zniceny.
+ak zivot <= 0: domček bol zničený
 
-Zistite, kolko najmenej workerov potrebujeme, aby domcek nebol zniceny.
+Zistite, koľko najmenej workerov potrebujeme, aby domček nebol zničený.
 
+Input:
+INT N: počet životov domčeka; 1 <= N <= 1000000
+INT M: počet barbarských útokov; 1 <= M <= 20
+VECTOR<INT> utoky: barbarské útoky => M čísel; 0<=M<=N
+INT zima: pomocná premenná
+INT teplo: pomocná premenná
+INT akurat: pomocná premenná
+INT nazvyniesunahoda: hintovacia premenná
 
-input:
-INT N: pocet zivotov domceka. 1 <= N <= 1000000
-INT M: pocet barbarskych utokov 1 <= M <= 20
-VECTOR<INT> utoky: barbarske utoky>. M cisel 0<=M<=N
-INT zima: pomocna premenna
-INT teplo: pomocna premenna
-INT akurat: pomocna premenna
-INT nazvyniesunahoda: hintovacia premenna
+Output:
+INT teplo: najnižší počet workerov potrebných na to, aby domček nezomrel
 
-output:
-INT teplo: najnizsi pocet workerov potrebnych na to, aby domcek nezomrel
