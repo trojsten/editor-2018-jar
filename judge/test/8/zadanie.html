@@ -1,0 +1,23 @@
+<p>Prebieha boj - my m&aacute;me <code>N &lt;= 100</code> vojakov, nepriateľ <code>M &lt;= 100</code>. Na&scaron;i vojaci maj&uacute; <code>H_i</code> životov, nepriateľsk&iacute; <code>h_i</code>. (tieto č&iacute;sla s&uacute;, čo ja viem, do 100). Každ&uacute; sekundu sa udeje nasledovn&eacute;:<br />
+Každ&yacute; nepriateľsk&yacute; vojak, jeden za druh&yacute;m, d&aacute; 1 damage ľubovoľn&eacute;mu n&aacute;&scaron;mu vojakovi. Maj&uacute; strat&eacute;giu: udriem do vojaka, ktor&yacute; je na vstupe čo najsk&ocirc;r a e&scaron;te žije. (Teda &ldquo;ľubovoľn&eacute;mu&rdquo; = prv&eacute;mu živ&eacute;mu). Ak n&aacute;&scaron; vojak po damagi ma 0 životov, zomrie.<br />
+Každ&yacute; z na&scaron;ich (živ&yacute;ch) vojakov d&aacute; 1 &uacute;der ľubovoľn&eacute;mu nepriateľovi.</p>
+
+<p>Ovl&aacute;dame na&scaron;ich vojakov, teda vieme každ&eacute;mu vždy povedať, ktor&eacute;ho nepriateľsk&eacute;ho vojaka maj&uacute; udrieť. Koľko z na&scaron;ich vojakov vie prežiť t&uacute;to bitku?</p>
+
+<p><strong>Input:</strong></p>
+
+<pre>
+<code>INT N: počet našich vojakov; 1&lt;=N&lt;=100
+INT M: počet nepriateľských vojakov; 1&lt;=N&lt;=100
+VECTOR&lt;INT&gt; hrdinovia: životy našich vojakov; 1&lt;=zivot_i&lt;=100
+VECTOR&lt;INT&gt; darebaci: životy nepriateľských vojakov; 1&lt;=zivot_i&lt;=100
+INT strategia: pomocná premenná
+INT utok: pomocná premenná
+INT obrana: pomocná premenná
+INT vitazstvo: pomocná premenná</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<pre>
+<code>INT N: najvyšší počet našich vojakov, ktorí dokážu prežiť bitku</code></pre>
+

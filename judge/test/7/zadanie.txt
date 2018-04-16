@@ -1,10 +1,12 @@
-Nepriatel si vyvinul novy typ vojaka: rozkladac. Tento vojak pri utoku premeni telo nasho vojaka na cislo, rozlozi ho na prvocisla, a potom ich premeni naspat na - uz rozkuskovane - telo vojaka.
-Rozkladac je vsak neefektivny, ak nasi vojaci su prvocisla. Chceme teda nasich vojakov posilnit tak, aby sa prvocislami stali. Ale nemame prilis jedla na zmar, tak co ich posilnime co najmenej.
+Nepriateľ si vyvinul nový typ vojaka: rozkladac. Tento vojak pri útoku premení telo nášho vojaka na číslo, rozloží ho na prvočísla, a potom ich premení naspäť na - už rozkúskované - telo vojaka.
+Rozkladač je však neefektívny, ak naši vojaci sú prvočísla. Chceme teda našich vojakov posilniť tak, aby sa prvočíslami stali. Ale nemáme príliš jedla na zmar, tak čo, posilnime ich čo najmenej.
 
-Dane je cislo N: cislo reprezentujuce nasho vojaka. Zvacste ho co najmenej tak, aby sa stalo prvocislom.
+Dané je číslo N: číslo reprezentujúce nášho vojaka. Zväčšite ho čo najmenej tak, aby sa stalo prvočíslom.
 
-input:
+Input:
 INT N: hodnota nasho vojaka. 1<=N<=1000
-INT rozkladac: pomocna premenna
-output:
-INT N: najmensie prvocislo ktore je aspon N.
+INT rozkladac: pomocná premenná
+
+Output:
+INT N: najmenšie prvočíslo ktoré je aspoň N
+
