@@ -11,7 +11,7 @@ from submit.helpers import get_default_custom_input
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_player = models.BooleanField(default=False)
+    is_player = models.BooleanField(default=True)
 
     def __str__(self):
         return '(Profile-%s-%s-%s)' % (self.id, self.user, self.is_player)
