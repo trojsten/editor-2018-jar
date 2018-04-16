@@ -12,6 +12,8 @@ See README in `editor` directory.
  - `golang-go`: Go compiler & toolchain
  - `php7.0-cli`: Php?  nie som si ale uplne isty verziou
  - `rustc` : Rust
+ - `perl` : Perl5
+ - `r-base` : R-ko
 
 
 ## Jazyk
