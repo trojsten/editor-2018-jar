@@ -1,0 +1,31 @@
+<p>Vlejd m&aacute; kas&aacute;reň. Ba&scaron;ka m&aacute; kas&aacute;reň.</p>
+
+<p>Priebeh hry: Na začiatku nikto nem&aacute; vojaka. V každej sekunde si každ&aacute; zo str&aacute;n, ak nem&aacute; vojaka, vytvor&iacute; jedn&eacute;ho vojaka. Označme silu <code>i</code>-teho vojaka vyroben&eacute;ho <code>L_i</code> a <code>R_i</code> pre ľavu a prav&uacute; stranu. Plat&iacute; <code>L_0 = R_0 = 1</code>.<br />
+Každ&aacute; strana m&aacute; magick&eacute; č&iacute;slo, naz&yacute;vame ich <code>mod_left</code> a <code>mod_right</code>, a m&aacute;me jedno magick&eacute; glob&aacute;lne č&iacute;slo <code>P</code>. Sila vojaka <code>i+1</code>-eho vyroben&eacute;ho ľavou stranou je <code>L_i * P % mod_left</code>, pravou stranou <code>R_i * P % mod_right</code>.</p>
+
+<p><strong>Obmedzenia:</strong></p>
+
+<pre>
+<code>P,mod_left,mod_right &lt;= 100</code></pre>
+
+<p>Teda v každej sekunde ma každ&aacute; strana 1 vojaka. Teraz: ak s&uacute; obaja vojaci rovnako siln&iacute;, nast&aacute;va rem&iacute;za (bij&uacute; sa donekonečna). Inak silnej&scaron;&iacute; zabije slab&scaron;ieho, a potom urobi 1 damage na nepriateľsk&yacute; base. Base m&aacute; <code>N &lt;= 10^9</code> životov.</p>
+
+<p><strong>Input:</strong></p>
+
+<pre>
+<code>INT N: Počet životov oboch základní; 1&lt;=N&lt;=10^9
+INT P: Konštanta relatívnej polohy planét a hviezd; 1&lt;=P&lt;=1000
+INT Vlejd: Vlejdova astrologická konštanta;  1&lt;=Vlejd&lt;=100
+INT Baska: Baškina astrologická konštanta; 1&lt;=Baska&lt;=100
+INT kopijnik: pomocná premenná
+INT lukostrelec: pomocná premenná
+INT delostrelec: pomocná premenná
+INT musketier: pomocná premenná
+STRING V: pomocná premenná
+STRING B: pomocná premenná</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<pre>
+<code>STRING V: "Vlejd" ak vyhrá Vlejd; "Baska" ak vyhrá Baška, alebo "Remiza" ak nikto nevyhrá.</code></pre>
+

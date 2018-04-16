@@ -1,26 +1,25 @@
-Vlejd ma kasaren. Baska ma kasaren.
+Vlejd má kasáreň. Baška má kasáreň.
 
+Priebeh hry: Na začiatku nikto nemá vojaka. V každej sekunde si každá zo strán, ak nemá vojaka, vytvorí jedného vojaka. Označme silu i-teho vojaka vyrobeného L_i a R_i pre ľavu a pravú stranu. Platí L_0 = R_0 = 1.
+Každá strana má magické číslo, nazývame ich mod_left a mod_right, a máme jedno magické globálne číslo P. Sila vojaka i+1-eho vyrobeného ľavou stranou je L_i * P % mod_left, pravou stranou R_i * P % mod_right.
 
-Priebeh hry: Na zaciatku nikto nema vojaka. V kazdej sekunde si kazda zo stran, ak nema vojaka, vytvori jedneho vojaka. Oznacme silu i-teho vojaka vyrobeneho L_i a R_i pre lavu a pravu stranu. L_0 = R_0 = 1.
-Kazda strana ma magicke cislo, nazvyme ich mod_left a mod_right, a mame jedno magicke globalne cislo P. Sila vojaka i+1-eho vyrobeneho lavou stranu je L_i * P % mod_left, pravou stranou R_i * P % mod_right.
-
+Obmedzenia:
 P,mod_left,mod_right <= 100.
 
-Teda v kazdej sekunde ma kazda strana 1 vojaka. Teraz: ak su obaja vojaci rovnako silny, je remiza (biju sa donekonecna). Inak silnejsi zabije slabsieho, a potom urobi 1 damage na nepriatelov base. Base ma N <= 10^9 zivotov.
+Teda v každej sekunde ma každá strana 1 vojaka. Teraz: ak sú obaja vojaci rovnako silní, nastáva remíza (bijú sa donekonečna). Inak silnejší zabije slabšieho, a potom urobi 1 damage na nepriateľský base. Base má N <= 10^9 životov.
 
-input:
+Input:
+INT N: Počet životov oboch základní; 1<=N<=10^9
+INT P: Konštanta relatívnej polohy planét a hviezd; 1<=P<=1000
+INT Vlejd: Vlejdova astrologická konštanta;  1<=Vlejd<=100
+INT Baska: Baškina astrologická konštanta; 1<=Baska<=100
+INT kopijnik: pomocná premenná
+INT lukostrelec: pomocná premenná
+INT delostrelec: pomocná premenná
+INT musketier: pomocná premenná
+STRING V: pomocná premenná
+STRING B: pomocná premenná
 
-INT N: Pocet zivotov oboch zakladni. 1<=N<=10^9
-INT P: Konstanta relativnej polohy planet a hviezd 1<=P<=1000
-INT Vlejd: Vlejdova astrologicka konstanta  1<=Vlejd<=100
-INT Baska: Baskina astrologicka konstanta 1<=Baska<=100
-INT kopijnik: pomocna premenna
-INT lukostrelec: pomocna premenna
-INT delostrelec: pomocna premenna
-INT musketier: pomocna premenna
-STRING V: pomocna premenna
-STRING B: pomocna premenna
-
-output:
-STRING V: "Vlejd" ak vyhra Vlejd, "Baska" ak vyhra Baska, alebo "Remiza" ak nikto nevyhra.
+Output:
+STRING V: "Vlejd" ak vyhrá Vlejd; "Baska" ak vyhrá Baška, alebo "Remiza" ak nikto nevyhrá.
 

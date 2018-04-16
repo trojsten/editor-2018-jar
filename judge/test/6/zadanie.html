@@ -1,0 +1,30 @@
+<p>&Uacute;plne dominujeme mapku, ale e&scaron;te sme nevyhrali. Vyhr&aacute;me o <code>N</code> sek&uacute;nd. Pr&aacute;ve sme dobyli nejak&uacute; zlat&uacute; baňu, spawnol sa pri nej nespokojn&yacute; magick&yacute; domorodec, ktor&yacute; za&uacute;toč&iacute; na na&scaron;ich workerov. Chceme tomu zabr&aacute;niť. M&aacute;me na v&yacute;ber <code>M &lt;= 10^4</code> typov bojovn&iacute;kov, <code>i</code>-ty z nich m&aacute;&nbsp;<code>H_i</code> životov a stoj&iacute; <code>C_i</code> peňaz&iacute; (<code>H_i, C_i &lt;= 1000</code>). Keďže &uacute;plne dominujeme, m&aacute;me k dispoz&iacute;cii <code>10^6 &lt;= Z &lt;= 10^9</code> zlata.</p>
+
+<p>Nespokojn&yacute; magick&yacute; domorodec m&aacute; k&uacute;zlo, ktor&eacute; rob&iacute; dokopy <code>D_i</code> damage okolostojacim vojakom. Keďže je magick&yacute;, na&scaron;i vojaci mu nerobia damage, ale len smutne stoja a tankuj&uacute; ho.</p>
+
+<p>Nech <code>sum(D)</code> je s&uacute;čet <code>D_1,...,D_{i-1}</code>, a <code>len(x)</code> počet č&iacute;slic v č&iacute;sle <code>x</code>:</p>
+
+<pre>
+<code>D_i = 0, ak i = 0,
+D_i = ( D_{i-1} * magia+sum(D)%i + 47 + len(D_{i-1}) ) % 1000 ak i&gt;0 a D_{i-1} je nepárne,
+D_i = ( D_{i-1} * len(sum(D)) + i%47 + magia*31 + sum(D)%len(magia) ) % 1000 ak i&gt;0 a D_{i-1} je párne</code></pre>
+
+<p>(a my mus&iacute;me vydržať sekundy <code>1...N</code>)</p>
+
+<p>Koľko najmenej vojakov potrebujeme, aby prežili <code>N</code> sek&uacute;nd?</p>
+
+<p><strong>Input:</strong></p>
+
+<pre>
+<code>INT N: počet sekúnd kým vyhráme; 1&lt;=N&lt;=100
+INT Z: počet zlata ktoré máme; 10^7 &lt;=Z&lt;= 10^9
+INT M: počet typov bojovníkov na výber; 1&lt;=M&lt;=10^4
+VECTOR&lt;INT&gt; bojovnici: M čísel, reprezentujúcich životy rôznych typov bojovníkov; 1&lt;=zivoty&lt;=10^4
+VECTOR&lt;INT&gt; nakupneceny: M cisel, reprezentujúcich ceny rôznych typov bojovníkov; 1&lt;=ceny&lt;=100
+INT magia: Magické číslo magického domorodca. 1&lt;=magia&lt;=1000</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<pre>
+<code>INT magia: najnižšíi počet bojovníkov ktorých potrebujeme, aby vydržali aspoň N kúziel.</code></pre>
+

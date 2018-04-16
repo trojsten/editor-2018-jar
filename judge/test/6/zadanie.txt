@@ -1,22 +1,23 @@
-Uplne dominujeme mapku, ale este sme nevyhrali. Vyhrame o N sekund. Prave sme dobyli nejaku zlatu banu, spawnol sa pri nej nespokojny magicky domorodec ktory zautoci na nasich workerov. Chceme tomu zabranit. Mame na vyber M <= 10^4 typov bojovnikov, i-ty z nich ma H_i zivotov a stoji C_i penazi (H_i, C_i <= 1000). Kedze uplne dominujeme, mame k dispozicii 10^6 <= Z <= 10^9 zlata.
+Úplne dominujeme mapku, ale ešte sme nevyhrali. Vyhráme o N sekúnd. Práve sme dobyli nejakú zlatú baňu, spawnol sa pri nej nespokojný magický domorodec, ktorý zaútočí na našich workerov. Chceme tomu zabrániť. Máme na výber M <= 10^4 typov bojovníkov, i-ty z nich má H_i životov a stojí C_i peňazí (H_i, C_i <= 1000). Keďže úplne dominujeme, máme k dispozícii 10^6 <= Z <= 10^9 zlata.
 
-Nespokojny magicky domorodec ma kuzlo, ktore robi dokopy D_i damage okolostojacim vojakom. Kedze je magicky, nasi vojaci mu nerobia damage, ale len smutne stoja a tankuju ho.
+Nespokojný magický domorodec má kúzlo, ktoré robí dokopy D_i damage okolostojacim vojakom. Keďže je magický, naši vojaci mu nerobia damage, ale len smutne stoja a tankujú ho.
 
-Nech sum(D) je sucet D_1,...,D_{i-1}, a len(x) pocet cislic v cisle x
+Nech sum(D) je súčet D_1,...,D_{i-1}, a len(x) počet číslic v čísle x:
 D_i = 0, ak i = 0,
-D_i = ( D_{i-1} * magia+sum(D)%i + 47 + len(D_{i-1}) ) % 1000 ak i>0 a D_{i-1} je neparne,
-D_i = ( D_{i-1} * len(sum(D)) + i%47 + magia*31 + sum(D)%len(magia) ) % 1000 ak i>0 a D_{i-1} je parne
-(a my musime vydrzat sekundy 1...N)
+D_i = ( D_{i-1} * magia+sum(D)%i + 47 + len(D_{i-1}) ) % 1000 ak i>0 a D_{i-1} je nepárne,
+D_i = ( D_{i-1} * len(sum(D)) + i%47 + magia*31 + sum(D)%len(magia) ) % 1000 ak i>0 a D_{i-1} je párne
+(a my musíme vydržať sekundy 1...N)
 
-Kolko najmenej vojakov potrebujeme, aby prezili N sekund?
+Koľko najmenej vojakov potrebujeme, aby prežili N sekúnd?
 
-input:
-INT N: pocet sekund kym vyhrame. 1<=N<=100
-INT Z: pocet zlata ktore mame. 10^7 <=Z<= 10^9
-INT M: pocet typov bojovnikov na vyber. 1<=M<=10^4
-VECTOR<INT> bojovnici: M cisel, reprezentujucich zivoty roznych typov bojovnikov 1<=zivoty<=10^4
-VECTOR<INT> nakupneceny: M cisel, reprezentujich ceny roznych typov bojovnikov. 1<=ceny<=100
-INT magia: Magicke cislo magickeho domorodca. 1<=magia<=1000
+Input:
+INT N: počet sekúnd kým vyhráme; 1<=N<=100
+INT Z: počet zlata ktoré máme; 10^7 <=Z<= 10^9
+INT M: počet typov bojovníkov na výber; 1<=M<=10^4
+VECTOR<INT> bojovnici: M čísel, reprezentujúcich životy rôznych typov bojovníkov; 1<=zivoty<=10^4
+VECTOR<INT> nakupneceny: M cisel, reprezentujúcich ceny rôznych typov bojovníkov; 1<=ceny<=100
+INT magia: Magické číslo magického domorodca. 1<=magia<=1000
 
-output:
-INT magia: najnizsi pocet bojovnikov ktorych potrebujeme, aby vydrzali aspon N kuziel.
+Output:
+INT magia: najnižšíi počet bojovníkov ktorých potrebujeme, aby vydržali aspoň N kúziel.
+
