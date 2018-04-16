@@ -17,14 +17,14 @@ class Command(BaseCommand):
 
     def _populate_problems(self, dir_path):
 
-        order = 1
-        used_orders = set([p.order for p in Problem.objects.all()])
+        problem_order = [10, 3, 7, 13, 9, 6, 2, 8, 4, 11, 1, 12, 5]
+        next_order = 14
+
         for input_path in sorted(glob.glob('%s/*/variables.json' % dir_path), key=lambda x : int(x.split('/')[-2])):
             problem_id = int(os.path.dirname(input_path).split('/')[-1])
             if problem_id < 1: continue
 
             dir = os.path.dirname(input_path)
-            print(os.path.join(dir, 'nazov.txt'))
 
             json_txt = '{}'
             nazov = 'Uloha %d' % problem_id
@@ -45,7 +45,11 @@ class Command(BaseCommand):
             problem = Problem.objects.filter(id=problem_id).first()
 
             if problem is None:
-                while order in used_orders: order += 1
+                try:
+                    order = problem_order.index(problem_id) + 1
+                except:
+                    order = next_order
+                    next_order += 1
                 problem, _ = Problem.objects.update_or_create(
                     id=problem_id,
                     title=nazov,
@@ -54,7 +58,6 @@ class Command(BaseCommand):
                     order=order,
                 )
                 self.stdout.write(self.style.NOTICE('Created %s problem' % problem.title))
-                order += 1
             else:
                 problem.variables=json_txt
                 problem.title = nazov
