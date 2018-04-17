@@ -1,0 +1,92 @@
+{% extends 'submit/main.html' %}
+{% load staticfiles %}
+
+{% block title %}Team{% endblock %}
+
+{% block style %}
+    .one-person {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .img-wrapper {
+        width: 300px;
+        height: 300px;
+        position: relative;
+    }
+    .photo {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        border-radius: 50%;
+    }
+    .name {
+        font-size: 40px;
+        color: #8c564b;
+    }
+    .team-row {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 80px;
+    }
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="first-row team-row">
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/vlejd.jpg' %}" />
+            </span>
+            <span class="name">
+                Vlejd
+            </span>
+        </div>
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/hodobox.jpg' %}" />
+            </span>
+            <span class="name">
+                Hodobox
+            </span>
+        </div>
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/baska.jpg' %}" />
+            </span>
+            <span class="name">
+                Baška
+            </span>
+        </div>
+    </div>
+    <div class="second-row team-row">
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/zajo.jpg' %}" />
+            </span>
+            <span class="name">
+                Zajo
+            </span>
+        </div>
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/buj.jpg' %}" />
+            </span>
+            <span class="name">
+                Buj
+            </span>
+        </div>
+    </div>
+    <div class="third-row team-row">
+        <div class="one-person">
+            <span class="img-wrapper">
+                <img class="photo" src="{% static 'submit/team/miso.jpg' %}" />
+            </span>
+            <span class="name">
+                Mišo
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}

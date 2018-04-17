@@ -23,6 +23,9 @@ def index(request):
 def welcome(request):
     return render(request, 'submit/welcome.html', {})
 
+def team(request):
+    return render(request, 'submit/team.html', {})
+
 def get_active(user):
     active_problems = list(filter(
         lambda task: task.active,
