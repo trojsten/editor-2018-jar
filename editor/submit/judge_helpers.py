@@ -10,7 +10,7 @@ from unidecode import unidecode
 import json
 
 from submit.constants import JudgeTestResult, ReviewResponse
-from submit.models import SubmitOutput, Row, Task
+from submit.models import SubmitOutput, Row, Task, Profile
 from submit.helpers import (write_chunks_to_file, write_lines_to_file)
 from submit.constants import ReviewResponse
 
@@ -23,8 +23,9 @@ def create_submit_and_send_to_judge(problem, user, custom=False):
     submit = SubmitOutput(user=user, problem=problem, score=0, custom=custom, status=ReviewResponse.SENDING_TO_JUDGE)
     submit.save()
     _prepare_raw_file(submit, custom)
+    profile = Profile.objects.get(user=user)
     try:
-        _send_to_judge(submit)
+        _send_to_judge(submit, profile.host, profile.port)
         submit.status = ReviewResponse.SENT_TO_JUDGE
     except JudgeConnectionError:
         submit.status = ReviewResponse.JUDGE_UNAVAILABLE
@@ -33,10 +34,11 @@ def create_submit_and_send_to_judge(problem, user, custom=False):
         submit.save()
         return submit.id
 
-def _send_to_judge(submit):
+def _send_to_judge(submit, host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print('\nSent submit: %d on %s:%s\n' % (submit.id, host, port))
     try:
-        sock.connect((django_settings.JUDGE_ADDRESS, django_settings.JUDGE_PORT))
+        sock.connect((host, port))
         with open(submit.raw_path(), 'rb') as raw:
             sock.send(raw.read())
     except:
