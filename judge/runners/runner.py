@@ -1,5 +1,3 @@
-import logging
-logging.basicConfig(level=logging.INFO)
 
 
 class Runner:
@@ -218,12 +216,12 @@ class Runner:
         pass
 
     def simple_full_run(self, in_memory, out_memory):
-        logging.info('Prepare')
+        #logging.info('Prepare')
         prepare_status = self.prepare()
-        logging.info("Prepare status: %s", prepare_status)
-        logging.info('Execute')
+        #logging.info("Prepare status: %s", prepare_status)
+        #logging.info('Execute')
         execute_status = self.execute(in_memory, out_memory)
-        logging.info("Execute status: %s", execute_status)
+        #logging.info("Execute status: %s", execute_status)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,10 @@ import logging
 import re
 import os
 
-
+import logging
+logging.basicConfig(filename='all.log',level=logging.DEBUG)
+logging.handlers = []
+        
 runners = [PythonRunner, CppRunner, GoRunner, PascalRunner, PHPRunner, RustRunner, RRunner, PerlRunner]
 
 REGISTER = {r.NAME: r for r in runners}
@@ -28,6 +31,7 @@ class MasterRunner:
         os.makedirs(os.path.dirname(self.location), exist_ok=True)
         
         self.logger = logging.getLogger('submit'+prefix)
+        self.logger.handlers = []
         self.logger.setLevel(logging.INFO)
         hdlr = logging.FileHandler(os.path.join('tmp',prefix,'fulllog.log'), mode='w')
         self.logger.addHandler(hdlr) 
