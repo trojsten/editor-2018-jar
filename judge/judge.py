@@ -26,8 +26,9 @@ def run_custom(master, protokol, input_path):
     result = master.run(input_path)
     message, line, detailsMsg = 'OK', 0, ''
     if isinstance(result, tuple):
-        message = 'EXC'
+        message = result[0]
         line = result[1]
+        detailsMsg = result[2]
     elif isinstance(result, dict):
         memory = result
         message = 'DONE'
@@ -66,30 +67,40 @@ def compare(memory, premenna, hodnota, problem):
 def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
     count_ok = 0
-    for input_path in glob.glob('test/%s/*.in' % problem):
+    skipping = False
+    tles = 0
+    for i, input_path in enumerate(sorted(glob.glob('test/%s/*.in' % problem))):
         print(input_path)
-        base = os.path.splitext(input_path)[0]
-        result = master.run(input_path)
         message, line, diff = 'OK', 0, {}
-        if isinstance(result, tuple):
-            message = 'EXC'
-            line = result[1]
-        elif isinstance(result, dict):
-            memory = result
+        
+        if tles >= 2:
+            message, line, diff = 'IGN', 0, {}
+        else:
+            base = os.path.splitext(input_path)[0]
+            result = master.run(input_path)
+            if isinstance(result, tuple):
+                message = result[0]
+                line = result[1]
+            elif isinstance(result, dict):
+                memory = result
 
-            with open('%s.out' % base, 'r') as out_file:
-                output = json.loads(out_file.read())
-                ok = True
-                for premenna, hodnota in output.items():
-                    # TODO: floaty su meh
-                    if not compare(memory, premenna, hodnota, problem):
-                        ok = False
-                        diff[premenna] = (hodnota, memory[premenna])
-                if ok:
-                    message = 'OK'
-                    count_ok += 1
-                else:
-                    message = 'WA'
+                with open('%s.out' % base, 'r') as out_file:
+                    output = json.loads(out_file.read())
+                    ok = True
+                    for premenna, hodnota in output.items():
+                        # TODO: floaty su meh
+                        if not compare(memory, premenna, hodnota, problem):
+                            ok = False
+                            diff[premenna] = (hodnota, memory[premenna])
+                    if ok:
+                        message = 'OK'
+                        count_ok += 1
+                    else:
+                        message = 'WA'
+
+        print("Msg ", message)
+        if message == "TLE":
+            tles += 1
 
         # crete xml elements
         test = SubElement(runLog, 'test')
