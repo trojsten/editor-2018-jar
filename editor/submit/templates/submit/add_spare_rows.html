@@ -5,9 +5,7 @@
 {% block content %}
 <h1>Add rows</h1>
 
-<p>
-Keď pridáš riadky družinke, tak sa im uložia do DB, a potom si ich vedia sami pridávať tak ako chcú.
-</p>
+<h4 style="font-weight: 600;">Keď pridáš riadky družinke, tak sa im uložia do DB, a potom si ich vedia sami pridávať tak ako chcú.</h4>
 
 <form id="add_rows_form" method="post" action="{% url 'add_spare_rows' %}">
     {% csrf_token %}

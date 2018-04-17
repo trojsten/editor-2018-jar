@@ -4,44 +4,49 @@
 {% block title %}Výsledky{% endblock %}
 
 {% block content %}
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col" class="col-md-3">#</th>
-            {% for user in users %}
-                <th scope="col" class="col-md-1">{{ user.username }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for problem in problems  %}
-            <tr>
-                <th scope="row">{{ problem.title }}</th>
-                {% for user in users %}
-                    {% with submit=results|get_key:user.id|get_key:problem.id %}
-                        {% if submit is None %}
-                            <td></td>
-                        {% else %}
-                            <td class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
-                                        success
-                                        {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
-                                        info
-                                        {% elif submit.score > 0 %}
-                                        warning
-                                        {% else %}
-                                        danger
-                                        {% endif %}">
-                                <a href="{% url 'view_submit' submit_id=submit.id %}">{{ submit.status }}</a>
-                            </td>
-                        {% endif %}
-                    {% endwith %}
+<div class="panel-group">
+    <div class="panel panel-default">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" class="col-md-3">#</th>
+                    {% for user in users %}
+                        <th scope="col" class="col-md-1">{{ user.username }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for problem in problems  %}
+                    <tr>
+                        <th scope="row">{{ problem.title }}</th>
+                        {% for user in users %}
+                            {% with submit=results|get_key:user.id|get_key:problem.id %}
+                                {% if submit is None %}
+                                    <td></td>
+                                {% else %}
+                                    <td class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
+                                                success
+                                                {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE %}
+                                                info
+                                                {% elif submit.score > 0 %}
+                                                warning
+                                                {% else %}
+                                                danger
+                                                {% endif %}">
+                                        <a href="{% url 'view_submit' submit_id=submit.id %}">{{ submit.status }}</a>
+                                    </td>
+                                {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
                 {% endfor %}
-            </tr>
-        {% endfor %}
-        <tr class="info">
-            <th scope="row">Počet OK</th>
-            {% for user in users %}
-                <td>{{ count_oks|get_key:user.id }}</td>
-            {% endfor %}
-    </tbody>
+                <tr class="info">
+                    <th scope="row">Počet OK</th>
+                    {% for user in users %}
+                        <td>{{ count_oks|get_key:user.id }}</td>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

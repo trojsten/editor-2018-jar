@@ -4,7 +4,7 @@
 {% block title %}Úloha: {{ problem.title }}{% endblock %}
 {% block content %}
 
-<h2>{{ problem.title }}</h2>
+<h2 style="font-weight: 600;">{{ problem.title }}</h2>
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -134,72 +134,80 @@
     </p>
     <div class="row">
         <div class="col col-md-4 col-md-push-8">
-            <table class="table hover sortable">
-                <thead>
-                    <tr>
-                        <th>Jazyk</th>
-                        <th>Počet</th>
-                        <th class="sorttable_nosort">+</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in lang_counts %}
-                        <tr>
-                            <td>{{ lang_codes|get_key:row.lang }}</td>
-                            <td>{{ row.num_rows }}</td>
-                            <td>
-                                <button
-                                    type="submit"
-                                    class="btn btn-success btn-xs"
-                                    {% if readonly %}disabled{% endif %}
-                                    name="add-lang"
-                                    formaction="{% url 'add_lang_row' problem_id=problem.id lang_code=row.lang %}"
-                                >
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <table class="table hover sortable">
+                        <thead>
+                            <tr>
+                                <th>Jazyk</th>
+                                <th>Počet</th>
+                                <th class="sorttable_nosort">+</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in lang_counts %}
+                                <tr>
+                                    <td>{{ lang_codes|get_key:row.lang }}</td>
+                                    <td>{{ row.num_rows }}</td>
+                                    <td>
+                                        <button
+                                            type="submit"
+                                            class="btn btn-success btn-xs"
+                                            {% if readonly %}disabled{% endif %}
+                                            name="add-lang"
+                                            formaction="{% url 'add_lang_row' problem_id=problem.id lang_code=row.lang %}"
+                                        >
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="col col-md-8 col-md-pull-4">
-            <table class="table hover">
-                <thead>
-                    <tr>
-                        <th>Čas</th>
-                        <th>Stav</th>
-                        <th>Body</th>
-                        <th>Akcie</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for submit in submits %}
-                    <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
-                                success
-                                {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE or submit.status == response.DONE %}
-                                info
-                                {% elif submit.score > 0 %}
-                                warning
-                                {% else %}
-                                danger
-                                {% endif %}">
-                            <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
-                            <td>{{ submit.get_status_display }}</td>
-                            <td>{{ submit.score }}</td>
-                            <td>
-                                <a
-                                    class="btn btn-primary btn-xs"
-                                    href="{% url 'view_submit' submit_id=submit.id %}"
-                                    target="_blank"
-                                >
-                                    Detaily
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <table class="table hover">
+                        <thead>
+                            <tr>
+                                <th>Čas</th>
+                                <th>Stav</th>
+                                <th>Body</th>
+                                <th>Akcie</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for submit in submits %}
+                            <tr class="{% if submit.status == response.OK or submit.status == response.REVIEWED %}
+                                        success
+                                        {% elif submit.status == response.SENDING_TO_JUDGE or submit.status == response.SENT_TO_JUDGE or submit.status == response.DONE %}
+                                        info
+                                        {% elif submit.score > 0 %}
+                                        warning
+                                        {% else %}
+                                        danger
+                                        {% endif %}">
+                                    <td>{{ submit.timestamp|date:"d.m.Y H:i T" }}</td>
+                                    <td>{{ submit.get_status_display }}</td>
+                                    <td>{{ submit.score }}</td>
+                                    <td>
+                                        <a
+                                            class="btn btn-primary btn-xs"
+                                            href="{% url 'view_submit' submit_id=submit.id %}"
+                                            target="_blank"
+                                        >
+                                            Detaily
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </form>
