@@ -147,6 +147,19 @@ class CppRunner(Runner):
         )
         return code
 
+    def generate(self):
+        """Generates the whole code."""
+        code = (
+          self.begin_ceremony() + '\n' +
+          self.load_vars() + '\n' +
+          "{\n"+
+          self.code + '\n' +
+          "}\n"+
+          self.save_vars() + '\n' +
+          self.end_ceremony()
+        )
+        return code
+
     def prepare(self):
         code_file = open(self.codename+".cpp", "w")
         code_file.write(self.generate())

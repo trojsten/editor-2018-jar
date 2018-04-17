@@ -92,7 +92,7 @@ class Runner:
         return code
 
     def timeout(self, command):
-        return 'timeout 1 '+ command
+        return 'timeout 5 '+ command
 
     def begin_ceremony(self):
         """Override me to generate code at the beginning of file (headers).

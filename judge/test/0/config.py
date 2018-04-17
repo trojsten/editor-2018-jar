@@ -21,8 +21,8 @@ sample_input_output_pairs = [
         {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
         "floatt":0.001, "strr":"ddgf"},
         # output
-        {"intv": [1,2,4,4], "strv": ["abcd","sfb"], "floatv": [0.11,0.2,0.3], "intt": 11, 
-        "floatt":0.0001, "strr":"ddgf3"},
+        {"intv": [1,2,3,4], "strv": ["abcd","sf"], "floatv": [0.1,0.2,0.3], "intt": 10, 
+        "floatt":0.001, "strr":"ddgf"},
     ),
     ( # sample 00
         # input

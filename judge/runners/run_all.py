@@ -24,7 +24,7 @@ REGISTER = {r.NAME: r for r in runners}
 
 
 class MasterRunner:
-    def __init__(self, code, prefix='', variables=None, limit=10000):
+    def __init__(self, code, prefix='', variables=None, limit=100000):
         self.code = code
         self.limit = limit
         self.runners = []
