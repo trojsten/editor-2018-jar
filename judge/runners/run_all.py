@@ -4,16 +4,18 @@ from runners.runner_go import GoRunner
 from runners.runner_pascal import PascalRunner
 from runners.runner_php import PHPRunner
 from runners.runner_rust import RustRunner
+from runners.runner_r import RRunner
+from runners.runner_perl import PerlRunner
 
 from runners.runner import Runner
 from runners.init_runner import InitRunner
 
 import logging
 import re
+import os
 
-logging.basicConfig(level=logging.INFO)
 
-runners = [PythonRunner, CppRunner, GoRunner, PascalRunner, PHPRunner, RustRunner]
+runners = [PythonRunner, CppRunner, GoRunner, PascalRunner, PHPRunner, RustRunner, RRunner, PerlRunner]
 
 REGISTER = {r.NAME: r for r in runners}
 
@@ -22,7 +24,14 @@ class MasterRunner:
     def __init__(self, code, prefix='', variables=None):
         self.code = code
         self.runners = []
-        self.location = 'tmp/'+prefix+'runer{}'
+        self.location = os.path.join('tmp',prefix,'runer{}')
+        os.makedirs(os.path.dirname(self.location), exist_ok=True)
+        
+        self.logger = logging.getLogger('submit'+prefix)
+        self.logger.setLevel(logging.INFO)
+        hdlr = logging.FileHandler(os.path.join('tmp',prefix,'fulllog.log'), mode='w')
+        self.logger.addHandler(hdlr) 
+
         self.variables = variables
 
     def prepare(self):
@@ -33,12 +42,15 @@ class MasterRunner:
         for i, (line, language) in enumerate(self.code):
             special_match = re.match("IF (.*) IS NOT ZERO GOTO (\d*)", line)
             if special_match is None:
-                runner = REGISTER[language](line, self.location.format(i), self.variables)
-                # TODO catch errors
-                prepare_status, prepare_message = runner.prepare()
-                if prepare_status != 0:
-                    return "CERR", i+1, prepare_message
-                self.runners.append(runner)
+                if line.strip()=="":
+                    self.runners.append(None)
+                else:
+                    runner = REGISTER[language](line, self.location.format(i), self.variables)
+                    # TODO catch errors
+                    prepare_status, prepare_message = runner.prepare()
+                    if prepare_status != 0:
+                        return "CERR", i+1, prepare_message
+                    self.runners.append(runner)
             else:
                 groups = special_match.groups()
                 self.runners.append((groups[0], int(groups[1])))
@@ -52,10 +64,12 @@ class MasterRunner:
         while line < len(self.runners):
             counter += 1
             runner = self.runners[line]
-            if not isinstance(runner, tuple):
-                logging.info('Line %d, counter %d, runner %s code %s', line+1, counter, runner.NAME, runner.code)
+            if runner is None:
+                line += 1
+            elif not isinstance(runner, tuple):
+                self.logger.info('Line %d, counter %d, runner %s code %s', line+1, counter, runner.NAME, runner.code)
                 out_memory = self.location.format("_mem_"+str(counter))
-                logging.info('From: %s, To: %s', last_memory, out_memory)
+                self.logger.info('From: %s, To: %s', last_memory, out_memory)
                 execute_result = self.runners[line].execute(last_memory, out_memory)
                 execute_status, execute_message = execute_result
                 if execute_status != 0:
@@ -63,19 +77,19 @@ class MasterRunner:
                 last_memory = out_memory
                 line += 1
             else:
-                logging.info('Line %d, counter %d, runner %s', line+1, counter, "jump")
-                logging.info('Jupming on line: %d', line+1)
+                self.logger.info('Line %d, counter %d, runner %s', line+1, counter, "jump")
+                self.logger.info('Jupming on line: %d', line+1)
                 variable = runner[0]
                 to_line = runner[1]-1
                 memory = init_runner.load_memory(last_memory)
-                logging.info('Memory: %s = %d', variable, memory[variable])
+                self.logger.info('Memory: %s = %d', variable, memory[variable])
 
                 if memory[variable] != 0:
                     line = to_line
                 else:
                     line += 1
 
-        logging.info('Reading final memory: %s', last_memory)
+        self.logger.info('Reading final memory: %s', last_memory)
         memory = init_runner.load_memory(last_memory)
         return memory
 

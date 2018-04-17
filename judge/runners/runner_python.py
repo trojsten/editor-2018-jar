@@ -1,9 +1,9 @@
 from runners.runner import Runner
 
 import os
-import logging
+#import logging
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 
 class PythonRunner(Runner):

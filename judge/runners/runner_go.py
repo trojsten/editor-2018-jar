@@ -1,7 +1,7 @@
 from runners.runner import Runner
 from runners.init_runner import InitRunner
 import os
-import logging
+#import logging
 
 the_genesis = '''
 package main
@@ -209,14 +209,14 @@ class GoRunner(Runner):
         f.close()
         log_fname = "{}.compile_log".format(self.codename)
         cmd = 'go build -o {} {} 2>{}'.format(self.codename, filename, log_fname)
-        logging.info("Running: %s", cmd)
+        #logging.info("Running: %s", cmd)
         return os.system(cmd), open(log_fname).read()
 
 
     def execute(self, in_memory, out_memory):
         log_fname = "{}.runtime_log".format(self.codename)
         cmd = './{} {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
-        logging.info('Executing: %s', cmd)
+        #logging.info('Executing: %s', cmd)
         return os.system(cmd), open(log_fname).read()
 
 

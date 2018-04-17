@@ -2,9 +2,9 @@ from runners.runner import Runner
 from runners.init_runner import InitRunner
 
 import os
-import logging
+#import logging
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 
 class CppRunner(Runner):
@@ -153,13 +153,13 @@ class CppRunner(Runner):
         code_file.close()
         log_fname = "{}.compile_log".format(self.codename)
         command = 'g++ {0}.cpp --std=c++11 -w -o {0}.bin 2>{1}'.format(self.codename, log_fname)
-        logging.info("Running: %s", command)
+        #logging.info("Running: %s", command)
         return os.system(command), open(log_fname).read()
 
     def execute(self, in_memory, out_memory):
         log_fname = "{}.runtime_log".format(self.codename)
         command = './{}.bin {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
-        logging.info('Executing: %s', command)
+        #logging.info('Executing: %s', command)
         return os.system(command), open(log_fname).read()
 
 

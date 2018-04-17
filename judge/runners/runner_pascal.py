@@ -1,9 +1,9 @@
 from runners.runner import Runner
 from runners.init_runner import InitRunner
 import os
-import logging
+#import logging
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 
 class PascalRunner(Runner):
@@ -190,7 +190,7 @@ class PascalRunner(Runner):
     def execute(self, in_memory, out_memory):
         log_fname = "{}.runtime_log".format(self.codename)
         command = './{} {} {} 2>{}'.format(self.codename, in_memory, out_memory, log_fname)
-        logging.info('Executing: %s', command)
+        #logging.info('Executing: %s', command)
         return os.system(command), open(log_fname).read()
 
 
