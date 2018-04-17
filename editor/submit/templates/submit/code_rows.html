@@ -27,7 +27,7 @@
         </div>
     {% endfor %}
     {% if rows|length == 0 %}
-        <h3 style="color: #d62728;">Prázdny kód.</h3>
+        <h3 class="empty-code">Prázdny kód.</h3>
         {% if not readonly %}Pridaj riadky.{% endif %}
     {% endif %}
 </div>
