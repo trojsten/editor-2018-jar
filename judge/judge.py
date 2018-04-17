@@ -80,7 +80,7 @@ def run_tests(problem, master, protokol):
                 ok = True
                 for premenna, hodnota in output.items():
                     # TODO: floaty su meh
-                    if notcompare(memory, premenna, hodnota, problem):
+                    if not compare(memory, premenna, hodnota, problem):
                         ok = False
                         diff[premenna] = (hodnota, memory[premenna])
                 if ok:
