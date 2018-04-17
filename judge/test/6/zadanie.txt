@@ -1,4 +1,4 @@
-Úplne dominujeme mapku, ale ešte sme nevyhrali. Vyhráme o N sekúnd. Práve sme dobyli nejakú zlatú baňu, spawnol sa pri nej nespokojný magický domorodec, ktorý zaútočí na našich workerov. Chceme tomu zabrániť. Máme na výber M <= 10^4 typov bojovníkov, i-ty z nich má H_i životov a stojí C_i peňazí (H_i, C_i <= 100). Keďže úplne dominujeme, máme k dispozícii 10^6 <= Z <= 10^9 zlata.
+Úplne dominujeme mapku, ale ešte sme nevyhrali. Vyhráme o N sekúnd. Práve sme dobyli nejakú zlatú baňu, spawnol sa pri nej nespokojný magický domorodec, ktorý zaútočí na našich workerov. Chceme tomu zabrániť. Máme na výber M <= 10^4 typov bojovníkov, i-ty z nich má bojovnici_i životov a stojí nakupneceny_i peňazí. Keďže úplne dominujeme, máme k dispozícii 10^6 <= Z <= 10^9 zlata.
 
 Nespokojný magický domorodec má kúzlo, ktoré robí dokopy D_i damage okolostojacim vojakom. Keďže je magický, naši vojaci mu nerobia damage, ale len smutne stoja a tankujú ho.
 
