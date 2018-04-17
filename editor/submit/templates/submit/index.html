@@ -1,10 +1,10 @@
 {% extends 'submit/main.html' %}
 
-{% block title %}Editor{% endblock %}
+{% block title %}Editor Of Empires{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h1>Editor says... hello {{ user.username }}!</h1>
+        <h1>Editor Of Empires says... hello {{ user.username }}!</h1>
     {% else %}
         <h1>Hello KSP!</h1>
         <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
