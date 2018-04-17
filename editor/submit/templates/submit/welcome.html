@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="{% static 'submit/css/bootstrap.min.css' %}">
+        <link rel="icon" type="image/png" href="{% static "submit/favicon.ico" %}"/>
+        <style>
+            .svg-div {
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: black;
+            }
+            a.svg:after {
+                content: ""; 
+                position: absolute; 
+                top: 0; 
+                right: 0; 
+                bottom: 0; 
+                left: 0;
+            }
+        </style>
+        <title>{% block title %}Editor Of Empires{% endblock %}</title>
+    </head>
+
+    <body>
+        <a href="{% url 'login' %}" class="svg">
+            <div class="svg-div">
+                <object data="{% static 'submit/logo.svg' %}" type="image/svg+xml" class="mailicon">
+            </div>
+        </a>
+        {% block js %}
+            <script src="{% static 'submit/js/jquery-latest.min.js' %}" type="text/javascript"></script>
+            <script src="{% static 'submit/js/popper.min.js' %}" type="text/javascript"></script>
+            <script src="{% static 'submit/js/bootstrap.min.js' %}" type="text/javascript"></script>
+            <script src="{% static 'submit/js/sorttable.js' %}" type="text/javascript"></script>
+        {% endblock js %}
+    </body>
+
+</html>

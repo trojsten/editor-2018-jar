@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    url(r'^$', lambda r: HttpResponseRedirect('submit/')),
+    url(r'^$', lambda r: HttpResponseRedirect('submit/welcome/')),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^submit/', include('submit.urls')),
     url(r'^admin/', admin.site.urls),

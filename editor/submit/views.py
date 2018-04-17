@@ -20,6 +20,9 @@ from submit.judge_helpers import (create_submit_and_send_to_judge, parse_protoco
 def index(request):
     return render(request, 'submit/index.html', {})
 
+def welcome(request):
+    return render(request, 'submit/welcome.html', {})
+
 def get_active(user):
     active_problems = list(filter(
         lambda task: task.active,
