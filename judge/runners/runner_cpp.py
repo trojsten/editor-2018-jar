@@ -168,7 +168,9 @@ if __name__ == '__main__':
     init.create_init_memory('tmp/memory.txt')
     runner1 = CppRunner(init.SOME_INT_VECTOR + '.push_back(10);\n', 'tmp/tmp.cpp')
     runner1.simple_full_run('tmp/memory.txt', 'tmp/memory2_cpp.txt')
-    print(init.load_memory('tmp/memory2_cpp.txt'))
+    mem = init.load_memory('tmp/memory2_cpp.txt')
+    assert mem[init.SOME_INT_VECTOR] == [10]
     runner2 = CppRunner(init.SOME_FLOAT_VECTOR + '.push_back(0.5);\n', 'tmp/tmp2.cpp')
     runner2.simple_full_run('tmp/memory2_cpp.txt', 'tmp/memory3_cpp.txt')
-    print(init.load_memory('tmp/memory3_cpp.txt'))
+    mem = init.load_memory('tmp/memory3_cpp.txt')
+    assert mem[init.SOME_FLOAT_VECTOR] == [0.5]

@@ -3,6 +3,11 @@ from runners.init_runner import InitRunner
 import os
 
 the_genesis = '''
+#![allow(unused_mut)]
+#![allow(unused_variables)]
+#![allow(unused_assignments)]
+
+
 fn get_line(input: &mut std::io::BufRead) -> String {
     let mut line = String::new();
     input.read_line(&mut line).expect("failed to read line");
@@ -169,8 +174,12 @@ if __name__ == '__main__':
       '{0} = vec!["0".to_string(), "2".to_string(), "4".to_string(), "6".to_string()];'.format(
         init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_rust.txt')
-    print(init.load_memory('tmp/memory2_rust.txt'))
+    mem = init.load_memory('tmp/memory2_rust.txt')
+    assert mem[init.SOME_STR_VECTOR] == ["0", "2", "4","6"]
+
     runner2 = RustRunner('{0} = 0.11;'.format(
       init.SOME_FLOAT), 'tmp/tmp')
     runner2.simple_full_run('tmp/memory2_rust.txt', 'tmp/memory3_rust.txt')
-    print(init.load_memory('tmp/memory3_rust.txt'))
+    mem = init.load_memory('tmp/memory3_rust.txt')
+    assert mem[init.SOME_FLOAT] == 0.11
+    

@@ -163,6 +163,7 @@ if __name__ == '__main__':
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_pl.txt')
     mem = init.load_memory('tmp/memory2_pl.txt')
     assert mem[init.SOME_STR_VECTOR] == ["a","bb","dss"]
+    assert mem[init.SOME_INT_VECTOR] == [1,2,3]
+    assert mem[init.SOME_FLOAT_VECTOR] == [11.0,21.0,31]
     assert mem[init.SOME_INT] == 2
-    print(mem)
     

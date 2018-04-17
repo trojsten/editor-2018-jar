@@ -226,8 +226,10 @@ if __name__ == '__main__':
     runner = GoRunner('{0} = append({0}, "one", "two");'.format(
       init.SOME_STR_VECTOR), 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_go.txt')
-    print(init.load_memory('tmp/memory2_go.txt'))
+    mem = init.load_memory('tmp/memory2_go.txt')
+    assert mem[init.SOME_STR_VECTOR] == ["one", "two"]
     runner2 = GoRunner('{0} = 0.5678;'.format(
       init.SOME_FLOAT), 'tmp/tmp')
     runner2.simple_full_run('tmp/memory2_go.txt', 'tmp/memory3_go.txt')
-    print(init.load_memory('tmp/memory3_go.txt'))
+    mem = init.load_memory('tmp/memory3_go.txt')
+    assert mem[init.SOME_FLOAT] == 0.5678

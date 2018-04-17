@@ -201,8 +201,8 @@ if __name__ == '__main__':
       "SetLength(" + init.SOME_INT_VECTOR + ", 2);\n" +
       "SetLength(" + init.SOME_FLOAT_VECTOR + ", 10);\n" +
       "SetLength(" + init.SOME_STR_VECTOR + ", 10);\n" +
-      init.SOME_INT_VECTOR + "[0]:= 100000000000;\n" +
-      init.SOME_INT_VECTOR + "[1]:= 100000000000;\n" +
+      init.SOME_INT_VECTOR + "[0]:= 42;\n" +
+      init.SOME_INT_VECTOR + "[1]:= 4700000000;\n" +
       init.SOME_FLOAT_VECTOR + "[3]:= 10.123;\n" +
       init.SOME_STR_VECTOR + "[3]:= 'desat';\n" +
       init.SOME_INT + ":= 10;\n" +
@@ -211,5 +211,10 @@ if __name__ == '__main__':
     )
     runner1 = PascalRunner(code1, 'tmp/tmp')
     runner1.simple_full_run('tmp/memory.txt', 'tmp/memory2_pas.txt')
-    memory = init.load_memory('tmp/memory2_pas.txt')
-    print(memory)
+    mem = init.load_memory('tmp/memory2_pas.txt')
+    
+    assert mem[init.SOME_INT_VECTOR] == [42,4700000000]
+    assert mem[init.SOME_FLOAT_VECTOR] == [0, 0, 0, 10.123, 0, 0, 0, 0, 0, 0]
+
+
+

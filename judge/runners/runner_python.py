@@ -157,7 +157,11 @@ if __name__ == '__main__':
     init.create_init_memory('tmp/memory.txt')
     runner = PythonRunner(init.SOME_STR_VECTOR + '.append("d   ")\n', 'tmp/tmp')
     runner.simple_full_run('tmp/memory.txt', 'tmp/memory2_py.txt')
-    print(init.load_memory('tmp/memory2_py.txt'))
+    mem = init.load_memory('tmp/memory2_py.txt')
+    assert mem[init.SOME_STR_VECTOR] == ["d   "]
+
     runner2 = PythonRunner(init.SOME_FLOAT_VECTOR + '.append(0.5)\n', 'tmp/tmp2')
     runner2.simple_full_run('tmp/memory2_py.txt', 'tmp/memory3_py.txt')
-    print(init.load_memory('tmp/memory3_py.txt'))
+    mem = init.load_memory('tmp/memory3_py.txt')
+    assert mem[init.SOME_FLOAT_VECTOR] == [0.5]
+
