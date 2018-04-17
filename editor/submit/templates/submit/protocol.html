@@ -39,7 +39,10 @@
                             {% endif %}
                         </td>
                         <td><span data-toggle="tooltip" data-placement="auto" title="{{ test.result }}">{{ result|verbose:test.result }}</span></td>
-                        <td>{% if test.line > 0 %}{{ test.line }}{% endif %}</td>
+                        <td>
+                            {% if test.result == result.IGNORED %}(Tvoje kódy produkujú TLE!){% endif %}
+                            {% if test.line > 0 %}{{ test.line }}{% endif %}
+                        </td>
                     </tr>
 
                     {% if test.show_details %}
