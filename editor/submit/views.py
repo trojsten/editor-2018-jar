@@ -396,6 +396,8 @@ def user_login(request):
             print("Invalid login details: {0}, {1}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
     else:
+        if request.user.is_authenticated():
+            return redirect('problems')
         return render(request, 'submit/login.html', {})
 
 @login_required
