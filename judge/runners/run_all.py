@@ -24,8 +24,9 @@ REGISTER = {r.NAME: r for r in runners}
 
 
 class MasterRunner:
-    def __init__(self, code, prefix='', variables=None):
+    def __init__(self, code, prefix='', variables=None, limit=10000):
         self.code = code
+        self.limit = limit
         self.runners = []
         self.location = os.path.join('tmp',prefix,'runer{}')
         os.makedirs(os.path.dirname(self.location), exist_ok=True)
@@ -67,6 +68,9 @@ class MasterRunner:
         init_runner = InitRunner(self.variables)
         while line < len(self.runners):
             counter += 1
+            if counter >  self.limit:
+                return "TLE", line+1, "Counter exceesed limit "+str(self.limit)
+
             runner = self.runners[line]
             if runner is None:
                 line += 1

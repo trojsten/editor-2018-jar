@@ -147,8 +147,8 @@ class PythonRunner(Runner):
 
     def execute(self, in_memory, out_memory):
         log_fname = "{}.log_file".format(self.codename)
-        command = 'python3 {}.py {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
-        return os.system(command), open(log_fname).read()
+        cmd = 'python3 {}.py {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
+        return os.system(self.timeout(cmd)), open(log_fname).read()
         
 
 if __name__ == '__main__':

@@ -66,6 +66,7 @@ def run_tests(problem, master, protokol):
     runLog = SubElement(protokol, 'runLog')
     count_ok = 0
     for input_path in glob.glob('test/%s/*.in' % problem):
+        print(input_path)
         base = os.path.splitext(input_path)[0]
         result = master.run(input_path)
         message, line, diff = 'OK', 0, {}
@@ -129,6 +130,8 @@ class EditorJudge(SocketServer.BaseRequestHandler):
         code = data['code']
         custom = data['custom']
         custom_input = data['custom_input']
+        user_id = data['user_id']
+        print('Handling submit:', submit_id, ' problem:', problem, ' custom:', custom, ' user:', user_id)
 
         protokol = Element('protokol')
 

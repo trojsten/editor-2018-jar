@@ -164,7 +164,7 @@ class RustRunner(Runner):
         log_fname = "{}.runtime_log".format(self.codename)
         cmd = './{} {} {} 2> {}'.format(self.codename, in_memory, out_memory, log_fname)
         #logging.info('Executing: %s', cmd)
-        return os.system(cmd), open(log_fname).read()
+        return os.system(self.timeout(cmd)), open(log_fname).read()
 
 
 if __name__ == '__main__':
