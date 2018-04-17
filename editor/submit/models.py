@@ -12,9 +12,11 @@ from submit.helpers import get_default_custom_input
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     is_player = models.BooleanField(default=True)
+    host = models.CharField(default='0.0.0.0', blank=False, max_length=128)
+    port = models.IntegerField(default=12347, blank=False)
 
     def __str__(self):
-        return '(Profile-%s-%s-%s)' % (self.id, self.user, self.is_player)
+        return '(Profile-%s-%s-%s-%s-%s)' % (self.id, self.user, self.is_player, self.host, self.port)
 
 class Problem(models.Model):
     order = models.PositiveIntegerField(default=0, blank=False, null=False)

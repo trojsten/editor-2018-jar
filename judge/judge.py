@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import glob
 import math
@@ -168,7 +169,9 @@ class EditorJudge(SocketServer.BaseRequestHandler):
         urllib.request.urlopen(req)
 
 if __name__ == '__main__':
-    HOST, PORT = '127.0.0.1', 12347
+    HOST, PORT = '0.0.0.0', 12347
+    if len(sys.argv) >= 2:
+        PORT = int(sys.argv[1])
     server = SocketServer.TCPServer((HOST, PORT), EditorJudge)
+    print('Running on %s:%s' % (HOST, PORT))
     server.serve_forever()
-    print('Running!')
