@@ -69,7 +69,7 @@ class Task(models.Model):
         return False
 
     def __str__(self):
-        return '(Task-%s-%s-%s)' % (self.id, self.user, self.problem, self.active)
+        return '(Task-%s-%s-%s-%s)' % (self.id, self.user, self.problem, self.active)
 
     class Meta:
         unique_together = ('user', 'problem')
