@@ -113,7 +113,7 @@
                                                 class="btn btn-primary"
                                                 {% if readonly %}disabled{% endif %}
                                                 name="save-custom-run"
-                                                id="save-custom-run"
+                                                {% if not readonly %}id="save-custom-run"{% endif %}
                                                 formaction="{% url 'submit_problem_custom' problem_id=problem.id %}"
                                             >
                                                 Save & Run for custom input
