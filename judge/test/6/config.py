@@ -65,12 +65,12 @@ vzorak = [
     ("kuzlo:= Z mod 2;","Pascal"),
     ("IF kuzlo IS NOT ZERO GOTO 9","Rust"),
     ("Z=Z*len(str(bojovnici[0]))+bojovnici[0]%len(str(magia))","Python"),
-    ("Z += bojovnici[2] mod 47+magia*31;Z:=Z mod 1000;","Pascal"),
-    ("kuzlo:=N-bojovnici[2];bojovnici[2]+=1;bojovnici[1]+=Z;","Pascal"),
+    ("Z += bojovnici[1] mod 47+magia*31;Z:=Z mod 1000;","Pascal"),
+    ("kuzlo:=N-bojovnici[1];bojovnici[1]+=1;bojovnici[0]+=Z;","Pascal"),
     ("IF kuzlo IS NOT ZERO GOTO 2","Rust"),
     ("IF N IS NOT ZERO GOTO 12","Go"),
     ("Z=(len(str(Z))+47+bojovnici[0]%bojovnici[1]+Z*magia)%1000","Python"),
-    ("kuzlo:=N-bojovnici[2];bojovnici[2]+=1;bojovnici[1]+=Z;","Pascal"),
+    ("kuzlo:=N-bojovnici[1];bojovnici[1]+=1;bojovnici[0]+=Z;","Pascal"),
     ("IF kuzlo IS NOT ZERO GOTO 2","Rust"),
     ("magia = bojovnici[0] / M + (bojovnici[0]%M!=0);","C++")
 ]
