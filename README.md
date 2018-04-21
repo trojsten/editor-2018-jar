@@ -1,5 +1,5 @@
-# editor-2017-jesen
-Editor na jesenne KSP sustredko 2017.
+# editor-2018-jar
+Editor na jarne KSP sustredko 2018.
 
 ## Django
 
